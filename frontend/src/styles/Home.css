@@ -1,0 +1,13 @@
+.home {
+    height: 100vh; /* Chiều cao 100% màn hình */
+    overflow-y: scroll; /* Chỉ cuộn trong Home */
+    scroll-snap-type: y mandatory; /* Cuộn từng video */
+}
+
+.video-wrapper {
+    height: 100vh; /* Mỗi video chiếm toàn bộ màn hình */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+}

@@ -1,0 +1,81 @@
+video {
+    width: 300px;
+    object-fit: contain;
+    height: 97vh;
+    border-radius: 10px;
+}
+
+.video-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px;
+}
+.bt-action {
+    display: flex;
+    align-items: flex-end;
+    
+    height: 97vh;
+    cursor: pointer;
+}
+
+/* Cột chứa nút Like, Comment, Share */
+.actions {
+    margin-left: 10px;
+    bottom: 10px;
+}
+
+.btn-act {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    margin: 4px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-act span {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.btn-action {
+    background-color: rgb(71, 71, 71);
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    align-content: center;
+    border-radius: 50%;
+}
+
+/* Avatar nhỏ ở góc */
+.avt-profile, .n-music {
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border-radius: 50%;
+    margin-top: 7px;
+}
+
+/* Nút chuyển video */
+.btn-nav {
+    position: absolute;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 50%;
+}
+
+.btn-prev {
+    top: 30%;
+}
+
+.btn-next {
+    top: 60%;
+}
