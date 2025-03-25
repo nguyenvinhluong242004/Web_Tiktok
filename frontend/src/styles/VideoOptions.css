@@ -1,0 +1,10 @@
+.drop-menu-opt {
+    position: absolute;
+    top: 0px; /* Điều chỉnh cho menu nằm dưới nút */
+    right: -150px; /* Đưa menu ra sát mép */
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 9999;
+    padding: 10px;
+}

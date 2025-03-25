@@ -1,16 +1,96 @@
 video {
-    width: 300px;
+    position: relative;
+    width: 360px;
     object-fit: contain;
-    height: 97vh;
+    height: 100%;
     border-radius: 10px;
+    background-color: black;
 }
+
 
 .video-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 30px;
+    overflow: hidden;
+    border-radius: 10px;
 }
+.video-ct {
+    width: 360px;
+    height: 97vh;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    
+}
+
+.video-timer {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px 10px;
+    border-radius: 8px;
+    opacity: 0;
+}
+
+
+.video-progress {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+.video-progress:hover {
+    height: 7px;
+}
+
+/* Phần đã chạy (bo góc) */
+.video-progress::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 20px;
+    background: linear-gradient(to right, #ff3b5c 0%, rgba(255, 255, 255, 0.3) 0%);
+}
+
+/* Nút kéo (thumb) */
+.video-progress::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -3px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+
+.video-controls {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-icon {
+    color: white;
+    font-size: 20px;
+}
+
+
 .bt-action {
     display: flex;
     align-items: flex-end;
@@ -56,7 +136,10 @@ video {
     height: 45px;
     background: #fff;
     border-radius: 50%;
-    margin-top: 7px;
+    margin-top: 3px;
+}
+.avt-profile {
+    margin-bottom: 12px;
 }
 
 /* Nút chuyển video */
@@ -79,3 +162,6 @@ video {
 .btn-next {
     top: 60%;
 }
+
+
+

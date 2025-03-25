@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
-import VideoCard from "../components/VideoCard";
-import { fetchVideos } from "../utils/api";
+import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
+import VideoCard from "../components/layout/VideoCard";
+import { fetchVideos } from "../components/utils/api";
+import { useAppState } from "../store/AppData"; 
 import "../styles/Home.css";
 
-const Home = forwardRef(({ currentIndex, setCurrentIndex }, ref) => {
+const Home = () => {
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
@@ -15,17 +17,17 @@ const Home = forwardRef(({ currentIndex, setCurrentIndex }, ref) => {
         });
     }, []);
 
-    // Hàm cuộn đến video
-    useImperativeHandle(ref, () => ({
+    // Cung cấp phương thức cuộn cho component cha
+    useImperativeHandle(homeRef, () => ({
         scrollToVideo: (index) => {
-            if (videoRefs.current[index]) {
+            if (videoRefs.current[index]?.current) {
                 videoRefs.current[index].current.scrollIntoView({ behavior: "smooth", block: "center" });
-                setTimeout(() => setCurrentIndex(index), 300); // Cập nhật state sau khi cuộn
+                setCurrentIndex(index);
             }
         }
     }));
 
-    // Xử lý lăn chuột -> Cập nhật currentIndex nếu lướt qua 50% video
+    // Xác định video nào đang ở giữa màn hình khi cuộn
     const handleScroll = () => {
         if (!containerRef.current) return;
         const container = containerRef.current;
@@ -47,16 +49,27 @@ const Home = forwardRef(({ currentIndex, setCurrentIndex }, ref) => {
     };
 
     return (
-        <div className="home" ref={containerRef} onScroll={handleScroll}>
-            <div className="video-container">
-                {videos.map((video, index) => (
-                    <div ref={videoRefs.current[index]} key={video.id} className="video-wrapper">
-                        <VideoCard video={video} />
-                    </div>
-                ))}
+        <div className="d-flex main-home">
+            <div></div>
+            <div className="home w-100" ref={containerRef} onScroll={handleScroll}>
+                <div className="video-container">
+                    {videos.map((video, index) => (
+                        <div ref={videoRefs.current[index]} key={video.id} className="video-wrapper">
+                            <VideoCard video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo}/>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="footer">
+                <div className="bt-prev" onClick={() => handleScrollButton(-1)}>
+                    <i className="bi bi-chevron-up"></i>
+                </div>
+                <div className="bt-next" onClick={() => handleScrollButton(1)}>
+                    <i className="bi bi-chevron-down"></i>
+                </div>
             </div>
         </div>
     );
-});
+};
 
 export default Home;

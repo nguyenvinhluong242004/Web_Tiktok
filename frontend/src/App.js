@@ -1,35 +1,28 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { AppProvider } from "./store/AppData";
+import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
+import LoginModal from "./components/ui/LoginModal";
 import "./styles/App.css";
 
 function App() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const homeRef = useRef(null);
-
-    const handleScrollButton = (direction) => {
-        const newIndex = currentIndex + direction;
-        if (newIndex < 0) return;
-
-        if (homeRef.current) {
-            homeRef.current.scrollToVideo(newIndex);
-        }
-    };
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
 
     return (
-        <Router>
-            <div className="app-container">
-                <Navbar />
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<Home ref={homeRef} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />} />
-                    </Routes>
+        <AppProvider>
+            <Router>
+                <div className="app-container">
+                    <Navbar onLoginClick={() => setIsLoginOpen(true)} />
+                    <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+                    <div className="content">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                        </Routes>
+                    </div>
                 </div>
-                <Footer onScroll={handleScrollButton} />
-            </div>
-        </Router>
+            </Router>
+        </AppProvider>
     );
 }
 

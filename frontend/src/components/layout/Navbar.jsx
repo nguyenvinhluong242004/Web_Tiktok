@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/Navbar.css";
+import "../../styles/Navbar.css";
 
-function Navbar() {
+function Navbar({ onLoginClick }) {
   return (
     <div className="navbar">
-      <div style={{height: "10px"}}></div>
+      <div style={{height: "1px"}}></div>
       <div>
         <Link to="/" className="nav-item-logo">
           <i className="bi bi-tiktok"></i>
@@ -17,35 +17,35 @@ function Navbar() {
         <input type="text" className="search-input" placeholder="Tìm kiếm" />
       </div>
       <Link to="/" className="nav-item">
-        <i class="bi bi-house-door-fill"></i>
+        <i className="bi bi-house-door-fill"></i>
         <span>Đề xuất</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-slash-circle"></i>
+        <i className="bi bi-slash-circle"></i>
         <span>Khám phá</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-person-fill-check"></i>
+        <i className="bi bi-person-fill-check"></i>
         <span>Đã follow</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-plus-square"></i>
+        <i className="bi bi-plus-square"></i>
         <span>Tải lên</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-camera-reels"></i>
+        <i className="bi bi-camera-reels"></i>
         <span>Live</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-person-fill"></i>
+        <i className="bi bi-person-fill"></i>
         <span>Hồ sơ</span>
       </Link>
       <Link to="/" className="nav-item">
-        <i class="bi bi-three-dots"></i>
+        <i className="bi bi-three-dots"></i>
         <span>Thêm</span>
       </Link>
 
-      <div className="bt-login">
+      <div className="bt-login" onClick={onLoginClick}>
         Đăng nhập
       </div>
 
@@ -55,7 +55,7 @@ function Navbar() {
       <span className="t-nav">Chương trình</span>
       <span className="t-nav">Điều khoản và chính sách</span>
       <span className="t-nav-cp">Thêm</span>
-      <span className="t-nav-cp"><i class="bi bi-c-circle"></i> <span>2025 TikTok</span></span>
+      <span className="t-nav-cp"><i className="bi bi-c-circle"></i> <span>2025 TikTok</span></span>
       
 
     </div>
