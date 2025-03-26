@@ -43,7 +43,33 @@
 .modal-body {
     display: block;
     justify-content: center;
-    max-height: 330px;
+    height: 330px;
     overflow-y: auto;
     margin-bottom: 5px;
 }
+
+.txt-login-input {
+    color: aliceblue;
+    background: rgb(37, 37, 36);
+    border: 0;
+}
+
+.txt-login-input::placeholder {
+    color: #888;
+}
+
+.txt-login-input:focus {
+    background: rgb(37, 37, 36); /* Giữ nguyên màu nền khi focus */
+    color: aliceblue;
+}
+
+.date-st{
+    width: 100%;
+}
+
+.custom-dropdown {
+    max-height: 200px; /* Giới hạn chiều cao */
+    overflow-y: auto;  /* Thêm thanh cuộn */
+}
+
+

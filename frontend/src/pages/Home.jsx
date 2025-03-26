@@ -50,7 +50,7 @@ const Home = () => {
 
     return (
         <div className="d-flex main-home">
-            <div></div>
+            <div style={{width: "70px"}}></div>
             <div className="home w-100" ref={containerRef} onScroll={handleScroll}>
                 <div className="video-container">
                     {videos.map((video, index) => (
@@ -60,6 +60,7 @@ const Home = () => {
                     ))}
                 </div>
             </div>
+            <div style={{width: "250px"}}></div>
             <div className="footer">
                 <div className="bt-prev" onClick={() => handleScrollButton(-1)}>
                     <i className="bi bi-chevron-up"></i>

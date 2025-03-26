@@ -12,6 +12,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const [duration, setDuration] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false); // 🆕 Trạng thái menu
     const [showButton, setShowButton] = useState(false);
+    const [showSpeaker, setShowSpeaker] = useState(false);
     const [isClickButton, setIsClickButton] = useState(false);
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -26,6 +27,10 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         setDuration(videoElement.duration || 0);
         videoElement.currentTime = 0;
         resetIsNewVideo();
+        setPlaying(true);
+        videoElement.play().catch(error => {
+            console.error("Không thể phát video:", error);
+        });
     }, [isNewVideo, resetIsNewVideo]);
 
     useEffect(() => {
@@ -80,14 +85,20 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         <div className="d-flex position-relative">
             <div className="video-card"
 
-                onMouseEnter={() =>{
+                onMouseEnter={() => {
                     if (isClickButton) {
                         setMenuOpen(false);
                         console.log("cllll");
                     }
                     setShowButton(true);
+                    setShowSpeaker(true);
                 }}
-                onMouseLeave={() => setShowButton(false) && setMenuOpen(false)}
+                onMouseLeave={() => {
+                    setShowButton(false);
+                    //setMenuOpen(false);
+                    setShowSpeaker(false);
+                }}
+                
             >
                 <div className="video-ct"
                 >
@@ -119,19 +130,21 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                         onChange={handleSeek}
                         onMouseLeave={disableTimer}
                     />
-                    <div className="video-controls">
-                        <i
-                            className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
-                            onClick={toggleMute}
-                        ></i>
-                    </div>
+                    {showSpeaker && (
+                        <div className="video-controls">
+                            <i
+                                className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
+                                onClick={toggleMute}
+                            ></i>
+                        </div>
+                    )}
                     {/* Nút menu (góc trên bên phải) */}
                     {showButton && (
                         <div
                             className="position-absolute top-0 end-0"
                             onMouseEnter={() => {
                                 setMenuOpen(true);
-                                if (isClickButton){
+                                if (isClickButton) {
                                     setIsClickButton(false);
                                     setMenuOpen(false);
                                 }
@@ -182,7 +195,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
             </div>
 
             {/* Truyền trạng thái menu xuống VideoOptions */}
-            <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton}/>
+            <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} />
         </div>
     );
 };
