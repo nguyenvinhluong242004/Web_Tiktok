@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import VideoOptions from "../ui/VideoOptions"; // Import menu tùy chọn
+import { FaPlay, FaPause } from "react-icons/fa";
 import "../../styles/VideoCard.css";
 
 const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
@@ -10,10 +11,11 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [menuOpen, setMenuOpen] = useState(false); // 🆕 Trạng thái menu
+    const [menuOpen, setMenuOpen] = useState(true); // 🆕 Trạng thái menu
     const [showButton, setShowButton] = useState(false);
     const [showSpeaker, setShowSpeaker] = useState(false);
     const [isClickButton, setIsClickButton] = useState(false);
+    const [showAnimation, setShowAnimation] = useState(false);
     useEffect(() => {
         const videoElement = videoRef.current;
         if (!videoElement || !isNewVideo) return;
@@ -43,6 +45,10 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         if (playing) videoRef.current.pause();
         else videoRef.current.play();
         setPlaying(!playing);
+
+        setShowAnimation(true);
+
+        setTimeout(() => setShowAnimation(false), 500); // Ẩn icon sau 0.5s
     };
 
     const toggleMute = () => {
@@ -98,7 +104,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                     //setMenuOpen(false);
                     setShowSpeaker(false);
                 }}
-                
+
             >
                 <div className="video-ct"
                 >
@@ -118,6 +124,11 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                         controlsList="nodownload nofullscreen noremoteplayback"
 
                     />
+                    {showAnimation && (
+                        <div className="play-pause-icon">
+                            {playing ? <FaPause size={40} /> : <FaPlay size={40} />}
+                        </div>
+                    )}
                     <div className="video-timer">
                         {formatTime(currentTime)} / {formatTime(duration)}
                     </div>
