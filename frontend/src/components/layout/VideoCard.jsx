@@ -11,7 +11,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [menuOpen, setMenuOpen] = useState(true); // 🆕 Trạng thái menu
+    const [menuOpen, setMenuOpen] = useState(false); // 🆕 Trạng thái menu
     const [showButton, setShowButton] = useState(false);
     const [showSpeaker, setShowSpeaker] = useState(false);
     const [isClickButton, setIsClickButton] = useState(false);

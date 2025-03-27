@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import VideoCard from "../components/layout/VideoCard";
-import { fetchVideos } from "../components/utils/api";
+import { fetchVideos, checkAccessToken } from "../components/utils/api";
 import { useAppState } from "../store/AppData"; 
 import "../styles/Home.css";
 
@@ -15,6 +15,7 @@ const Home = () => {
             setVideos(data);
             videoRefs.current = data.map(() => React.createRef());
         });
+        checkAccessToken();
     }, []);
 
     // Cung cấp phương thức cuộn cho component cha

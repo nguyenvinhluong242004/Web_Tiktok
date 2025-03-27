@@ -28,7 +28,7 @@ function Navbar({ onLoginClick }) {
         <i className="bi bi-person-fill-check"></i>
         <span>Đã follow</span>
       </Link>
-      <Link to="/" className="nav-item">
+      <Link to="/up" className="nav-item">
         <i className="bi bi-plus-square"></i>
         <span>Tải lên</span>
       </Link>

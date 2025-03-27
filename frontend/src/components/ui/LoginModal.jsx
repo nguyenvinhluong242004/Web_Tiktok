@@ -5,6 +5,8 @@ import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
 
+import { handleLogin } from "../../services/UserService";
+
 const optionsMonth = [...Array(12).keys()].map((m) => ({
     value: m + 1,
     label: `Tháng ${m + 1}`,
@@ -60,6 +62,8 @@ const LoginModal = ({ isOpen, onClose }) => {
     const [agree, setAgree] = useState(false);
 
     if (!isOpen) return null;
+
+
 
     return (
         <div className="modal fade show d-block" tabIndex="-1">
@@ -129,13 +133,15 @@ const LoginModal = ({ isOpen, onClose }) => {
                                         {/* Form đăng nhập */}
                                         <div className="mb-3" >
                                             <label className="form-label">Email hoặc Tiktok ID</label>
-                                            <input type="text" className="txt-login-input form-control mb-2" placeholder="Email hoặc Tiktok ID" />
+                                            <input type="text" className="txt-login-input form-control mb-2" placeholder="Email hoặc Tiktok ID" value={email || ""}
+                                                onChange={(e) => setEmail(e.target.value)} />
 
-                                            <input type="password" className="txt-login-input form-control mb-2" placeholder="Mật khẩu" />
+                                            <input type="password" className="txt-login-input form-control mb-2" placeholder="Mật khẩu" value={password || ""}
+                                                onChange={(e) => setPassword(e.target.value)} />
 
                                             <a href="#" className="text-decoration-none small text-light" onClick={() => setShowForgotForm(true)}>Bạn quên mật khẩu?</a>
                                         </div>
-                                        <button className="btn btn-danger w-100 mb-2">Đăng nhập</button>
+                                        <button className="btn btn-danger w-100 mb-2" onClick={() => handleLogin(email, password)}>Đăng nhập</button>
                                     </>
                                 )}
                             </>

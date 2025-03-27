@@ -1,17 +1,17 @@
 .drop-menu-opt {
     position: absolute;
     top: 0px; /* Điều chỉnh cho menu nằm dưới nút */
-    right: -128px; /* Đưa menu ra sát mép */
-    width: 180px;
+    right: -118px; /* Đưa menu ra sát mép */
+    width: 170px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     z-index: 9999;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .ic-opt {
-    font-size: 14px;
-    margin-right: 3px;
+    font-size: 13px;
+    margin-right: 2px;
 }
 
 .form-check {
