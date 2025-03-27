@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
                 new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
+                    Secure = false,
                     SameSite = SameSiteMode.Lax,
                     Expires = DateTime.UtcNow.AddMinutes(1),
                 }
@@ -67,32 +67,57 @@ public class AuthController : ControllerBase
             "Cookies nhận được: {Cookies}",
             string.Join(", ", Request.Cookies.Keys)
         );
+
+        // 1️⃣ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
         if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
             return Unauthorized(new { message = "No refresh token" });
 
-        // if (!Request.Cookies.TryGetValue("access_token", out var oldAccessToken))
-        //     return Unauthorized(new { message = "No access token" });
+        string email = null;
 
+        // 2️⃣ Lấy email từ access token cũ (nếu còn)
+        var oldAccessToken = HttpContext
+            .Request.Headers["Authorization"]
+            .ToString()
+            .Replace("Bearer ", "");
+        if (!string.IsNullOrEmpty(oldAccessToken))
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadToken(oldAccessToken) as JwtSecurityToken;
+            email = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        }
 
-        var oldAccessToken = HttpContext.Request.Headers["Authorization"].ToString();
+        // 3️⃣ Nếu chưa có, lấy từ header `X-User-Email`
+        if (string.IsNullOrEmpty(email))
+        {
+            email = HttpContext.Request.Headers["X-User-Email"].ToString();
+        }
 
-        var handler = new JwtSecurityTokenHandler();
-        var token = oldAccessToken;
-        var email = User.FindFirst(ClaimTypes.Email)?.Value; // Lấy email từ token
+        // 4️⃣ Nếu vẫn chưa có, lấy từ User Claims (nếu access token đã hết hạn)
+        if (string.IsNullOrEmpty(email))
+        {
+            email = User.FindFirst(ClaimTypes.Email)?.Value;
+        }
 
-        if (email == null || !await _authService.ValidateRefreshTokenAsync(email, refreshToken))
+        if (string.IsNullOrEmpty(email))
+            return Unauthorized(new { message = "Email not found" });
+
+        // 5️⃣ Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
+        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
             return Unauthorized(new { message = "Invalid refresh token" });
 
+        // 6️⃣ Tạo access token mới
         var newAccessToken = _authService.GenerateJwtToken(email);
+
+        // 7️⃣ Gửi token mới về client (cookie HttpOnly)
         Response.Cookies.Append(
             "access_token",
             newAccessToken,
             new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, //local là false
+                Secure = false, // Local là false, production nên đặt true
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(1),
             }
         );
 
@@ -133,6 +158,19 @@ public class AuthController : ControllerBase
 
         if (string.IsNullOrEmpty(token))
             return Unauthorized(new { message = "Không có token trong request." });
+
+        if (!Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
+            return Unauthorized(new { message = "No access_token from Cookies" });
+
+        if (!string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(tokenFromCookie))
+        {
+            _logger.LogInformation("CheckToken T1: {0}", token.Split(" ")[1]);
+            _logger.LogInformation("CheckToken T2: {0}", tokenFromCookie);
+            if (token.Split(" ")[1] != tokenFromCookie)
+            {
+                return Unauthorized(new { message = "Token trong header và cookie không khớp." });
+            }
+        }
 
         var email = User.FindFirst(ClaimTypes.Email)?.Value; // Lấy email từ token
 

@@ -15,7 +15,7 @@ const Home = () => {
             setVideos(data);
             videoRefs.current = data.map(() => React.createRef());
         });
-        checkAccessToken();
+        //checkAccessToken();
     }, []);
 
     // Cung cấp phương thức cuộn cho component cha

@@ -68,10 +68,12 @@ public class AuthService
     public async Task<bool> ValidateRefreshTokenAsync(string email, string refreshToken)
     {
         var storedToken = await _cache.GetStringAsync($"refresh_{email}");
-        _logger.LogInformation("oooooooooooooooo", email);
-        _logger.LogInformation("qqqqqqqqqqqqqqqq", storedToken);
-        _logger.LogInformation("kkkkkkkkkkkkkkkk", refreshToken);
         return storedToken == refreshToken;
+    }
+
+    public async Task<string> GetfreshTokenAsync(string email)
+    {
+        return await _cache.GetStringAsync($"refresh_{email}");
     }
 
     public async Task RevokeRefreshTokenAsync(string email)

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { checkAccessToken } from "../utils/api";
 import "../../styles/Navbar.css";
 
 function Navbar({ onLoginClick }) {
+  useEffect(() => {
+    checkAccessToken();
+  }, []);
   return (
     <div className="navbar">
-      <div style={{height: "1px"}}></div>
+      <div style={{ height: "1px" }}></div>
       <div>
         <Link to="/" className="nav-item-logo">
           <i className="bi bi-tiktok"></i>
@@ -56,7 +60,7 @@ function Navbar({ onLoginClick }) {
       <span className="t-nav">Điều khoản và chính sách</span>
       <span className="t-nav-cp">Thêm</span>
       <span className="t-nav-cp"><i className="bi bi-c-circle"></i> <span>2025 TikTok</span></span>
-      
+
 
     </div>
   );

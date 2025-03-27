@@ -39,6 +39,7 @@ export const checkAccessToken = async () => {
     try {
         const response = await axios.get("http://localhost:5281/api/auth/check-token", {
             headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true, // Đặt đúng vị trí ở đây
         });
         console.log(response.data);
         return response.data;

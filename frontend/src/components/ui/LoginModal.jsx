@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Select from 'react-select';
-import { FaFacebook, FaGoogle, FaLine, FaApple, FaDivide } from "react-icons/fa";
+import { FaFacebook, FaGoogle, FaLine, FaApple } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
@@ -139,7 +139,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                                             <input type="password" className="txt-login-input form-control mb-2" placeholder="Mật khẩu" value={password || ""}
                                                 onChange={(e) => setPassword(e.target.value)} />
 
-                                            <a href="#" className="text-decoration-none small text-light" onClick={() => setShowForgotForm(true)}>Bạn quên mật khẩu?</a>
+                                            <span style={{ cursor: "pointer" }} className="text-decoration-none small text-light" onClick={() => setShowForgotForm(true)}>Bạn quên mật khẩu?</span>
                                         </div>
                                         <button className="btn btn-danger w-100 mb-2" onClick={() => handleLogin(email, password)}>Đăng nhập</button>
                                     </>
@@ -258,26 +258,26 @@ const LoginModal = ({ isOpen, onClose }) => {
                         {swRegister ? (
                             <span className="rg">
                                 Bạn đã có tài khoản?{" "}
-                                <a href="#" onClick={() => {
+                                <span onClick={() => {
                                     setShowRegisterForm(false);
                                     setShowForgotForm(false);
                                     setSwRegister(false);
                                 }}
-                                    style={{ textDecoration: "none" }} className="text-danger fw-bold">
+                                    style={{ textDecoration: "none", cursor: "pointer" }} className="text-danger fw-bold">
                                     Đăng nhập
-                                </a>
+                                </span>
                             </span>
                         ) : (
                             <span className="rg">
                                 Bạn không có tài khoản?{" "}
-                                <a href="#" onClick={() => {
+                                <span onClick={() => {
                                     setShowLoginForm(false);
                                     setShowForgotForm(false);
                                     setSwRegister(true);
                                 }}
-                                    style={{ textDecoration: "none" }} className="text-danger fw-bold">
+                                    style={{ textDecoration: "none", cursor: "pointer" }} className="text-danger fw-bold">
                                     Đăng ký
-                                </a>
+                                </span>
                             </span>
                         )}
                     </div>

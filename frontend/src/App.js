@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { AppProvider } from "./store/AppData";
 import PublicRoutes from "./routes/PublicRoute";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Navbar from "./components/layout/Navbar";
-import Home from "./pages/Home";
 import LoginModal from "./components/ui/LoginModal";
 import "./styles/App.css";
 
