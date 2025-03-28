@@ -24,7 +24,14 @@ public class AuthController : ControllerBase
 
         if (model.Email == "luong" && model.Password == "123")
         {
-            var accessToken = _authService.GenerateJwtToken(model.Email);
+            string role = model.Email switch
+            {
+                "luong" => "Admin",
+                "nhi" => "Censor",
+                _ => "User",
+            };
+
+            var accessToken = _authService.GenerateJwtToken(model.Email, role);
             var refreshToken = _authService.GenerateRefreshToken();
 
             await _authService.StoreRefreshTokenAsync(model.Email, refreshToken);
@@ -53,24 +60,25 @@ public class AuthController : ControllerBase
                 }
             );
 
-            return Ok(new { message = "Login successful", access_token = accessToken });
+            return Ok(
+                new
+                {
+                    message = "Login successful",
+                    access_token = accessToken,
+                    role = role,
+                }
+            );
         }
 
         return Unauthorized();
     }
 
     [Authorize]
-    [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshToken()
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
     {
-        _logger.LogInformation(
-            "Cookies nhận được: {Cookies}",
-            string.Join(", ", Request.Cookies.Keys)
-        );
-
-        // 1️⃣ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
         if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
-            return Unauthorized(new { message = "No refresh token" });
+            return BadRequest(new { message = "No refresh token found" });
 
         string email = null;
 
@@ -101,43 +109,7 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(email))
             return Unauthorized(new { message = "Email not found" });
 
-        // 5️⃣ Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
-        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
-            return Unauthorized(new { message = "Invalid refresh token" });
-
-        // 6️⃣ Tạo access token mới
-        var newAccessToken = _authService.GenerateJwtToken(email);
-
-        // 7️⃣ Gửi token mới về client (cookie HttpOnly)
-        Response.Cookies.Append(
-            "access_token",
-            newAccessToken,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = false, // Local là false, production nên đặt true
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(1),
-            }
-        );
-
-        return Ok(new { message = "Token refreshed", access_token = newAccessToken });
-    }
-
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
-            return BadRequest(new { message = "No refresh token found" });
-
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(refreshToken);
-        var email = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-        if (email != null)
-        {
-            await _authService.RevokeRefreshTokenAsync(email);
-        }
+        await _authService.RevokeRefreshTokenAsync(email);
 
         Response.Cookies.Delete("access_token");
         Response.Cookies.Delete("refresh_token");
@@ -194,5 +166,134 @@ public class AuthController : ControllerBase
                 expiresAt = expiryDate,
             }
         );
+    }
+
+    [Authorize]
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        _logger.LogInformation(
+            "Cookies nhận được: {Cookies}",
+            string.Join(", ", Request.Cookies.Keys)
+        );
+
+        // 1️⃣ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
+        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
+            return Unauthorized(new { message = "No refresh token" });
+
+        string email = null;
+        string role = null;
+
+        // 2️⃣ Lấy email từ access token cũ (nếu còn)
+        var oldAccessToken = HttpContext
+            .Request.Headers["Authorization"]
+            .ToString()
+            .Replace("Bearer ", "");
+        if (!string.IsNullOrEmpty(oldAccessToken))
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadToken(oldAccessToken) as JwtSecurityToken;
+            email = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            role = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "User";
+        }
+
+        // 3️⃣ Nếu chưa có, lấy từ header `X-User-Email`
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role))
+        {
+            email = HttpContext.Request.Headers["X-User-Email"].ToString();
+            role = HttpContext.Request.Headers["X-User-Role"].ToString();
+        }
+
+        // 4️⃣ Nếu vẫn chưa có, lấy từ User Claims (nếu access token đã hết hạn)
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role))
+        {
+            email = User.FindFirst(ClaimTypes.Email)?.Value;
+            role = User.FindFirst(ClaimTypes.Role)?.Value ?? "User";
+        }
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role))
+            return Unauthorized(new { message = "Email not found" });
+
+        // 5️⃣ Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
+        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
+            return Unauthorized(new { message = "Invalid refresh token" });
+
+        // 6️⃣ Tạo access token mới
+        var newAccessToken = _authService.GenerateJwtToken(email, role);
+
+        // 7️⃣ Gửi token mới về client (cookie HttpOnly)
+        Response.Cookies.Append(
+            "access_token",
+            newAccessToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, // Local là false, production nên đặt true
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddMinutes(1),
+            }
+        );
+
+        return Ok(new { message = "Token refreshed", access_token = newAccessToken });
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("admin")]
+    public async Task<IActionResult> GetAdminData()
+    {
+        // 1️ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
+        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
+            return Unauthorized(new { message = "Role: No refresh token" });
+
+        string email = email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(email))
+            return Unauthorized(new { message = "Role: Email not found" });
+
+        // 2 Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
+        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
+            return Unauthorized(new { message = "Role: Invalid refresh token" });
+
+        return Ok(new { message = "This is admin data." });
+    }
+
+    [Authorize(Roles = "Censor")]
+    [HttpGet("censor")]
+    public async Task<IActionResult> GetCensorData()
+    {
+        // 1️ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
+        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
+            return Unauthorized(new { message = "Role: No refresh token" });
+
+        string email = email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(email))
+            return Unauthorized(new { message = "Role: Email not found" });
+
+        // 2 Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
+        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
+            return Unauthorized(new { message = "Role: Invalid refresh token" });
+
+        return Ok(new { message = "This is admin data." });
+    }
+
+    [Authorize(Roles = "User")]
+    [HttpGet("user")]
+    public async Task<IActionResult> GetUserData()
+    {
+        // 1️ Kiểm tra refresh token trong Redis (từ cookie client gửi lên)
+        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
+            return Unauthorized(new { message = "Role: No refresh token" });
+
+        string email = email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(email))
+            return Unauthorized(new { message = "Role: Email not found" });
+
+        // 2 Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
+        if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
+            return Unauthorized(new { message = "Role: Invalid refresh token" });
+
+        return Ok(new { message = "This is user data." });
     }
 }

@@ -22,13 +22,14 @@ public class AuthService
         _logger = logger;
     }
 
-    public string GenerateJwtToken(string email)
+    public string GenerateJwtToken(string email, string role)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Role, role), // 🛠️ Thêm Role vào JWT
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 

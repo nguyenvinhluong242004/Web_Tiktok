@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -51,8 +52,17 @@ builder
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
             ),
+            RoleClaimType = ClaimTypes.Role,
         };
     });
+
+// Thêm Authorization Policies cho các vai trò
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CensorPolicy", policy => policy.RequireRole("Censor"));
+    options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
+});
 
 // 🛠️ Quan trọng: Thêm dòng này để tránh lỗi
 builder.Services.AddAuthorization();

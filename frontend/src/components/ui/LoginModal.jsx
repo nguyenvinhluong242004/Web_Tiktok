@@ -5,7 +5,7 @@ import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
 
-import { handleLogin } from "../../services/UserService";
+import { handleLogin } from "../../services/apiAccount";
 
 const optionsMonth = [...Array(12).keys()].map((m) => ({
     value: m + 1,

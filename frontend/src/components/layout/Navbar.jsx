@@ -1,12 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { checkAccessToken } from "../utils/api";
+import { checkToken, checkRole } from "../../services/apiNavbar";
 import "../../styles/Navbar.css";
 
+import { handleLogout } from "../../services/apiAccount";
+
 function Navbar({ onLoginClick }) {
+  const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-    checkAccessToken();
+    const verifyToken = async () => {
+      const result = await checkToken();
+      setIsLogin(!!result); // Chuyển kết quả thành true/false
+    };
+    verifyToken();
+    checkRole();
   }, []);
+
   return (
     <div className="navbar">
       <div style={{ height: "1px" }}></div>
@@ -49,9 +58,15 @@ function Navbar({ onLoginClick }) {
         <span>Thêm</span>
       </Link>
 
-      <div className="bt-login" onClick={onLoginClick}>
-        Đăng nhập
-      </div>
+      {isLogin ? (
+        <div className="bt-login" onClick={handleLogout}>
+          Đăng xuất
+        </div>
+      ) : (
+        <div className="bt-login" onClick={onLoginClick}>
+          Đăng nhập
+        </div>
+      )}
 
       <hr className="line" />
 

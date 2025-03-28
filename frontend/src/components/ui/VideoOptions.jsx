@@ -10,15 +10,15 @@ const VideoOptions = ({isOpen, setMenuOpen, setIsClickButton, setShowButton}) =>
             <ul className="drop-menu-opt dropdown-menu dropdown-menu-dark show" data-bs-display="static" onMouseLeave={() => setMenuOpen(false) && setIsClickButton(false) && setShowButton(false)} >
                 <li>
                     <button className="dropdown-item d-flex justify-content-between">
-                        <span><i class="bi bi-badge-hd ic-opt"></i> Chất lượng</span> <span>540P</span>
+                        <span><i className="bi bi-badge-hd ic-opt"></i> Chất lượng</span> <span>540P</span>
                     </button>
                 </li>
                 <li>
-                    <button className="dropdown-item"><i class="bi bi-badge-cc ic-opt"></i> Phụ đề</button>
+                    <button className="dropdown-item"><i className="bi bi-badge-cc ic-opt"></i> Phụ đề</button>
                 </li>
                 <li>
                     <button className="dropdown-item d-flex">
-                        <span><i class="bi bi-capslock-fill ic-opt"></i> Cuộn tự động</span>
+                        <span><i className="bi bi-capslock-fill ic-opt"></i> Cuộn tự động</span>
                         <div className="form-check form-switch">
                             <input
                                 className="form-check-input"
@@ -30,10 +30,10 @@ const VideoOptions = ({isOpen, setMenuOpen, setIsClickButton, setShowButton}) =>
                     </button>
                 </li>
                 <li>
-                    <button className="dropdown-item"><i class="bi bi-heartbreak ic-opt"></i> Không quan tâm</button>
+                    <button className="dropdown-item"><i className="bi bi-heartbreak ic-opt"></i> Không quan tâm</button>
                 </li>
                 <li>
-                    <button className="dropdown-item"><i class="bi bi-flag ic-opt"></i> Báo cáo</button>
+                    <button className="dropdown-item"><i className="bi bi-flag ic-opt"></i> Báo cáo</button>
                 </li>
             </ul>
         </div>
