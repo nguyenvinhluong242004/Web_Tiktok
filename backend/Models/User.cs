@@ -1,9 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
+    [Table("users")]
     public class User
     {
+        [Key]
+        [Column("Id")] // nếu tên sai so với dtb
         public int Id { get; set; }
 
         [Required]

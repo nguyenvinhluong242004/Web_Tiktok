@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UploadController : ControllerBase
+public class CloudController : ControllerBase
 {
     private readonly CloudinaryService _cloudinaryService;
 
-    public UploadController(CloudinaryService cloudinaryService)
+    public CloudController(CloudinaryService cloudinaryService)
     {
         _cloudinaryService = cloudinaryService;
     }

@@ -3,6 +3,7 @@ using System.Text;
 using CloudinaryDotNet;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
@@ -25,6 +26,14 @@ config["Cloudinary:ApiSecret"] = Environment.GetEnvironmentVariable("CLOUD_SECRE
 config["Redis:ConnectionString"] = Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING");
 config["Redis:Password"] = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
 
+config["Database:Host"] = Environment.GetEnvironmentVariable("DB_HOST");
+config["Database:Name"] = Environment.GetEnvironmentVariable("DB_NAME");
+config["Database:User"] = Environment.GetEnvironmentVariable("DB_USER");
+config["Database:Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD");
+config["Database:Port"] = Environment.GetEnvironmentVariable("DB_PORT");
+config["Database:SslMode"] = Environment.GetEnvironmentVariable("DB_SSLMODE");
+config["Database:TrustServerCertificate"] = Environment.GetEnvironmentVariable("DB_TRUST_CERT");
+
 // Cấu hình Cloudinary
 var account = new Account(
     config["Cloudinary:CloudName"],
@@ -34,6 +43,19 @@ var account = new Account(
 var cloudinary = new Cloudinary(account);
 builder.Services.AddSingleton(cloudinary);
 builder.Services.AddScoped<CloudinaryService>();
+
+// Cấu hình Database
+var connectionString =
+    $"Host={config["Database:Host"]};"
+    + $"Database={config["Database:Name"]};"
+    + $"Username={config["Database:User"]};"
+    + $"Password={config["Database:Password"]};"
+    + $"Port={config["Database:Port"]};"
+    + $"Ssl Mode={config["Database:SslMode"]};"
+    + $"Trust Server Certificate={config["Database:TrustServerCertificate"]}";
+
+// Thêm DbContext vào dịch vụ
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
 // Thêm các service cần thiết
 builder.Services.AddControllers();
@@ -111,6 +133,12 @@ app.UseEndpoints(endpoints =>
 
 app.UseMiddleware<JwtMiddleware>();
 
-Console.WriteLine($"🔍 JWT_KEY from Configuration: {config["Jwt:Key"]}");
+app.Use(
+    async (context, next) =>
+    {
+        Console.WriteLine($"📩 Request: {context.Request.Method} {context.Request.Path}");
+        await next();
+    }
+);
 
 app.Run();

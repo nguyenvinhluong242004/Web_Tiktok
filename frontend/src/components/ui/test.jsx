@@ -25,7 +25,7 @@ const UploadImage = () => {
 
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5281/api/upload/upload-image", {
+            const response = await fetch("http://localhost:5281/api/cloud/upload-image", {
                 method: "POST",
                 body: formData,
             });
@@ -46,6 +46,32 @@ const UploadImage = () => {
         setLoading(false);
     };
 
+    const getUsers = async () => {
+        try {
+            const response = await fetch("http://localhost:5281/api/database/users");
+
+            // Kiểm tra response có nội dung không
+            const responseText = await response.text();
+            console.log("Response từ backend:", responseText);
+
+            if (!responseText) {
+                throw new Error("Phản hồi rỗng từ backend");
+            }
+
+            const data = JSON.parse(responseText);
+            console.log("Dữ liệu JSON đã parse:", data);
+
+            if (response.ok) {
+                console.log("Danh sách users:", data);
+            } else {
+                console.error("Lỗi API:", data.message);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error.message);
+        }
+    };
+
+
     return (
         <div style={{ textAlign: "center", padding: "20px" }}>
             <h2>Upload ảnh lên Cloudinary</h2>
@@ -55,6 +81,7 @@ const UploadImage = () => {
             <button onClick={handleUpload} disabled={loading} style={{ marginTop: "10px" }}>
                 {loading ? "Đang tải..." : "Upload ảnh"}
             </button>
+            <button onClick={getUsers}>TestDTB</button>
             {uploadedUrl && (
                 <div style={{ marginTop: "20px" }}>
                     <h3>Ảnh đã upload:</h3>
