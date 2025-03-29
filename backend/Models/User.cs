@@ -7,16 +7,15 @@ namespace Backend.Models
     public class User
     {
         [Key]
-        [Column("Id")] // nếu tên sai so với dtb
+        [Column("id")]
         public int Id { get; set; }
 
+        [Column("email")]
         [Required]
         public string Email { get; set; } = string.Empty;
 
+        [Column("passwordhash")]
         [Required]
-        public string PasswordHash { get; set; } = string.Empty; // Lưu mật khẩu dạng hash
-
-        public string RefreshToken { get; set; } = string.Empty;
-        public DateTime RefreshTokenExpiry { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
     }
 }
