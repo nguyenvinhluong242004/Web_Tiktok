@@ -10,12 +10,40 @@ namespace Backend.Models
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("email")]
-        [Required]
-        public string Email { get; set; } = string.Empty;
+        [Required, Column("username")]
+        public string Username { get; set; }
 
-        [Column("passwordhash")]
-        [Required]
-        public string PasswordHash { get; set; } = string.Empty;
+        [Required, Column("email")]
+        public string Email { get; set; }
+
+        [Required, Column("passwordhash")]
+        public string PasswordHash { get; set; }
+
+        [Column("phonenumber")]
+        public string? PhoneNumber { get; set; } = null;
+
+        [Column("dateofbirth")]
+        public DateTime? DateOfBirth { get; set; }
+
+        [Column("role")]
+        public string Role { get; set; } = "user";
+
+        [Column("profileimage")]
+        public string? ProfileImage { get; set; } = null;
+
+        [Column("createdat")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column("updatedat")]
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column("totalfollowers")]
+        public int TotalFollowers { get; set; } = 0;
+
+        [Column("totalfollowing")]
+        public int TotalFollowing { get; set; } = 0;
+
+        [Column("totalvideolikes")]
+        public int TotalVideoLikes { get; set; } = 0;
     }
 }

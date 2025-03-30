@@ -109,7 +109,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                 <div className="video-ct"
                 >
                     <video
-                        src={video.url}
+                        src={video.videoUrl}
                         ref={videoRef}
                         autoPlay
                         loop

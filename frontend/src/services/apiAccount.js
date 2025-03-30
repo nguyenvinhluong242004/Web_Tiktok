@@ -1,4 +1,28 @@
-import { login, logout } from "./auth/AuthService";
+import { register, login, logout } from "./auth/AuthService";
+
+export const handleRegister = async (email, password, day, year, month) => {
+    // Đảm bảo định dạng YYYY-MM-DD chuẩn
+    const formattedMonth = month.toString().padStart(2, "0");
+    const formattedDay = day.toString().padStart(2, "0");
+
+    const userData = {
+        email,
+        password,
+        dateOfBirth: `${year}-${formattedMonth}-${formattedDay}`,
+    };
+    try {
+        console.log(email, password)
+        const res = await register(userData);
+        if (res.error) {
+            alert("Đăng ký thất bại: " + res.error);
+        } else {
+            alert("Đăng ký thành công!");
+        }
+    } catch (error) {
+        console.error("Register error:", error);
+        alert("Register failed due to an error.");
+    }
+};
 
 export const handleLogin = async (email, password) => {
     try {

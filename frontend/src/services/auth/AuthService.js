@@ -1,5 +1,27 @@
-import { API_URL, setAccessToken, getAccessToken, setRole, getRole } from "../config/APIConfig";
+import { API_URL, setAccessToken, getAccessToken, setRole } from "../config/APIConfig";
 import axios from "axios";
+
+// Đăng ký
+export const register = async (userData) => {
+  try {
+    console.log("Dữ liệu gửi đi:", JSON.stringify(userData, null, 2)); // Kiểm tra log
+
+    const response = await axios.post(`${API_URL}/auth/register`, {
+      email: userData.email,
+      password: userData.password,
+      dateOfBirth: userData.dateOfBirth,
+    }, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    console.log("Kết quả:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi đăng ký:", error.response?.data || error.message);
+    return { error: error.message };
+  }
+};
+
 
 // Đăng nhập
 export const login = async (email, password) => {
@@ -89,7 +111,7 @@ export const checkRoleUser = async (role) => {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-    console.log(response.data.message); 
+    console.log(response.data.message);
     return response.data;
   } catch (error) {
     console.error("Không có quyền hạn này!", error.response?.data?.message || error.message);

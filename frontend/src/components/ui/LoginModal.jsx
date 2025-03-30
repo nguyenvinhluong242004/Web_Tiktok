@@ -5,7 +5,7 @@ import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
 
-import { handleLogin } from "../../services/apiAccount";
+import { handleLogin, handleRegister } from "../../services/apiAccount";
 
 const optionsMonth = [...Array(12).keys()].map((m) => ({
     value: m + 1,
@@ -62,8 +62,6 @@ const LoginModal = ({ isOpen, onClose }) => {
     const [agree, setAgree] = useState(false);
 
     if (!isOpen) return null;
-
-
 
     return (
         <div className="modal fade show d-block" tabIndex="-1">
@@ -199,7 +197,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                                                 Nhận nội dung thịnh hành, bản tin, khuyến mại, đề xuất và thông tin cập nhật tài khoản qua email.
                                             </div>
                                         </div>
-                                        <button className="btn btn-danger w-100">Đăng ký</button>
+                                        <button className="btn btn-danger w-100" onClick={() => handleRegister(email, password, dob.day, dob.year, dob.month)}>Đăng ký</button>
 
                                     </>
                                 ) : (

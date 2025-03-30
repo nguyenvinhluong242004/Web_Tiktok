@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Backend.Models;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
@@ -9,12 +11,61 @@ using StackExchange.Redis;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly UserService _userService;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(AuthService authService, ILogger<AuthController> logger)
+    public AuthController(
+        AuthService authService,
+        UserService userService,
+        ILogger<AuthController> logger
+    )
     {
         _authService = authService;
+        _userService = userService;
         _logger = logger;
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] UserRegister model)
+    {
+        _logger.LogInformation("User {Email} is attempting to register", model.Email);
+
+        if (await _userService.IsEmailTaken(model.Email))
+        {
+            return BadRequest(new { message = "Email đã được sử dụng" });
+        }
+
+        // Tạo username từ email (phần trước @)
+        string generatedUsername = model.Email.Split('@')[0];
+
+        if (await _userService.IsUsernameTaken(generatedUsername))
+        {
+            // Nếu username đã tồn tại, thêm số random phía sau
+            generatedUsername += new Random().Next(1000, 9999);
+        }
+
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
+        _logger.LogInformation("Pass {HashedPassword}", hashedPassword);
+
+        if (!DateTime.TryParse(model.DateOfBirth, out DateTime dob))
+        {
+            return BadRequest(new { message = "Ngày sinh không hợp lệ" });
+        }
+
+        var user = new User
+        {
+            Username = generatedUsername, // Gán username tự động
+            Email = model.Email,
+            PasswordHash = hashedPassword,
+            DateOfBirth = dob.ToUniversalTime(),
+            Role = "user",
+            CreatedAt = DateTime.UtcNow.ToUniversalTime(),
+            UpdatedAt = DateTime.UtcNow.ToUniversalTime(),
+        };
+
+        await _userService.CreateUserAsync(user);
+
+        return Ok(new { message = "Đăng ký thành công", username = generatedUsername });
     }
 
     [HttpPost("login")]

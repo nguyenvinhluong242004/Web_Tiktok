@@ -116,6 +116,7 @@ builder.Services.AddAuthorization(options =>
 // 🛠️ Quan trọng: Thêm dòng này để tránh lỗi
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddControllers();
 builder.Services.AddLogging();
 
