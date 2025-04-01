@@ -1,0 +1,51 @@
+.cmt-container {
+    background-color: rgb(26, 25, 25);
+    color: aliceblue;
+    padding: 12px;
+}
+
+.main-cmt {
+    width: 360px;
+    max-height: 100%;
+    justify-content: center;
+    overflow-y: auto;
+    /* Thêm thanh cuộn */
+}
+
+.header-cmt {
+    height: 50px;
+    position: sticky;  /* Giữ cố định khi cuộn */
+    top: 0;            /* Cố định ở đầu */
+    background-color: rgb(26, 25, 25);  /* Màu nền */
+    padding: 10px 0px 10px 0px;     /* Khoảng cách */
+    z-index: 1000;     /* Đảm bảo nằm trên nội dung khác */
+}
+
+.footer-cmt {
+    position: sticky;  /* Giữ cố định khi cuộn */
+    bottom: 0;         /* Cố định ở cuối */
+    z-index: 1000;     /* Đảm bảo hiển thị trên nội dung khác */
+    background-color: rgb(26, 25, 25);  /* Màu nền */
+    height: 56px;
+    padding-top: 10px;
+    
+}
+
+.bt-login-cmt {
+    height: 46px;
+    width: 100%;
+    border-radius: 9px;
+    background-color: rgb(39, 37, 37);  /* Màu nền */
+    text-align: left;
+    align-content: center;
+    padding-left: 12px;
+    color: rgb(216, 49, 49);
+    font-weight: 600;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+
+.cmt-child {
+    margin-left: 50px;
+}

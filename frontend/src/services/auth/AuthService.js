@@ -9,19 +9,43 @@ export const register = async (userData) => {
     const response = await axios.post(`${API_URL}/auth/register`, {
       email: userData.email,
       password: userData.password,
+      verificationCode: userData.verificationcode,
+      receiveNews: userData.agree,
       dateOfBirth: userData.dateOfBirth,
     }, {
       headers: { "Content-Type": "application/json" },
+      withCredentials: true
     });
 
     console.log("Kết quả:", response.data);
     return response.data;
   } catch (error) {
     console.error("Lỗi đăng ký:", error.response?.data || error.message);
-    return { error: error.message };
+    return { error: error.response?.data.message || error.message };
   }
 };
 
+// Lấy mã
+export const sendVerificationCode = async (_email) => {
+  try {
+    console.log("Dữ liệu gửi đi:", _email); // Kiểm tra log
+
+    const response = await axios.post(`${API_URL}/auth/send-code`, {
+      email: _email,
+    }, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true
+    });
+
+    console.log("Kết quả:", response.data);
+    console.log("true");
+    return response.data;
+  } catch (error) {
+    console.log("false");
+    console.error("Lỗi đăng ký:", error.response?.data || error.message);
+    return { error: error.message };
+  }
+};
 
 // Đăng nhập
 export const login = async (email, password) => {
@@ -67,14 +91,14 @@ export const logout = async () => {
 // CheckToken
 export const checkAccessToken = async () => {
   const token = getAccessToken();
-  console.log("Token Before: ", token);
+  //console.log("Token Before: ", token);
   try {
     const response = await axios.get(`${API_URL}/auth/check-token`,
       {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-    console.log(response.data); // pulic thì .message -> bảo mật
+    console.log(response.data.message); // pulic thì .message -> bảo mật
     return response.data;
   } catch (error) {
     console.error("Lỗi kiểm tra token:", error.response?.data?.message || error.message);
@@ -88,7 +112,7 @@ export const checkAccessToken = async () => {
             withCredentials: true,
           }
         );
-        console.log(refreshResponse.data); // pulic thì .message -> bảo mật
+        console.log(refreshResponse.data.message); // pulic thì .message -> bảo mật
         setAccessToken(refreshResponse.data.access_token);
         setRole(refreshResponse.data.role);
         return refreshResponse.data; // Trả về token mới nếu thành công
@@ -104,7 +128,7 @@ export const checkAccessToken = async () => {
 // CheckRole
 export const checkRoleUser = async (role) => {
   const token = getAccessToken();
-  console.log("Token Before: ", token);
+  //console.log("Token Before: ", token);
   try {
     const response = await axios.get(`${API_URL}/auth/${role}`,
       {

@@ -1,12 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import VideoOptions from "../ui/VideoOptions"; // Import menu tùy chọn
 import { FaPlay, FaPause } from "react-icons/fa";
+import { useAppState } from "../../store/AppData";
 import "../../styles/VideoCard.css";
 
 const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
+    const { isCommentOpen, setIsCommentOpen } = useAppState();
     const videoRef = useRef(null);
     const progressRef = useRef(null);
     const [playing, setPlaying] = useState(true);
+    //const [isHide, setHide] = useState(false);
     const [muted, setMuted] = useState(true);
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
@@ -19,6 +22,11 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     useEffect(() => {
         const videoElement = videoRef.current;
         if (!videoElement || !isNewVideo) return;
+
+        // if (!isHide) {
+        //     console.log("hhh")
+        //     return;
+        // }
 
         console.log("🔄 Reset video...");
 
@@ -175,7 +183,10 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
 
                 <div className="bt-action">
                     <div className="actions d-flex flex-column align-items-center">
-                        <img className="avt-profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlrDBSmMQyqmbeYR0Xbhkf0f8YmLQGju_8nw&s" alt="profile" />
+                        <div className="header-btn">
+                            <img className="avt-profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlrDBSmMQyqmbeYR0Xbhkf0f8YmLQGju_8nw&s" alt="profile" />
+                            <div className="add-follow"><span>+</span></div>
+                        </div>
                         <div className="btn-act">
                             <div className="btn-action" id="heart">
                                 <i className="bi bi-heart-fill"></i>
@@ -183,7 +194,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                             <span>17.4k</span>
                         </div>
                         <div className="btn-act">
-                            <div className="btn-action" id="chat">
+                            <div className="btn-action" id="chat" onClick={() => setIsCommentOpen(!isCommentOpen)}>
                                 <i className="bi bi-chat-dots-fill"></i>
                             </div>
                             <span>2004</span>

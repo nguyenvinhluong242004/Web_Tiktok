@@ -1,4 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using Backend.Models;
 using BCrypt.Net;
@@ -11,34 +13,57 @@ using StackExchange.Redis;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
-    private readonly UserService _userService;
+    private readonly UserData _userData;
     private readonly ILogger<AuthController> _logger;
+    private readonly IConfiguration _configuration;
 
     public AuthController(
         AuthService authService,
-        UserService userService,
-        ILogger<AuthController> logger
+        UserData userData,
+        ILogger<AuthController> logger,
+        IConfiguration configuration
     )
     {
         _authService = authService;
-        _userService = userService;
+        _userData = userData;
         _logger = logger;
+        _configuration = configuration;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegister model)
     {
         _logger.LogInformation("User {Email} is attempting to register", model.Email);
+        _logger.LogInformation("Model received: {@Model}", model);
 
-        if (await _userService.IsEmailTaken(model.Email))
+        if (await _userData.IsEmailTaken(model.Email))
         {
             return BadRequest(new { message = "Email đã được sử dụng" });
         }
 
+        // Kiểm tra mã xác thực có đúng không
+        if (
+            !Request.Cookies.TryGetValue("verificationCode", out string storedCodeStr) // Lấy chuỗi từ cookie
+            || !int.TryParse(storedCodeStr, out int storedCode) // Chuyển thành số nguyên
+            || storedCode != model.VerificationCode // So sánh với mã xác minh
+        )
+        {
+            _logger.LogInformation("User {StoredCodeStr} is attempting to register", storedCodeStr);
+
+            _logger.LogInformation(
+                "User {VerificationCode} is attempting to register",
+                model.VerificationCode
+            );
+            return BadRequest(new { message = "Mã xác thực không đúng hoặc đã hết hạn." });
+        }
+
+        // Xóa mã xác thực sau khi sử dụng
+        Response.Cookies.Delete("verificationCode");
+
         // Tạo username từ email (phần trước @)
         string generatedUsername = model.Email.Split('@')[0];
 
-        if (await _userService.IsUsernameTaken(generatedUsername))
+        if (await _userData.IsUsernameTaken(generatedUsername))
         {
             // Nếu username đã tồn tại, thêm số random phía sau
             generatedUsername += new Random().Next(1000, 9999);
@@ -61,11 +86,89 @@ public class AuthController : ControllerBase
             Role = "user",
             CreatedAt = DateTime.UtcNow.ToUniversalTime(),
             UpdatedAt = DateTime.UtcNow.ToUniversalTime(),
+            ReceiveNews = model.ReceiveNews,
         };
 
-        await _userService.CreateUserAsync(user);
+        await _userData.CreateUserAsync(user);
 
         return Ok(new { message = "Đăng ký thành công", username = generatedUsername });
+    }
+
+    [HttpPost("send-code")]
+    public async Task<IActionResult> SendVerificationCode(
+        [FromBody] EmailRequest request,
+        [FromServices] SmtpClient smtpClient
+    )
+    {
+        _logger.LogInformation("Gửi mã xác thực đến email: {Email}", request.Email);
+
+        if (string.IsNullOrEmpty(request.Email))
+        {
+            return BadRequest(new { message = "Email không được để trống." });
+        }
+
+        if (await _userData.IsEmailTaken(request.Email))
+        {
+            return BadRequest(new { message = "Email đã được sử dụng" });
+        }
+
+        // ✅ Tạo mã xác thực ngẫu nhiên 6 chữ số
+        var verificationCode = new Random().Next(100000, 999999).ToString();
+
+        // ✅ Lưu mã vào Cookies (Thời gian hết hạn 3 phút)
+        Response.Cookies.Append(
+            "verificationCode",
+            verificationCode.ToString(),
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, //local là false
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddMinutes(3),
+            }
+        );
+
+        // ✅ Lấy thông tin từ cấu hình đã được đăng ký trong DI container
+        var senderEmail = _configuration["Email:SenderEmail"];
+        var senderName = _configuration["Email:SenderName"];
+
+        // ✅ Gửi mã xác thực qua SMTP
+        try
+        {
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(senderEmail, senderName),
+                Subject = "Xác thực tài khoản TikTok",
+                Body =
+                    $@"
+                    <html>
+                    <body style='font-family: Arial, sans-serif; color: #333;'>
+                        <h3 style='color:rgb(195, 0, 255);'>Xác thực tài khoản của bạn</h3>
+                        <p>Chào bạn,</p>
+                        <p>Bạn vừa yêu cầu mã xác thực để đăng ký hoặc đăng nhập TikTok.</p>
+                        <p><strong>Mã xác thực của bạn:</strong> <span style='font-size: 17px; color:rgb(255, 51, 0);'>{verificationCode}</span></p>
+                        <p>Mã này sẽ hết hạn sau <strong>3 phút</strong>. Không chia sẻ mã này với bất kỳ ai.</p>
+                        <p>Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.</p>
+                        <hr>
+                        <p>Trân trọng,<br><strong>TikTok Team</strong></p>
+                    </body>
+                    </html>",
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(request.Email);
+            mailMessage.ReplyToList.Add(new MailAddress("support@tiktokclone.com")); // Giúp tránh spam
+            mailMessage.Priority = MailPriority.High; // Gmail ưu tiên email này hơn
+
+            await smtpClient.SendMailAsync(mailMessage);
+
+            return Ok(new { message = "Mã xác thực đã được gửi." });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Lỗi gửi email: {Error}", ex.Message);
+            return StatusCode(500, new { message = "Không thể gửi email. Vui lòng thử lại sau." });
+        }
     }
 
     [HttpPost("login")]
@@ -73,55 +176,59 @@ public class AuthController : ControllerBase
     {
         _logger.LogInformation("User {Email} is attempting to log in", model.Email);
 
-        if (model.Email == "luong" && model.Password == "123")
+        var user = await _userData.GetUserByEmailAsync(model.Email);
+        if (user == null)
         {
-            string role = model.Email switch
-            {
-                "luong" => "Admin",
-                "nhi" => "Censor",
-                _ => "User",
-            };
-
-            var accessToken = _authService.GenerateJwtToken(model.Email, role);
-            var refreshToken = _authService.GenerateRefreshToken();
-
-            await _authService.StoreRefreshTokenAsync(model.Email, refreshToken);
-
-            Response.Cookies.Append(
-                "access_token",
-                accessToken,
-                new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = false,
-                    SameSite = SameSiteMode.Lax,
-                    Expires = DateTime.UtcNow.AddMinutes(1),
-                }
-            );
-
-            Response.Cookies.Append(
-                "refresh_token",
-                refreshToken,
-                new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = false, //local là false
-                    SameSite = SameSiteMode.Lax,
-                    Expires = DateTime.UtcNow.AddMinutes(5),
-                }
-            );
-
-            return Ok(
-                new
-                {
-                    message = "Login successful",
-                    access_token = accessToken,
-                    role = role,
-                }
-            );
+            return Unauthorized(new { message = "Email hoặc mật khẩu không đúng" });
         }
+        if (!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+        {
+            return Unauthorized(new { message = "Email hoặc mật khẩu không đúng" });
+        }
+        string role = model.Email switch
+        {
+            "luongnguyen02042004@gmail.com" => "Admin",
+            "vquan2142@gmail.com" => "Censor",
+            _ => "User",
+        };
 
-        return Unauthorized();
+        var accessToken = _authService.GenerateJwtToken(model.Email, role);
+        var refreshToken = _authService.GenerateRefreshToken();
+
+        await _authService.StoreRefreshTokenAsync(model.Email, refreshToken);
+
+        Response.Cookies.Append(
+            "access_token",
+            accessToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddMinutes(15),
+            }
+        );
+
+        Response.Cookies.Append(
+            "refresh_token",
+            refreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, //local là false
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTime.UtcNow.AddDays(7),
+            }
+        );
+
+        return Ok(
+            new
+            {
+                message = "Login successful",
+                access_token = accessToken,
+                role = role,
+            }
+        );
     }
 
     [Authorize]
@@ -174,6 +281,7 @@ public class AuthController : ControllerBase
     {
         // In log để kiểm tra API có chạy đến đây không
         _logger.LogInformation("CheckToken API được gọi");
+        _logger.LogInformation("User IsAuthenticated: {0}", User.Identity.IsAuthenticated);
 
         // Lấy token từ request header
         var token = HttpContext.Request.Headers["Authorization"].ToString();
@@ -197,7 +305,7 @@ public class AuthController : ControllerBase
 
         var email = User.FindFirst(ClaimTypes.Email)?.Value; // Lấy email từ token
 
-        _logger.LogInformation("email", email);
+        _logger.LogInformation("email {email}", email);
         var expClaim = User.FindFirst(JwtRegisteredClaimNames.Exp)?.Value;
 
         if (expClaim == null)
@@ -219,7 +327,7 @@ public class AuthController : ControllerBase
         );
     }
 
-    [Authorize]
+    //[Authorize] // Nếu check thì khi ac_token hết hạn -> không vượt qua -> không lấy được ac_token mới
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshToken()
     {
@@ -281,7 +389,7 @@ public class AuthController : ControllerBase
                 HttpOnly = true,
                 Secure = false, // Local là false, production nên đặt true
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(15),
             }
         );
 

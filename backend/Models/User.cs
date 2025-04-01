@@ -45,5 +45,8 @@ namespace Backend.Models
 
         [Column("totalvideolikes")]
         public int TotalVideoLikes { get; set; } = 0;
+
+        [Column("receivenews")]
+        public bool ReceiveNews { get; set; } = false;
     }
 }

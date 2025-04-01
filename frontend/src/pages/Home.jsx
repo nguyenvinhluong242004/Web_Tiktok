@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
-import { useAppState } from "../store/AppData"; 
+import { useAppState } from "../store/AppData";
 import "../styles/Home.css";
 
 const Home = () => {
-    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo } = useAppState();
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
@@ -50,17 +50,33 @@ const Home = () => {
 
     return (
         <div className="d-flex main-home">
-            <div style={{width: "70px"}}></div>
+            {isCommentOpen ? (
+                <>
+                    <div style={{ width: "70px" }}></div>
+                </>
+            ) : (
+                <>
+                    <div style={{ width: "70px" }}></div>
+                </>
+            )}
             <div className="home w-100" ref={containerRef} onScroll={handleScroll}>
                 <div className="video-container">
                     {videos.map((video, index) => (
                         <div ref={videoRefs.current[index]} key={video.id} className="video-wrapper">
-                            <VideoCard video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo}/>
+                            <VideoCard video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo} />
                         </div>
                     ))}
                 </div>
             </div>
-            <div style={{width: "250px"}}></div>
+            {isCommentOpen ? (
+                <>
+                    <div style={{ width: "90px" }} className="space-home"></div>
+                </>
+            ) : (
+                <>
+                    <div style={{ width: "240px" }} className="space-home"></div>
+                </>
+            )}
             <div className="footer">
                 <div className="bt-prev" onClick={() => handleScrollButton(-1)}>
                     <i className="bi bi-chevron-up"></i>

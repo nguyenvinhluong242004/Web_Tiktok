@@ -5,6 +5,7 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isNewVideo, setIsNewVideo] = useState(false);
+    const [isCommentOpen, setIsCommentOpen] = useState(true);
     const homeRef = useRef(null);
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export const AppProvider = ({ children }) => {
         setIsNewVideo(false);
     };
     return (
-        <AppContext.Provider value={{ currentIndex, setCurrentIndex, homeRef, handleScrollButton, isNewVideo, resetIsNewVideo }}>
+        <AppContext.Provider value={{ currentIndex, setCurrentIndex, homeRef, handleScrollButton, isNewVideo, resetIsNewVideo, isCommentOpen, setIsCommentOpen }}>
             {children}
         </AppContext.Provider>
     );

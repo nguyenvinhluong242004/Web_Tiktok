@@ -1,0 +1,44 @@
+.cmt-wrapper-child {
+    display: flex;
+    align-items: flex-start;
+    color: white;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.avatar-child {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.cmt-content-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.username-child {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.ct-cmt-child {
+    font-size: 14.5px;
+}
+
+
+.cmt-info-child{
+    display: flex;
+    gap: 22px;
+    font-size: 14px;
+    color: gray;
+}
+
+.cmt-info-child span {
+    font-weight: 700;
+}
+
+.likes-child i {
+    font-size: 13.5px;
+}

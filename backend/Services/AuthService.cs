@@ -37,7 +37,7 @@ public class AuthService
             _config["Jwt:Issuer"],
             _config["Jwt:Audience"],
             claims,
-            expires: DateTime.UtcNow.AddMinutes(1), // Access Token có hiệu lực 15 phút
+            expires: DateTime.UtcNow.AddMinutes(15), // Access Token có hiệu lực 15 phút
             signingCredentials: creds
         );
 
@@ -61,7 +61,7 @@ public class AuthService
             refreshToken,
             new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5), // Hết hạn sau 7 ngày
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7), // Hết hạn sau 7 ngày
             }
         );
     }

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from 'react-select';
 import { FaFacebook, FaGoogle, FaLine, FaApple } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
 
-import { handleLogin, handleRegister } from "../../services/apiAccount";
+import { handleLogin, handleRegister, handleSendCode } from "../../services/apiAccount";
 
 const optionsMonth = [...Array(12).keys()].map((m) => ({
     value: m + 1,
@@ -60,6 +60,40 @@ const LoginModal = ({ isOpen, onClose }) => {
     const [newPassword, setNewPassword] = useState("");
     const [verificationCode, setVerificationCode] = useState("");
     const [agree, setAgree] = useState(false);
+
+    const [isSendingCode, setIsSendingCode] = useState(false);
+    const [timer, setTimer] = useState(0);
+
+    useEffect(() => {
+        //if (!isOpen || !isSendingCode) return;
+        if (!isSendingCode) return;
+
+        const countdown = setInterval(() => {
+            setTimer((prev) => {
+                if (prev <= 1) {
+                    clearInterval(countdown);
+                    setIsSendingCode(false);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(countdown);
+    }, [isSendingCode, timer]); // Theo dõi timer luôn cập nhật
+
+    const sendVerificationCode = async () => {
+        if (!email || isSendingCode) return; // Tránh spam gửi mã
+
+        try {
+            await handleSendCode(email);
+            setIsSendingCode(true);
+            setTimer(100); // Bắt đầu countdown
+            console.log("time")
+        } catch (error) {
+            console.error("Lỗi khi gửi mã:", error);
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -189,7 +223,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                                         </div>
                                         <div className="mb-1 d-flex">
                                             <input type="text" className="form-control txt-login-input" placeholder="Nhập mã gồm 6 chữ số" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
-                                            <button className="btn btn-outline-secondary ms-2">Gửi mã</button>
+                                            <button
+                                                className="btn btn-outline-secondary ms-2"
+                                                onClick={sendVerificationCode}
+                                                disabled={isSendingCode}
+                                            >
+                                                {isSendingCode ? `Gửi lại sau ${timer}s` : "Gửi mã"}
+                                            </button>
                                         </div>
                                         <div className="mb-2 form-check">
                                             <input type="checkbox" className="form-check-input bg-dark" id="agree" checked={agree} onChange={() => setAgree(!agree)} />
@@ -197,7 +237,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                                                 Nhận nội dung thịnh hành, bản tin, khuyến mại, đề xuất và thông tin cập nhật tài khoản qua email.
                                             </div>
                                         </div>
-                                        <button className="btn btn-danger w-100" onClick={() => handleRegister(email, password, dob.day, dob.year, dob.month)}>Đăng ký</button>
+                                        <button className="btn btn-danger w-100" onClick={() => handleRegister(email, password, verificationCode, agree, dob.day, dob.year, dob.month)}>Đăng ký</button>
 
                                     </>
                                 ) : (

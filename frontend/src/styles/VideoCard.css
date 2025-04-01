@@ -131,14 +131,15 @@ video {
 }
 
 .btn-act span {
-    font-size: 12px;
-    margin-top: 5px;
+    font-size: 13px;
+    margin-top: 1px;
+    font-weight: 600;
 }
 
 .btn-action {
     background-color: rgb(71, 71, 71);
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     text-align: center;
     align-content: center;
     border-radius: 50%;
@@ -153,7 +154,27 @@ video {
     margin-top: 3px;
 }
 .avt-profile {
-    margin-bottom: 12px;
+    margin-bottom: 28px;
+}
+
+.header-btn {
+    position: relative;
+}
+
+.add-follow {
+    position: absolute;
+    top: 34px;
+    left: 10px;
+    background-color: #ff3b5c;
+    text-align: center;
+    align-content: center;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+}
+
+.add-follow span {
+    padding-top: 4px;
 }
 
 /* Nút chuyển video */

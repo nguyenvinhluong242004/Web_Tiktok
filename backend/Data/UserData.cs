@@ -2,13 +2,18 @@ using System.Threading.Tasks;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class UserService
+public class UserData
 {
     private readonly ApplicationDbContext _context;
 
-    public UserService(ApplicationDbContext context)
+    public UserData(ApplicationDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<bool> IsEmailTaken(string email)

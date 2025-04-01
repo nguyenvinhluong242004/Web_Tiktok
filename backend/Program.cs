@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using CloudinaryDotNet;
@@ -34,6 +36,12 @@ config["Database:Port"] = Environment.GetEnvironmentVariable("DB_PORT");
 config["Database:SslMode"] = Environment.GetEnvironmentVariable("DB_SSLMODE");
 config["Database:TrustServerCertificate"] = Environment.GetEnvironmentVariable("DB_TRUST_CERT");
 
+config["Email:SmtpServer"] = Environment.GetEnvironmentVariable("SMTP_SERVER");
+config["Email:SmtpPort"] = Environment.GetEnvironmentVariable("SMTP_PORT");
+config["Email:SenderEmail"] = Environment.GetEnvironmentVariable("EMAIL_USER");
+config["Email:SenderName"] = Environment.GetEnvironmentVariable("EMAIL_NAME");
+config["Email:AppPassword"] = Environment.GetEnvironmentVariable("EMAIL_PASS");
+
 // Cấu hình Cloudinary
 var account = new Account(
     config["Cloudinary:CloudName"],
@@ -53,6 +61,23 @@ var connectionString =
     + $"Port={config["Database:Port"]};"
     + $"Ssl Mode={config["Database:SslMode"]};"
     + $"Trust Server Certificate={config["Database:TrustServerCertificate"]}";
+
+// Cấu hình SmtpClient
+builder.Services.AddSingleton<SmtpClient>(provider =>
+{
+    var smtpServer = config["Email:SmtpServer"];
+    int smtpPort = int.Parse(config["Email:SmtpPort"] ?? "587");
+    var senderEmail = config["Email:SenderEmail"];
+    var appPassword = config["Email:AppPassword"];
+
+    var client = new SmtpClient(smtpServer, smtpPort)
+    {
+        Credentials = new NetworkCredential(senderEmail, appPassword),
+        EnableSsl = true,
+    };
+
+    return client;
+});
 
 // Thêm DbContext vào dịch vụ
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
@@ -116,7 +141,7 @@ builder.Services.AddAuthorization(options =>
 // 🛠️ Quan trọng: Thêm dòng này để tránh lỗi
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserData>();
 builder.Services.AddControllers();
 builder.Services.AddLogging();
 

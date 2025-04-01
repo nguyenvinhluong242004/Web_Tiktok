@@ -12,7 +12,7 @@ export const checkToken = async () => {
 
 export const checkRole = async () => {
     try {
-        const response = await checkRoleUser('admin');
+        const response = await checkRoleUser('Censor');
         return response; 
     } catch (error) {
         console.error("Không có quyền hạn", error);
