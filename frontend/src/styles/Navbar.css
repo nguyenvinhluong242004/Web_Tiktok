@@ -6,6 +6,14 @@
   justify-content: start;
   padding-left: 10px;
   padding-right: 10px;
+  position: relative;
+  height: 100%;
+  transition: width 0.3s ease-in-out; /* Hiệu ứng chuyển đổi */
+}
+/* Chưa làm giống được */
+.ct-navbar {
+  min-width: 250px;
+  background: #000;
 }
 
 .nav-item {
@@ -18,6 +26,7 @@
   padding: 2px 20px 2px 20px;
   min-width: 230px;
   border-radius: 7px;
+  cursor: pointer;
 }
 
 .nav-item-logo {
@@ -30,12 +39,14 @@
   padding: 0px 20px 3px 20px;
   min-width: 150px;
   border-radius: 7px;
+  padding-left: 14px;
 }
 
 .nav-item:hover {
 
   background-color: rgb(66, 66, 66);
 }
+
 .bi {
   font-size: 24px;
 }
@@ -43,7 +54,7 @@
 .bi-tiktok {
   font-size: 36px;
   margin-bottom: 5px;
-}
+} 
 
 
 
@@ -53,7 +64,7 @@
 }
 
 /* search */
-.search-container {
+.bt-search-container {
   display: flex;
   align-items: center;
   background-color: #2e2e2e;
@@ -61,24 +72,20 @@
   padding: 8px 15px;
   margin-left: 3px;
   margin-bottom: 10px;
+  cursor: pointer;
+  z-index: 10;
+  margin-left: 8px;
+  width: 210px;
 }
 
-.search-icon {
-  color: #aaa;
+.bt-search-icon {
+  color: #e0e0e0;
   font-size: 18px;
   margin-right: 10px;
+  z-index: 1;
 }
 
-.search-input {
-  background: none;
-  border: none;
-  outline: none;
-  color: white;
-  font-size: 16px;
-  width: 100%;
-}
-
-.search-input::placeholder {
+.bt-search-container span {
   color: #888;
 }
 
@@ -133,16 +140,61 @@
   font-weight: bold;
   color: #888;
   width: 200px;
-  
+
   font-size: 12px;
 }
 
 .t-nav-cp i {
   font-size: 10px;
   margin-bottom: 1px;
-  
+
 }
+
 .t-nav-cp span {
   font-size: 10px;
 }
 
+.nav-item.active {
+  color: rgb(240, 21, 14); /* Tô đỏ chữ */
+  font-weight: bold;
+}
+
+/* Thu gọn */
+.navbar.expand{
+  width: 80px;
+  border-right: 1px solid rgb(46, 40, 40);
+}
+
+.navbar.expand .nav-item-logo {
+  min-width: 0px;
+  padding-left: 14px;
+}
+
+.navbar.expand .t-tiktok{
+  width: 0px;
+  opacity: 0;
+  display: none;
+}
+
+
+.navbar.expand .bt-search-container {
+  width: 46px;
+  margin-left: 8px;
+}
+
+
+.navbar.expand .nav-item{
+  min-width: 40px;
+}
+
+.navbar.expand .line {
+  display: none;
+}
+
+.navbar.expand span{
+  display: none;
+}
+
+.navbar.expand .bt-login{
+  display: none;
+}

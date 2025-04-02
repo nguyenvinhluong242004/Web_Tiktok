@@ -1,0 +1,126 @@
+.profile-container {
+    margin: auto;
+    padding-left: 30px;
+}
+
+.header-prf {
+    display: flex;
+    padding-top: 30px;
+    margin-bottom: 24px;
+}
+
+.avatar-prf {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: purple;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+}
+
+.ct-prf {
+    margin: auto;
+    margin-left: 0;
+}
+
+.upload-icon {
+    font-size: 50px;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.prf-name {
+    align-items: center;
+}
+
+.h-prf-tab {
+    border-bottom: 1px solid rgb(61, 58, 58);
+}
+
+.prf-tab i {
+    font-size: 17px;
+}
+
+.prf-tab .active {
+    background-color: rgb(35, 35, 36);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 1px solid white;
+}
+
+.btn-prf,
+.btn-prf-change {
+    background-color: rgb(32, 31, 31);
+    height: 40px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-prf-change {
+    background-color: rgb(206, 36, 36);
+
+}
+
+.btn-prf:hover {
+    background-color: rgb(46, 44, 44);
+}
+
+.btn-prf:active {
+    background-color: rgb(32, 31, 31);
+}
+
+.btn-prf-change:hover {
+    background-color: rgb(223, 41, 41);
+}
+
+.btn-prf-change:active {
+    background-color: rgb(206, 36, 36);
+}
+
+
+.btn-prf i {
+    font-size: 19px;
+    color: white;
+}
+
+.prf-filter-tab {
+    background-color: rgb(35, 37, 37);
+    padding: 10px 3px 10px 3px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 7px;
+    height: 38px;
+
+}
+
+.filter-tab {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.prf-filter-tab .active{
+    background-color: rgb(105, 105, 105);
+}

@@ -5,7 +5,7 @@ import { useAppState } from "../store/AppData";
 import "../styles/Home.css";
 
 const Home = () => {
-    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen } = useAppState();
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
@@ -50,7 +50,7 @@ const Home = () => {
 
     return (
         <div className="d-flex main-home">
-            {isCommentOpen ? (
+            {isExpand ? (
                 <>
                     <div style={{ width: "70px" }}></div>
                 </>

@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
-import Navbar from "../components/layout/Navbar";
+import Profile from "../pages/Profile";
 
 const privateRoutes = [
-    { path: "/up", element: <Navbar /> },
+    { path: "/profile", element: <Profile /> },
 ];
 
 const PrivateRoutes = () => {
