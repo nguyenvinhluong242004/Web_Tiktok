@@ -10,16 +10,16 @@ import UploadImage from "./components/ui/test";
 import "./styles/App.css";
 
 function App() {
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [reload, setReload] = useState(0);
 
     return (
         <AppProvider>
             <Router>
                 <div className="app-container">
-                    <Navbar onLoginClick={() => setIsLoginOpen(true)} />
-                    <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+                    <Navbar reload={reload} setReload={setReload} />
+                    <LoginModal />
                     <div className="content">
-                        <Routes>
+                        <Routes key={reload}>
                             {/* Public Routes */}
                             <Route path="/" element={<Home />} />
                             <Route path="/upload" element={<UploadImage />} />
@@ -27,7 +27,7 @@ function App() {
                             <Route path="/*" element={<PrivateRoutes />} />
                         </Routes>
                     </div>
-                    <CmtContainer setIsLoginOpen={setIsLoginOpen} />
+                    <CmtContainer key={reload}/>
                 </div>
             </Router>
         </AppProvider>

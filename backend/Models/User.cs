@@ -10,6 +10,9 @@ namespace Backend.Models
         [Column("id")]
         public int Id { get; set; }
 
+        [Required, Column("userid")]
+        public string UserId { get; set; }
+
         [Required, Column("username")]
         public string Username { get; set; }
 

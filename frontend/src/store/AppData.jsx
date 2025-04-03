@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useRef, useEffect } from "react";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isNewVideo, setIsNewVideo] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -27,7 +28,7 @@ export const AppProvider = ({ children }) => {
         setIsNewVideo(false);
     };
     return (
-        <AppContext.Provider value={{ currentIndex, setCurrentIndex, homeRef, handleScrollButton, isNewVideo, resetIsNewVideo, isCommentOpen, setIsCommentOpen, isExpand, setIsExpand, isSearch, setIsSearch }}>
+        <AppContext.Provider value={{ currentIndex, setCurrentIndex, homeRef, handleScrollButton, isNewVideo, resetIsNewVideo, isCommentOpen, setIsCommentOpen, isExpand, setIsExpand, isSearch, setIsSearch, isLoginOpen, setIsLoginOpen }}>
             {children}
         </AppContext.Provider>
     );

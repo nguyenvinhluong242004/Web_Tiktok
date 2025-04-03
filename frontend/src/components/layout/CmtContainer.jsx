@@ -1,11 +1,13 @@
 import React from "react";
 import CmtWrapperParent from "../ui/CmtWrapperParent";
 import { useAppState } from "../../store/AppData";
+import GetUserStrorage from "../../hooks/UseStorage";
 import "../../styles/CmtContainer.css";
 
-const CmtContainer = ({setIsLoginOpen}) => {
-  const { isCommentOpen, setIsCommentOpen } = useAppState();
+const CmtContainer = () => {
+  const { isCommentOpen, setIsCommentOpen, setIsLoginOpen } = useAppState();
   if (!isCommentOpen) return null;
+  const user = GetUserStrorage();
 
   return (
     <div className="cmt-container">
@@ -45,9 +47,15 @@ const CmtContainer = ({setIsLoginOpen}) => {
           />
         </div>
         <div className="footer-cmt">
-          <div className="bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
-            Đăng nhập để bình luận
-          </div>
+          {user ? (
+            <>
+            
+            </>
+          ) : (
+            <div className="bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
+              Đăng nhập để bình luận
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -27,6 +27,7 @@
   min-width: 230px;
   border-radius: 7px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .nav-item-logo {
@@ -67,7 +68,7 @@
 .bt-search-container {
   display: flex;
   align-items: center;
-  background-color: #2e2e2e;
+  background-color: #201f1f;
   border-radius: 25px;
   padding: 8px 15px;
   margin-left: 3px;
@@ -157,6 +158,14 @@
 .nav-item.active {
   color: rgb(240, 21, 14); /* Tô đỏ chữ */
   font-weight: bold;
+}
+
+.avt-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-top: 7px;
+  margin-bottom: 7px;
 }
 
 /* Thu gọn */

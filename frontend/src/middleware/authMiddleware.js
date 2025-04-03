@@ -1,4 +1,5 @@
+import GetUserStrorage from "../hooks/UseStorage";
+
 export const isAuthenticated = () => {
-    return !!localStorage.getItem("user"); // Kiểm tra xem có thông tin user hay không
-  };
-  
+    return !!GetUserStrorage(); // Kiểm tra xem có thông tin user hay không
+};

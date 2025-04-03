@@ -4,6 +4,7 @@ import { FaFacebook, FaGoogle, FaLine, FaApple } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
 import "../../styles/LoginModal.css";
+import { useAppState } from "../../store/AppData";
 
 import { handleLogin, handleRegister, handleSendCode } from "../../services/apiAccount";
 
@@ -48,7 +49,8 @@ const customStyles = {
     }),
 };
 
-const LoginModal = ({ isOpen, onClose }) => {
+const LoginModal = () => {
+    const { isLoginOpen, setIsLoginOpen } = useAppState();
     const [swRegister, setSwRegister] = useState(false);
     const [showLoginForm, setShowLoginForm] = useState(false);
     const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -95,7 +97,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         }
     };
 
-    if (!isOpen) return null;
+    if (!isLoginOpen) return null;
 
     return (
         <div className="modal fade show d-block" tabIndex="-1">
@@ -125,7 +127,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                             className="btn-close btn-close-white pt-5"
                             onClick={() => {
                                 setSwRegister(false); // Reset về trang đăng nhập khi đóng modal
-                                onClose(); // Gọi hàm đóng modal
+                                setIsLoginOpen(false); // Gọi hàm đóng modal
                             }}
                         ></button>
                     </div>

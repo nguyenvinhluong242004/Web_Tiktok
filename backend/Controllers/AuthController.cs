@@ -63,10 +63,24 @@ public class AuthController : ControllerBase
         // Tạo username từ email (phần trước @)
         string generatedUsername = model.Email.Split('@')[0];
 
-        if (await _userData.IsUsernameTaken(generatedUsername))
+        int suffix = 1;
+
+        // Kiểm tra trùng lặp và thêm số vào username nếu cần
+        while (await _userData.IsUsernameTaken(generatedUsername))
         {
-            // Nếu username đã tồn tại, thêm số random phía sau
-            generatedUsername += new Random().Next(1000, 9999);
+            generatedUsername = $"{generatedUsername}{suffix}";
+            suffix++;
+        }
+
+        suffix = 1;
+        // Tạo UserId ngẫu nhiên
+        string userId = $"{generatedUsername}_{Guid.NewGuid().ToString().Substring(0, 4)}";
+
+        // Kiểm tra trùng lặp và thêm số vào userId nếu cần
+        while (await _userData.IsUsernameTaken(generatedUsername))
+        {
+            userId = $"{userId}{suffix}";
+            suffix++;
         }
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
@@ -79,6 +93,7 @@ public class AuthController : ControllerBase
 
         var user = new User
         {
+            UserId = userId, // Gán UserId tự động
             Username = generatedUsername, // Gán username tự động
             Email = model.Email,
             PasswordHash = hashedPassword,
@@ -221,12 +236,25 @@ public class AuthController : ControllerBase
             }
         );
 
+        var userProfile = new
+        {
+            userid = user.UserId,
+            username = user.Username,
+            email = user.Email,
+            dateOfBirth = user.DateOfBirth,
+            totalFollowers = user.TotalFollowers,
+            totalFollowing = user.TotalFollowing,
+            totalVideoLikes = user.TotalVideoLikes,
+            profileImage = user.ProfileImage,
+        };
+
         return Ok(
             new
             {
                 message = "Login successful",
                 access_token = accessToken,
                 role = role,
+                user = userProfile,
             }
         );
     }

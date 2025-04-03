@@ -1,4 +1,6 @@
 import { register, login, logout, sendVerificationCode } from "./auth/AuthService";
+import { API_URL, getAccessToken } from "./config/APIConfig";
+import axios from "axios";
 
 export const handleRegister = async (email, password, verificationcode, agree, day, year, month) => {
     // Kiểm tra định dạng email
@@ -92,8 +94,9 @@ export const handleLogin = async (email, password) => {
     try {
         console.log(email, password)
         const res = await login(email, password);
+        console.log(res)
         if (res) {
-            localStorage.setItem("user", JSON.stringify({ email }));
+            sessionStorage.setItem("user", JSON.stringify(res.user));
             //window.location.reload();
         } else {
             alert("Login failed! Check your email and password.");
@@ -108,11 +111,31 @@ export const handleLogout = async () => {
     try {
         const res = await logout();
         console.log(res);
-        //window.location.href = "/"; // Chuyển hướng về trang đăng nhập
+        sessionStorage.removeItem("user");
+        window.location.href = "/"; // Chuyển hướng về trang đăng nhập
     } catch (error) {
         alert("Logout failed!");
     }
 };
 
+// Lấy profile
+export const getFrofile = async () => {
+    const token = getAccessToken();
+    try {
+        const response = await axios.get(`${API_URL}/profile`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
 
+        console.log("Kết quả:", response.data);
+        return { status: true, data: response.data.userProfile};
+    } catch (error) {
+        console.error("Lỗi đăng ký:", error.response?.data || error.message);
+        return { status: false };
+    }
+};
 

@@ -3,12 +3,23 @@ import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../store/AppData";
 import "../styles/Profile.css";
+import { getFrofile } from "../services/apiAccount";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
 
     const [activeTab, setActiveTab] = useState(1);
     const [activeFilter, setActiveFilter] = useState(1);
+
+    // Khai báo các state để lưu thông tin profile
+    const [userId, setUserId] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [totalFollowers, setTotalFollowers] = useState(0);
+    const [totalFollowing, setTotalFollowing] = useState(0);
+    const [totalVideoLikes, setTotalVideoLikes] = useState(0);
+    const [profileImage, setProfileImage] = useState('');
 
     const moveTab = (index) => {
         setActiveTab(index);
@@ -18,30 +29,78 @@ const Profile = () => {
         setActiveFilter(index);
     };
 
+    const user = async () => {
+        try {
+            const result = await getFrofile();
+            if (result) {
+                setUserId(result.data.userid);
+                setUsername(result.data.username);
+                setEmail(result.data.email);
+                setDateOfBirth(result.data.dateOfBirth);
+                setTotalFollowers(result.data.totalFollowers);
+                setTotalFollowing(result.data.totalFollowing);
+                setTotalVideoLikes(result.data.totalVideoLikes);
+                setProfileImage(result.data.profileImage);
+            } else {
+                console.log("NO");
+            }
+        } catch (error) {
+            // Xử lý lỗi khi gọi getFrofile() không thành công
+            console.error("Error fetching user data:", error);
+        }
+    };
+    
+
+    useEffect(() => {
+        const user = async () => {
+            const result = await getFrofile();
+            if (result.status) {
+                setUserId(result.data.userid);
+                setUsername(result.data.username);
+                setEmail(result.data.email);
+                setDateOfBirth(result.data.dateOfBirth);
+                setTotalFollowers(result.data.totalFollowers);
+                setTotalFollowing(result.data.totalFollowing);
+                setTotalVideoLikes(result.data.totalVideoLikes);
+                setProfileImage(result.data.profileImage);
+            }
+            else {
+                console.log("NO");
+            }
+        };
+
+        user();
+    }, []);
+
 
     return (
         <div className="container profile-container">
             {/* Header */}
             <div className="header-prf">
                 <div className="avt-prf">
-                    <div className="avatar-prf">V</div>
+                    {profileImage ? (
+                        <img src={profileImage} alt="User Avatar" className="avatar-prf"/>
+                    ) : (
+                        <div className="avatar-prf"></div>
+                    )}
                 </div>
+
                 <div className="ct-prf">
                     <div className="prf-name d-flex gap-3 mb-1">
-                        <h3 className="u-name">van.quan46</h3>
-                        <h4 className="fullname">Van Quan</h4>
+                        <h3 className="u-name">{userId}</h3>
+                        <h4 className="fullname">{username}</h4>
                     </div>
                     <div className="d-flex mb-2">
                         <div className="btn-prf-change">Sửa hồ sơ</div>
                         <div className="btn-prf">Quảng bá bài đăng</div>
-                        <div className="btn-prf"><i class="bi bi-gear-wide"></i></div>
-                        <div className="btn-prf"><i class="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
+                        <div className="btn-prf"><i className="bi bi-gear-wide"></i></div>
+                        <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
                     </div>
                     {/* Stats */}
                     <div className="d-flex gap-4 mb-2">
-                        <div className=""><b>0</b> Đã follow</div>
-                        <div className=""><b>0</b> Follower</div>
-                        <div className=""><b>0</b> Lượt thích</div>
+                        <div className=""><b>{totalFollowing}</b> Đã follow</div>
+                        <div className=""><b>{totalFollowers}</b> Follower</div>
+                        <div className=""><b>{totalVideoLikes}</b> Lượt thích</div>
                     </div>
                     <div className="des-prf">
                         Chưa có tiểu sử

@@ -56,16 +56,23 @@
     background-color: rgb(61, 62, 63);
 }
 
+.bt-list:active {
+    background-color: rgb(72, 74, 75);
+}
+
 /* search */
 .search-container {
     display: flex;
     align-items: center;
-    background-color: #2e2e2e;
+    background-color: #222121;
     border-radius: 25px;
     padding: 8px 15px;
-    margin-left: 3px;
     margin-bottom: 10px;
-    height: 45px;
+    height: 42px;
+}
+
+.search-container input {
+    font-size: 14px;
 }
 
 .search-icon {
@@ -104,4 +111,8 @@
 
 .bt-list-search:hover {
     background-color: rgb(36, 36, 37);
+}
+
+.bt-list-search:active {
+    background-color: rgb(67, 69, 70);
 }

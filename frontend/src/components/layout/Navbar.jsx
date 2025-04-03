@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from "react";
-import CurrentPath from "../hooks/CurrentPath";
+import CurrentPath from "../../hooks/CurrentPath";
 import { checkToken, checkRole } from "../../services/apiNavbar";
 import { useAppState } from "../../store/AppData";
+import GetUserStrorage from "../../hooks/UseStorage";
 import ExpandAndMore from "../ui/ExpandAndMore";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Navbar.css";
 
 import { handleLogout } from "../../services/apiAccount";
 
-function Navbar({ onLoginClick }) {
-  const { isExpand, setIsExpand, isSearch, setIsSearch } = useAppState();
+function Navbar({ reload, setReload }) {
+  const { isExpand, setIsExpand, isSearch, setIsCommentOpen, setIsSearch, isLoginOpen, setIsLoginOpen } = useAppState();
   const [isLogin, setIsLogin] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
+
+  const navigate = useNavigate(); // Thay thế window.location.href
   const currentPath = CurrentPath();
+
   const movePath = (path) => {
     setIsSearch(false);
+    setIsCommentOpen(false);
+    if (path === "/profile" && !isLogin) {
+      setIsLoginOpen(true); // Hiển thị modal đăng nhập nếu chưa đăng nhập
+      return;
+    }
+    setReload((prevKey) => !prevKey);
     if (isExpand) {
-      setIsExpand(false); // Đóng expand nếu đang mở
+      setIsExpand(false);
       setTimeout(() => {
-        window.location.href = path; // Chuyển hướng sau khi đóng
-      }, 300); // Đợi một chút để hiệu ứng đóng hoàn tất
+        navigate(path); // Dùng navigate thay vì window.location.href
+      }, 300);
     } else {
-      window.location.href = path; // Chuyển hướng ngay nếu không expand
+      navigate(path);
     }
   };
 
@@ -28,14 +40,23 @@ function Navbar({ onLoginClick }) {
     setIsSearch(status);
   };
 
+  const verifyToken = async () => {
+    const result = await checkToken();
+    setIsLogin(!!result); // Chuyển kết quả thành true/false
+  };
+
   useEffect(() => {
-    const verifyToken = async () => {
-      const result = await checkToken();
-      setIsLogin(!!result); // Chuyển kết quả thành true/false
-    };
     verifyToken();
     checkRole();
-  }, []);
+    const user = GetUserStrorage();
+    if (user) {
+      setProfileImage(user.profileImage);
+      setIsLogin(true);
+    }
+    else {
+      setIsLogin(false);
+    }
+  }, [reload]);
 
   return (
     <div className="ct-navbar">
@@ -62,29 +83,65 @@ function Navbar({ onLoginClick }) {
           <i className="bi bi-person-fill-check"></i>
           <span>Đã follow</span>
         </div>
-        <div to="/up" className="nav-item">
-          <i className="bi bi-plus-square"></i>
-          <span>Tải lên</span>
-        </div>
-        <div onClick={() => movePath("/")} className="nav-item">
-          <i className="bi bi-camera-reels"></i>
-          <span>Live</span>
-        </div>
-        <div onClick={() => movePath("/profile")} className="nav-item">
-          <i className="bi bi-person-fill"></i>
+        {!isLogin ? (
+          <>
+            <div onClick={() => movePath("/upload")} className="nav-item">
+              <i className="bi bi-plus-square"></i>
+              <span>Tải lên</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-camera-reels"></i>
+              <span>Live</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div onClick={() => movePath("/upload")} className="nav-item">
+              <i className="bi bi-people-fill"></i>
+              <span>Bạn bè</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-camera-reels"></i>
+              <span>Tải lên</span>
+            </div>
+            <div onClick={() => movePath("/upload")} className="nav-item">
+              <i className="bi bi-chat-square-dots"></i>
+              <span>Hoạt động</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-send"></i>
+              <span>Tin nhắn</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-camera-reels"></i>
+              <span>Live</span>
+            </div>
+          </>
+        )}
+        <div onClick={() => movePath("/profile")} className={`nav-item ${currentPath === "/profile" ? "active" : ""}`}>
+          {isLogin ? (
+            <img src={profileImage} alt="User Avatar" className="avt-icon" />
+          ) : (
+            <i className="bi bi-person-fill"></i>
+          )
+
+          }
           <span>Hồ sơ</span>
         </div>
-        <div onClick={() => setIsExpand(!isExpand)} className="nav-item">
+        <div onClick={() => {
+          setIsSearch(false);
+          setIsExpand(!isExpand);
+        }} className="nav-item">
           <i className="bi bi-three-dots"></i>
           <span>Thêm</span>
         </div>
 
         {isLogin ? (
-          <div className="bt-login" onClick={handleLogout}>
-            Đăng xuất
-          </div>
+          <></>
         ) : (
-          <div className="bt-login" onClick={onLoginClick}>
+          <div className="bt-login" onClick={() => {
+            setIsLoginOpen(true);
+          }}>
             Đăng nhập
           </div>
         )}
@@ -99,7 +156,7 @@ function Navbar({ onLoginClick }) {
 
       </div>
 
-      <ExpandAndMore />
+      <ExpandAndMore isLogin={isLogin} handleLogout={handleLogout} />
     </div>
   );
 }
