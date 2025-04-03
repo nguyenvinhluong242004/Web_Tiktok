@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import VideoOptions from "../ui/VideoOptions"; // Import menu tùy chọn
 import { FaPlay, FaPause } from "react-icons/fa";
 import { useAppState } from "../../store/AppData";
-import "../../styles/VideoCard.css";
+import "../../styles/User/VideoCard.css";
 
 const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const { isCommentOpen, setIsCommentOpen } = useAppState();

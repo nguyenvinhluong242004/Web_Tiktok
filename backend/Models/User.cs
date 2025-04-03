@@ -34,6 +34,9 @@ namespace Backend.Models
         [Column("profileimage")]
         public string? ProfileImage { get; set; } = null;
 
+        [Column("bio")]
+        public string? Bio { get; set; } = null;
+
         [Column("createdat")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

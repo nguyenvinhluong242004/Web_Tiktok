@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { FaFacebook, FaGoogle, FaLine, FaApple } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
-import "../../styles/LoginModal.css";
+import "../../styles/User/LoginModal.css";
 import { useAppState } from "../../store/AppData";
 
 import { handleLogin, handleRegister, handleSendCode } from "../../services/apiAccount";
@@ -239,7 +239,7 @@ const LoginModal = () => {
                                                 Nhận nội dung thịnh hành, bản tin, khuyến mại, đề xuất và thông tin cập nhật tài khoản qua email.
                                             </div>
                                         </div>
-                                        <button className="btn btn-danger w-100" onClick={() => handleRegister(email, password, verificationCode, agree, dob.day, dob.year, dob.month)}>Đăng ký</button>
+                                        <button className="btn btn-danger w-100" onClick={() => handleRegister(email, password, verificationCode, agree, dob.day, dob.year, dob.month, setShowRegisterForm, setShowLoginForm, setSwRegister, setShowForgotForm)}>Đăng ký</button>
 
                                     </>
                                 ) : (

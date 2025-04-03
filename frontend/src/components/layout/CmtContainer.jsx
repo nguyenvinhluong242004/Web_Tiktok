@@ -2,7 +2,7 @@ import React from "react";
 import CmtWrapperParent from "../ui/CmtWrapperParent";
 import { useAppState } from "../../store/AppData";
 import GetUserStrorage from "../../hooks/UseStorage";
-import "../../styles/CmtContainer.css";
+import "../../styles/User/CmtContainer.css";
 
 const CmtContainer = () => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen } = useAppState();

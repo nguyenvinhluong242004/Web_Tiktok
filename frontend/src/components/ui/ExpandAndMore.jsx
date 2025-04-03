@@ -1,7 +1,7 @@
 import React from "react";
 import CmtWrapperParent from "./CmtWrapperParent";
 import { useAppState } from "../../store/AppData";
-import "../../styles/ExpandAndMore.css";
+import "../../styles/User/ExpandAndMore.css";
 
 const ExpandAndMore = ({ isLogin, handleLogout }) => {
   const { isExpand, setIsExpand, isSearch, setIsSearch } = useAppState();

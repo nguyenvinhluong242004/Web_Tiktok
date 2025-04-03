@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/VideoOptions.css";
+import "../../styles/User/VideoOptions.css";
 
 
 const VideoOptions = ({isOpen, setMenuOpen, setIsClickButton, setShowButton}) => {

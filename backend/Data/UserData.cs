@@ -31,9 +31,24 @@ public class UserData
         return await _context.Users.FirstOrDefaultAsync(u => u.UserId == uid);
     }
 
+    public async Task<User?> GetUserByUUIDAsync(int uuid)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == uuid);
+    }
+
     public async Task CreateUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync(); // Lưu vào database
+    }
+
+    public async Task UpdateUserAsync(User user)
+    {
+        user.DateOfBirth = user.DateOfBirth?.ToLocalTime().ToUniversalTime();
+        user.CreatedAt = user.CreatedAt.ToLocalTime().ToUniversalTime();
+
+        user.UpdatedAt = user.UpdatedAt.ToUniversalTime();
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
     }
 }

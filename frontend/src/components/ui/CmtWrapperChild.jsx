@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/CmtWrapperChild.css";
+import "../../styles/User/CmtWrapperChild.css";
 
 const CmtWrapper = ({ avatar, username, content, time, likes, replies }) => {
     return (

@@ -2,15 +2,18 @@ import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../store/AppData";
-import "../styles/Profile.css";
+import "../styles/User/Profile.css";
 import { getProfile } from "../services/apiAccount";
 import { useParams } from "react-router-dom";
+
+import ChangeInformation from "../components/ui/ChangeInformation";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
     const { uid } = useParams();
     const [activeTab, setActiveTab] = useState(0);
     const [activeFilter, setActiveFilter] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
 
     // Khai báo các state để lưu thông tin profile
     const [userId, setUserId] = useState('');
@@ -21,6 +24,7 @@ const Profile = () => {
     const [totalFollowing, setTotalFollowing] = useState(0);
     const [totalVideoLikes, setTotalVideoLikes] = useState(0);
     const [profileImage, setProfileImage] = useState('');
+    const [user, setUser] = useState({});
 
     const moveTab = (index) => {
         setActiveTab(index);
@@ -35,6 +39,7 @@ const Profile = () => {
             console.log(uid);
             const result = await getProfile(uid);
             if (result.status) {
+                setUser(result.data);
                 setUserId(result.data.userid);
                 setUsername(result.data.username);
                 setEmail(result.data.email);
@@ -58,7 +63,7 @@ const Profile = () => {
             <div className="header-prf">
                 <div className="avt-prf">
                     {profileImage ? (
-                        <img src={profileImage} alt="User Avatar" className="avatar-prf"/>
+                        <img src={profileImage} alt="User Avatar" className="avatar-prf" />
                     ) : (
                         <div className="avatar-prf"></div>
                     )}
@@ -70,7 +75,9 @@ const Profile = () => {
                         <h4 className="fullname">{username}</h4>
                     </div>
                     <div className="d-flex mb-2">
-                        <div className="btn-prf-change">Sửa hồ sơ</div>
+                        <div className="btn-prf-change"
+                            onClick={() => setIsOpen(true)}
+                        >Sửa hồ sơ</div>
                         <div className="btn-prf">Quảng bá bài đăng</div>
                         <div className="btn-prf"><i className="bi bi-gear-wide"></i></div>
                         <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
@@ -129,6 +136,8 @@ const Profile = () => {
                 <p className="fw-bold">Tải video đầu tiên của bạn lên</p>
                 <p>Video của bạn sẽ xuất hiện tại đây</p>
             </div>
+
+            <ChangeInformation isOpen={isOpen} setIsOpen={setIsOpen} user={user}/>
         </div>
     );
 };

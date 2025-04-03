@@ -2,7 +2,7 @@ import { register, login, logout, sendVerificationCode } from "./auth/AuthServic
 import { API_URL, getAccessToken } from "./config/APIConfig";
 import axios from "axios";
 
-export const handleRegister = async (email, password, verificationcode, agree, day, year, month) => {
+export const handleRegister = async (email, password, verificationcode, agree, day, year, month, setShowRegisterForm, setShowLoginForm, setSwRegister, setShowForgotForm) => {
     // Kiểm tra định dạng email
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -62,6 +62,10 @@ export const handleRegister = async (email, password, verificationcode, agree, d
             alert("Đăng ký thất bại: " + res.error);
         } else {
             alert("Đăng ký thành công!");
+            setShowRegisterForm(false); // Đóng form đăng ký
+            setShowLoginForm(true); // Mở form đăng nhập
+            setShowForgotForm(false); // Đóng form quên mật khẩu
+            setSwRegister(false); // Đóng form đăng ký
         }
     } catch (error) {
         console.error("Register error:", error);
@@ -158,6 +162,25 @@ export const checkProfile = async () => {
     } catch (error) {
         console.error("Lỗi đăng ký:", error.response?.data || error.message);
         return { status: false };
+    }
+};
+
+export const changeInformation = async (formData) => {
+    const token = getAccessToken();
+    try {
+        const response = await axios.post(`${API_URL}/update-profile`, formData, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(response.data.message);
+        sessionStorage.setItem("user", JSON.stringify(response.data.userProfile));
+        window.location.href = `/@${response.data.userProfile.userid}`;
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi cập nhật thông tin:", error);
+        throw error;
     }
 };
 

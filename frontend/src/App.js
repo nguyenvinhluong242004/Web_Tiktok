@@ -7,7 +7,7 @@ import LoginModal from "./components/ui/LoginModal";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Home from "./pages/Home";
 import UploadImage from "./components/ui/test";
-import "./styles/App.css";
+import "./styles/User/App.css";
 
 function App() {
     const [reload, setReload] = useState(0);

@@ -5,7 +5,7 @@ import { useAppState } from "../../store/AppData";
 import GetUserStrorage from "../../hooks/UseStorage";
 import ExpandAndMore from "../ui/ExpandAndMore";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Navbar.css";
+import "../../styles/User/Navbar.css";
 
 import { checkProfile, handleLogout } from "../../services/apiAccount";
 
@@ -123,7 +123,7 @@ function Navbar({ reload, setReload }) {
           </>
         )}
         <div onClick={() => movePath(`/@${userid}`)} className={`nav-item ${currentPath === `/@${userid}` ? "active" : ""}`}>
-          {isLogin && profileImage !== '' ? (
+          {isLogin && profileImage ? (
             <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
           ) : (
             <i className="bi bi-person-fill"></i>
