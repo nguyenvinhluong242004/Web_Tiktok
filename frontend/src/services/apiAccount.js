@@ -97,7 +97,7 @@ export const handleLogin = async (email, password) => {
         console.log(res)
         if (res) {
             sessionStorage.setItem("user", JSON.stringify(res.user));
-            //window.location.reload();
+            window.location.href = `/@${res.user.userid}`; // Chuyển hướng về trang cá nhân của người dùng
         } else {
             alert("Login failed! Check your email and password.");
         }
@@ -119,10 +119,10 @@ export const handleLogout = async () => {
 };
 
 // Lấy profile
-export const getFrofile = async () => {
+export const getProfile = async (uid) => {
     const token = getAccessToken();
     try {
-        const response = await axios.get(`${API_URL}/profile`,
+        const response = await axios.get(`${API_URL}/${uid}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -132,7 +132,29 @@ export const getFrofile = async () => {
             });
 
         console.log("Kết quả:", response.data);
-        return { status: true, data: response.data.userProfile};
+        return { status: true, data: response.data.userProfile };
+    } catch (error) {
+        console.error("Lỗi đăng ký:", error.response?.data || error.message);
+        return { status: false };
+    }
+};
+
+// Lấy profile
+export const checkProfile = async () => {
+    const token = getAccessToken();
+    try {
+        const response = await axios.post(`${API_URL}/check-profile`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+        //console.log("Kết quả:", response.data);
+        sessionStorage.setItem("user", JSON.stringify(response.data.userProfile));
+        return { status: true, data: response.data.userProfile };
     } catch (error) {
         console.error("Lỗi đăng ký:", error.response?.data || error.message);
         return { status: false };

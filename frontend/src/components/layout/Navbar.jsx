@@ -7,12 +7,13 @@ import ExpandAndMore from "../ui/ExpandAndMore";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Navbar.css";
 
-import { handleLogout } from "../../services/apiAccount";
+import { checkProfile, handleLogout } from "../../services/apiAccount";
 
 function Navbar({ reload, setReload }) {
   const { isExpand, setIsExpand, isSearch, setIsCommentOpen, setIsSearch, isLoginOpen, setIsLoginOpen } = useAppState();
   const [isLogin, setIsLogin] = useState(false);
   const [profileImage, setProfileImage] = useState('');
+  const [userid, setUserId] = useState('');
 
   const navigate = useNavigate(); // Thay thế window.location.href
   const currentPath = CurrentPath();
@@ -20,7 +21,7 @@ function Navbar({ reload, setReload }) {
   const movePath = (path) => {
     setIsSearch(false);
     setIsCommentOpen(false);
-    if (path === "/profile" && !isLogin) {
+    if (path === `/@${userid}` && !isLogin) {
       setIsLoginOpen(true); // Hiển thị modal đăng nhập nếu chưa đăng nhập
       return;
     }
@@ -43,19 +44,22 @@ function Navbar({ reload, setReload }) {
   const verifyToken = async () => {
     const result = await checkToken();
     setIsLogin(!!result); // Chuyển kết quả thành true/false
+    if (result) {
+      const user = await checkProfile(); // Kiểm tra profile
+      if (user.status) {
+        setUserId(user.data.userid);
+        setProfileImage(user.data.profileImage);
+        setIsLogin(true);
+      }
+      else {
+        setIsLogin(false);
+      }
+    }
   };
 
   useEffect(() => {
     verifyToken();
     checkRole();
-    const user = GetUserStrorage();
-    if (user) {
-      setProfileImage(user.profileImage);
-      setIsLogin(true);
-    }
-    else {
-      setIsLogin(false);
-    }
   }, [reload]);
 
   return (
@@ -118,9 +122,9 @@ function Navbar({ reload, setReload }) {
             </div>
           </>
         )}
-        <div onClick={() => movePath("/profile")} className={`nav-item ${currentPath === "/profile" ? "active" : ""}`}>
-          {isLogin ? (
-            <img src={profileImage} alt="User Avatar" className="avt-icon" />
+        <div onClick={() => movePath(`/@${userid}`)} className={`nav-item ${currentPath === `/@${userid}` ? "active" : ""}`}>
+          {isLogin && profileImage !== '' ? (
+            <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
           ) : (
             <i className="bi bi-person-fill"></i>
           )

@@ -26,6 +26,11 @@ public class UserData
         return await _context.Users.AnyAsync(u => u.Username == username);
     }
 
+    public async Task<User?> GetUserByUserIdAsync(string uid)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.UserId == uid);
+    }
+
     public async Task CreateUserAsync(User user)
     {
         await _context.Users.AddAsync(user);

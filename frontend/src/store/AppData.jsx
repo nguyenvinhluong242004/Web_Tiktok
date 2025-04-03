@@ -28,7 +28,15 @@ export const AppProvider = ({ children }) => {
         setIsNewVideo(false);
     };
     return (
-        <AppContext.Provider value={{ currentIndex, setCurrentIndex, homeRef, handleScrollButton, isNewVideo, resetIsNewVideo, isCommentOpen, setIsCommentOpen, isExpand, setIsExpand, isSearch, setIsSearch, isLoginOpen, setIsLoginOpen }}>
+        <AppContext.Provider value={{
+            currentIndex, setCurrentIndex,
+            homeRef, handleScrollButton,
+            isNewVideo, resetIsNewVideo,
+            isCommentOpen, setIsCommentOpen,
+            isExpand, setIsExpand,
+            isSearch, setIsSearch,
+            isLoginOpen, setIsLoginOpen
+        }}>
             {children}
         </AppContext.Provider>
     );

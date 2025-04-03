@@ -3,7 +3,7 @@ import AuthRoute from "./AuthRoute";
 import Profile from "../pages/Profile";
 
 const privateRoutes = [
-    { path: "/profile", element: <Profile /> },
+    { path: "/:uid", element: <Profile /> }, // Hỗ trợ dynamic username
 ];
 
 const PrivateRoutes = () => {

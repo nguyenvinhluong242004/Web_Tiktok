@@ -6,7 +6,7 @@ function GetUserStrorage() {
     // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
     const user = JSON.parse(userJson);
     if (user) {
-      return user.value;
+      return user;
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // 🛠 Thêm import Routes, Route
 import { AppProvider } from "./store/AppData";
 import Navbar from "./components/layout/Navbar";
@@ -27,7 +27,7 @@ function App() {
                             <Route path="/*" element={<PrivateRoutes />} />
                         </Routes>
                     </div>
-                    <CmtContainer key={reload}/>
+                    <CmtContainer key={reload} />
                 </div>
             </Router>
         </AppProvider>

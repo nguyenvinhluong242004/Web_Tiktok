@@ -3,13 +3,14 @@ import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../store/AppData";
 import "../styles/Profile.css";
-import { getFrofile } from "../services/apiAccount";
+import { getProfile } from "../services/apiAccount";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
-
-    const [activeTab, setActiveTab] = useState(1);
-    const [activeFilter, setActiveFilter] = useState(1);
+    const { uid } = useParams();
+    const [activeTab, setActiveTab] = useState(0);
+    const [activeFilter, setActiveFilter] = useState(0);
 
     // Khai báo các state để lưu thông tin profile
     const [userId, setUserId] = useState('');
@@ -29,31 +30,10 @@ const Profile = () => {
         setActiveFilter(index);
     };
 
-    const user = async () => {
-        try {
-            const result = await getFrofile();
-            if (result) {
-                setUserId(result.data.userid);
-                setUsername(result.data.username);
-                setEmail(result.data.email);
-                setDateOfBirth(result.data.dateOfBirth);
-                setTotalFollowers(result.data.totalFollowers);
-                setTotalFollowing(result.data.totalFollowing);
-                setTotalVideoLikes(result.data.totalVideoLikes);
-                setProfileImage(result.data.profileImage);
-            } else {
-                console.log("NO");
-            }
-        } catch (error) {
-            // Xử lý lỗi khi gọi getFrofile() không thành công
-            console.error("Error fetching user data:", error);
-        }
-    };
-    
-
     useEffect(() => {
         const user = async () => {
-            const result = await getFrofile();
+            console.log(uid);
+            const result = await getProfile(uid);
             if (result.status) {
                 setUserId(result.data.userid);
                 setUsername(result.data.username);
@@ -65,10 +45,9 @@ const Profile = () => {
                 setProfileImage(result.data.profileImage);
             }
             else {
-                console.log("NO");
+                console.log("NO USER");
             }
         };
-
         user();
     }, []);
 
