@@ -6,7 +6,6 @@ import CmtContainer from "./components/layout/CmtContainer";
 import LoginModal from "./components/ui/LoginModal";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Home from "./pages/Home";
-import UploadImage from "./components/ui/test";
 import "./styles/User/App.css";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
                         <Routes key={reload}>
                             {/* Public Routes */}
                             <Route path="/" element={<Home />} />
-                            <Route path="/upload" element={<UploadImage />} />
                             {/* Private Routes */}
                             <Route path="/*" element={<PrivateRoutes />} />
                         </Routes>

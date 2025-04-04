@@ -1,0 +1,539 @@
+.upload-video-container {
+    padding: 20px;
+    background: #181818;
+    color: rgb(255, 255, 255);
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.upload-video-header h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.main-upload {
+    display: flex;
+}
+
+.left-main-upload {
+    width: 100%;
+    padding-right: 10px;
+}
+
+.ct-main-upload {
+    background-color: #333131;
+    padding: 10px;
+    border-radius: 15px;
+    min-height: 748px;
+}
+
+.upload-video-container input {
+
+    background-color: #333131;
+    color: #333131;
+}
+
+
+
+
+
+.upload-header {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-field {
+    margin-bottom: 15px;
+}
+
+.upload-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.upload-field input,
+.upload-field textarea,
+.upload-field select {
+    width: 100%;
+    padding: 8px;
+    background-color: #333131;
+    border-radius: 5px;
+    color: aliceblue;
+}
+
+.upload-field textarea {
+    min-height: 170px;
+    width: 100%;
+    resize: none; /* Không cho resize thủ công */
+    overflow: hidden;
+    line-height: 1.5;
+    padding-bottom: 36px;
+}
+
+.upload-button {
+    padding: 10px;
+    background-color: #ff3b5c;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+}
+
+.upload-button-done {
+    margin-right: 10px;
+}
+
+.upload-button-store {
+    background-color: #7c807c;
+}
+
+/* Ẩn nút file mặc định */
+.upload-field input[type="file"] {
+    display: none;
+    /* Ẩn nút file gốc */
+}
+
+/* Tạo nút tùy chỉnh */
+.upload-field .custom-file-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hiệu ứng khi hover */
+.upload-field .custom-file-button:hover {
+    background-color: #45a049;
+}
+
+/* Hiển thị icon trong nút */
+.upload-field .custom-file-button i {
+    margin-right: 8px;
+}
+
+
+
+
+
+.upload-button:disabled {
+    background-color: #ccc;
+}
+
+.video-preview {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.video-preview h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.video-preview video {
+    width: 320px;
+    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* z-index: 3; */
+}
+
+.icon-prv {
+    opacity: 1;
+    /* z-index: 5; */
+}
+
+.custom-file-button i{
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.253); /* Lớp phủ đen nhẹ */
+    pointer-events: none; /* Không chặn sự kiện của video */
+    border-radius: 20px;
+    z-index: 4;
+}
+
+
+.controls-prv {
+    position: absolute;
+    margin-top: 100px;
+    padding-left: 100px;
+}
+
+.thumbnail-main {
+    position: relative;
+}
+
+.custom-img-button {
+    position: absolute;
+    bottom: 4px;
+    left: 30px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.514);
+    color: white;
+    width: 100px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Preview Video On TikTok */
+.display-preview {
+    height: 700px;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    position: relative;
+    width: 320px;
+}
+
+.bt-opt-preview {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    background-color: #252424;
+    height: 40px;
+    border-radius: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-bottom: 7px;
+}
+
+.bt-opt-preview div {
+    width: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #000000;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 10px;
+}
+
+
+
+.display-preview i {
+    position: absolute;
+}
+
+.display-preview .bi-broadcast-pin {
+    top: 45px;
+    left: 15px;
+    font-size: 18px;
+}
+
+.display-preview .bi-battery-full {
+    top: 17px;
+    right: 20px;
+    font-size: 18px;
+}
+
+.display-preview .bi-wifi-2 {
+    top: 14px;
+    right: 43px;
+    font-size: 19px;
+}
+
+.display-preview .bi-bar-chart-fill {
+    top: 21px;
+    right: 65px;
+    font-size: 12px;
+}
+
+.display-preview .bi-search {
+    top: 45px;
+    right: 15px;
+    font-size: 18px;
+}
+
+/* name, avt..... */
+.prv-name {
+    position: absolute;
+    top: 500px;
+    left: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.prv-description {
+    position: absolute;
+    top: 530px;
+    left: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.prv-name-song {
+    position: absolute;
+    top: 575px;
+    left: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.prv-name-song i {
+    font-size: 14px;
+}
+
+.prv-name-song span {
+    font-weight: 400;
+}
+
+.prv-name-song-main {
+    position: absolute;
+    width: 200px;
+    left: 20px;
+
+}
+
+.prv-description {
+    max-width: 250px;
+    /* Giới hạn chiều rộng */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Giới hạn 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* Ẩn nội dung vượt quá */
+    text-overflow: ellipsis;
+    /* Hiển thị "..." nếu bị cắt */
+    word-break: break-word;
+    /* Xuống dòng nếu từ quá dài */
+}
+
+
+.prv-avt {
+    position: absolute;
+    top: 270px;
+    right: 7px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.prv-add-follow {
+    position: absolute;
+    top: 302px;
+    right: 19px;
+    overflow: hidden;
+    background-color: #ff3b5c;
+    text-align: center;
+    align-content: center;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+}
+
+.prv-song {
+    position: absolute;
+    top: 560px;
+    right: 11px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.display-preview .prv-heart {
+    position: absolute;
+    top: 365px;
+    right: 25px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.display-preview .bi-heart-fill {
+    bottom: 15px;
+    left: -10px;
+    font-size: 29px;
+}
+
+.display-preview .prv-chat-dots {
+    position: absolute;
+    top: 420px;
+    right: 25px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.display-preview .bi-chat-dots-fill {
+    bottom: 15px;
+    left: -10px;
+    font-size: 29px;
+    transform: scale(-1, 1);
+}
+
+.display-preview .prv-bookmark {
+    position: absolute;
+    top: 480px;
+    right: 25px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.display-preview .bi-bookmark-fill {
+    bottom: 15px;
+    left: -10px;
+    font-size: 29px;
+}
+
+.display-preview .prv-reply {
+    position: absolute;
+    top: 530px;
+    right: 25px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.display-preview .bi-reply-fill {
+    bottom: 15px;
+    left: -10px;
+    font-size: 29px;
+    transform: scale(-1, 1);
+}
+
+
+.display-preview .prv-home {
+    position: absolute;
+    bottom: 35px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.display-preview .bi-house-door-fill {
+    bottom: 17px;
+    left: 3px;
+    font-size: 25px;
+}
+
+.display-preview .prv-people {
+    position: absolute;
+    bottom: 35px;
+    left: 80px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.display-preview .bi-people {
+    bottom: 17px;
+    left: 5px;
+    font-size: 25px;
+}
+
+.display-preview .bi-plus-square-fill {
+    bottom: 40px;
+    left: 150px;
+    font-size: 30px;
+}
+
+.display-preview .prv-chat {
+    position: absolute;
+    bottom: 35px;
+    right: 75px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.display-preview .bi-chat-square-dots {
+    bottom: 16px;
+    left: 3px;
+    font-size: 24px;
+}
+
+.display-preview .prv-person {
+    position: absolute;
+    bottom: 35px;
+    right: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.display-preview .bi-person {
+    bottom: 16px;
+    left: -5px;
+    font-size: 26px;
+}
+
+
+
+
+
+.prv-fl {
+    position: absolute;
+    top: 45px;
+    left: 95px;
+    color: #5a5757;
+}
+
+.prv-fy {
+    position: absolute;
+    top: 45px;
+    left: 175px;
+}
+
+.prv-time {
+    position: absolute;
+    top: 20px;
+    left: 35px;
+    font-size: 12px;
+}
+
+.display-preview .bi-dash-lg {
+    top: 52px;
+    left: 185px;
+    font-size: 25px;
+}
+
+.no-video-choose {
+    width: 170px;
+    height: 200px;
+    background-color: #252424;
+    border-radius: 10px;
+}
+
+.description-input {
+    position: relative;
+}
+
+.bt-hashtag, .bt-call {
+    position: absolute;
+    cursor: pointer;
+}
+
+.bt-call {
+    bottom: 10px;
+    left: 100px;
+    color: white;
+}
+.bt-hashtag {
+    bottom: 10px;
+    left: 10px;
+    color: white;
+}

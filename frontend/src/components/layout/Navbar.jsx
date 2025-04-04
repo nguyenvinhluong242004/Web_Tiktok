@@ -100,15 +100,15 @@ function Navbar({ reload, setReload }) {
           </>
         ) : (
           <>
-            <div onClick={() => movePath("/upload")} className="nav-item">
+            <div onClick={() => movePath("/")} className="nav-item">
               <i className="bi bi-people-fill"></i>
               <span>Bạn bè</span>
             </div>
-            <div onClick={() => movePath("/")} className="nav-item">
+            <div onClick={() => movePath("/upload")} className="nav-item">
               <i className="bi bi-camera-reels"></i>
               <span>Tải lên</span>
             </div>
-            <div onClick={() => movePath("/upload")} className="nav-item">
+            <div onClick={() => movePath("/")} className="nav-item">
               <i className="bi bi-chat-square-dots"></i>
               <span>Hoạt động</span>
             </div>

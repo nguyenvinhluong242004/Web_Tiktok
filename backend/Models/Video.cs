@@ -47,5 +47,8 @@ namespace backend.Models
 
         [Column("totalviews")]
         public int TotalViews { get; set; } = 0;
+
+        [Column("address")]
+        public string Address { get; set; } = "";
     }
 }

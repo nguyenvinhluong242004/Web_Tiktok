@@ -176,10 +176,12 @@ export const changeInformation = async (formData) => {
         });
         console.log(response.data.message);
         sessionStorage.setItem("user", JSON.stringify(response.data.userProfile));
+        alert("Cập nhật thông tin thành công");
         window.location.href = `/@${response.data.userProfile.userid}`;
         return response.data;
     } catch (error) {
         console.error("Lỗi khi cập nhật thông tin:", error);
+        alert("Cập nhật thông tin thất bại");
         throw error;
     }
 };
