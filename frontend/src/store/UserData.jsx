@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [isExpand, setIsExpand] = useState(false);
     const [isSearch, setIsSearch] = useState(true);
+    const [videoId, setVideoId] = useState(0);
     const homeRef = useRef(null);
 
     useEffect(() => {
@@ -35,7 +36,8 @@ export const UserProvider = ({ children }) => {
             isCommentOpen, setIsCommentOpen,
             isExpand, setIsExpand,
             isSearch, setIsSearch,
-            isLoginOpen, setIsLoginOpen
+            isLoginOpen, setIsLoginOpen,
+            videoId, setVideoId
         }}>
             {children}
         </AppContext.Provider>

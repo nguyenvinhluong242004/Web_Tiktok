@@ -52,4 +52,20 @@ namespace Backend.Models
         [Column("address")]
         public string Address { get; set; } = "";
     }
+
+    public class VideoWithUserDto
+    {
+        public int Id { get; set; }
+        public int UserDbId { get; set; } // id trong bảng videos (trỏ tới bảng users)
+        public string UserId { get; set; } // userid trong bảng users
+        public string Username { get; set; }
+        public string Description { get; set; }
+        public string VideoUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
+        public string Visibility { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int TotalLikes { get; set; }
+        public int TotalViews { get; set; }
+        public string Address { get; set; }
+    }
 }

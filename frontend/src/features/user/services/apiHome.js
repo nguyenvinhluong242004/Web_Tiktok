@@ -1,6 +1,7 @@
 import { API_URL } from "./config/APIConfig";
+import axios from "axios";
 
 export const fetchVideos = async () => {
-    const response = await fetch(`${API_URL}/videos`);
-    return response.json();
+    const response = await axios.post(`${API_URL}/video/feeds`);
+    return response.data; 
 };

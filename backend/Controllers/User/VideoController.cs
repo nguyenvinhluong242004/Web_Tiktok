@@ -28,6 +28,13 @@ public class VideoController : ControllerBase
         _logger = logger;
     }
 
+    [HttpPost("feeds")]
+    public async Task<IActionResult> GetVideosOnFeeds()
+    {
+        var videos = await _videoData.GetRandomVideosAsync(10);
+        return Ok(videos);
+    }
+
     [HttpGet("@{uid}")]
     public async Task<IActionResult> GetListVideo(string uid)
     {

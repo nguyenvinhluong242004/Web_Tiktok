@@ -5,13 +5,14 @@ import { useAppState } from "../../../store/UserData";
 import "../styles/Home.css";
 
 const Home = () => {
-    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand, videoId, setVideoId } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
 
     useEffect(() => {
         fetchVideos().then((data) => {
+            console.log(data)
             setVideos(data);
             videoRefs.current = data.map(() => React.createRef());
         });
@@ -23,6 +24,9 @@ const Home = () => {
             if (videoRefs.current[index]?.current) {
                 videoRefs.current[index].current.scrollIntoView({ behavior: "smooth", block: "center" });
                 setCurrentIndex(index);
+                console.log(index)
+
+                setVideoId(videos[index].id)
             }
         }
     }));
@@ -45,6 +49,7 @@ const Home = () => {
 
         if (newIndex !== -1 && newIndex !== currentIndex) {
             setCurrentIndex(newIndex);
+            setVideoId(videos[newIndex].id)
         }
     };
 

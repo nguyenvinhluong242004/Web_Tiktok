@@ -15,13 +15,14 @@ video {
     overflow: hidden;
     border-radius: 10px;
 }
+
 .video-ct {
     width: 100%;
     height: 97vh;
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    
+
 }
 
 .video-timer {
@@ -51,6 +52,7 @@ video {
     outline: none;
     cursor: pointer;
 }
+
 .video-progress:hover {
     height: 7px;
 }
@@ -108,7 +110,7 @@ video {
 .bt-action {
     display: flex;
     align-items: flex-end;
-    
+
     height: 97vh;
     cursor: pointer;
 }
@@ -146,13 +148,15 @@ video {
 }
 
 /* Avatar nhỏ ở góc */
-.avt-profile, .n-music {
+.avt-profile,
+.n-music {
     width: 45px;
     height: 45px;
     background: #fff;
     border-radius: 50%;
     margin-top: 3px;
 }
+
 .avt-profile {
     margin-bottom: 28px;
 }
@@ -200,3 +204,133 @@ video {
 
 
 
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 60px;
+    height: 4px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #ff3b5c 50%, rgba(255, 255, 255, 0.3) 50%);
+    outline: none;
+    cursor: pointer;
+}
+
+/* Track cho WebKit (Chrome, Safari) */
+.volume-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 5px;
+}
+
+/* Thumb cho WebKit */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff3b5c;
+    border: 2px solid #ff3b5c;
+    margin-top: -4px;
+    /* Căn giữa */
+    cursor: pointer;
+}
+
+/* Track cho Firefox */
+.volume-slider::-moz-range-track {
+    height: 4px;
+    border-radius: 5px;
+}
+
+/* Thumb cho Firefox */
+.volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ff3b5c;
+    cursor: pointer;
+}
+
+
+.info-video-feeds {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+}
+
+.info-video-feeds .bi {
+    font-size: 12px;
+}
+
+.info-video-feeds .name {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.info-video-feeds .date {
+    font-size: 17px;
+    font-weight: bold;
+    color: rgb(153, 156, 158);
+}
+
+.header-i-v-f {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.content-i-v-f {
+    font-size: 17px;
+}
+
+.description-ct {
+    display: flex;
+    justify-content: space-between;
+}
+
+.see-more-btn {
+    width: 80px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.hashtag,
+.link-user {
+    text-decoration: none;
+    color: white;
+
+}
+
+.hashtag:hover,
+.link-user:hover {
+    text-decoration: underline;
+}
+
+.description {
+    max-width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3.2em;
+    position: relative;
+    word-break: break-word;
+}
+
+.prv-description {
+    max-width: 250px;
+    /* Giới hạn chiều rộng */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Giới hạn 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* Ẩn nội dung vượt quá */
+    text-overflow: ellipsis;
+    /* Hiển thị "..." nếu bị cắt */
+    word-break: break-word;
+    /* Xuống dòng nếu từ quá dài */
+}
