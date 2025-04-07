@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // 🛠 Thêm import Routes, Route
-import { AppProvider } from "./store/AppData";
-import Navbar from "./components/layout/Navbar";
-import CmtContainer from "./components/layout/CmtContainer";
-import LoginModal from "./components/ui/LoginModal";
+import { UserProvider } from "./store/UserData";
+import Navbar from "./features/user/components/layout/Navbar";
+import CmtContainer from "./features/user/components/layout/CmtContainer";
+import LoginModal from "./features/user/components/ui/LoginModal";
 import PrivateRoutes from "./routes/PrivateRoute";
-import Home from "./pages/Home";
-import "./styles/User/App.css";
+import Home from "./features/user/pages/Home";
+import "./styles/App.css";
 
 function App() {
     const [reload, setReload] = useState(0);
 
     return (
-        <AppProvider>
+        <UserProvider>
             <Router>
                 <div className="app-container">
                     <Navbar reload={reload} setReload={setReload} />
@@ -28,7 +28,7 @@ function App() {
                     <CmtContainer key={reload} />
                 </div>
             </Router>
-        </AppProvider>
+        </UserProvider>
     );
 }
 

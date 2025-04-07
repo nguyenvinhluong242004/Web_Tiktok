@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
-import { useAppState } from "../store/AppData";
-import "../styles/User/Home.css";
+import { useAppState } from "../../../store/UserData";
+import "../styles/Home.css";
 
 const Home = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();

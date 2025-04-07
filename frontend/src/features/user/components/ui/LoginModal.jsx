@@ -3,8 +3,8 @@ import Select from 'react-select';
 import { FaFacebook, FaGoogle, FaLine, FaApple } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 import { BsQrCode, BsPerson } from "react-icons/bs";
-import "../../styles/User/LoginModal.css";
-import { useAppState } from "../../store/AppData";
+import "../../styles/LoginModal.css";
+import { useAppState } from "../../../../store/UserData";
 
 import { handleLogin, handleRegister, handleSendCode } from "../../services/apiAccount";
 

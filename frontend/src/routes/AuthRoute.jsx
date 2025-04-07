@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../middleware/authMiddleware";
-import { useAppState } from "../store/AppData";
+import { useAppState } from "../store/UserData";
 
 const PrivateRoute = ({ children }) => {
   const { setIsLoginOpen } = useAppState();

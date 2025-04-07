@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import { useAppState } from "../store/AppData";
+import { useAppState } from "../../../store/UserData";
 import { uploadVideo } from "../services/apiVideo";
-import GetUserStrorage from "../hooks/UseStorage";
+import GetUserStrorage from "../../../hooks/UseStorage";
 import axios from "axios";
-import "../styles/User/UploadVideo.css"; // Đảm bảo file CSS cập nhật theo giao diện
+import "../styles/UploadVideo.css"; // Đảm bảo file CSS cập nhật theo giao diện
 
 const UploadVideo = () => {
     const [videoFile, setVideoFile] = useState(null);

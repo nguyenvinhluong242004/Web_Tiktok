@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import CurrentPath from "../../hooks/CurrentPath";
+import CurrentPath from "../../../../hooks/CurrentPath";
 import { checkToken, checkRole } from "../../services/apiNavbar";
-import { useAppState } from "../../store/AppData";
-import GetUserStrorage from "../../hooks/UseStorage";
+import { useAppState } from "../../../../store/UserData";
+import GetUserStrorage from "../../../../hooks/UseStorage";
 import ExpandAndMore from "../ui/ExpandAndMore";
 import { useNavigate } from "react-router-dom";
-import "../../styles/User/Navbar.css";
+import "../../styles/Navbar.css";
 
 import { checkProfile, handleLogout } from "../../services/apiAccount";
 

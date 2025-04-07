@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { changeInformation } from "../../services/apiAccount"; // Import API
-import "../../styles/User/ChangeInformation.css";
+import "../../styles/ChangeInformation.css";
 
 const ChangeInformation = ({ isOpen, setIsOpen, user }) => {
     const url = "www.tiktok.com";

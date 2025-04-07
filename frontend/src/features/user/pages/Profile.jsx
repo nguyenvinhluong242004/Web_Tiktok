@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
-import VideoCard from "../../../components/layout/VideoCard";
-import { fetchVideos } from "../../../services/apiHome";
-import { useAppState } from "../store/AppData";
-import "../styles/User/Profile.css";
-import { getProfile } from "../../../services/apiAccount";
-import { getVideoOfUser } from "../../../services/apiVideo";
+import VideoCard from "../components/layout/VideoCard";
+import { fetchVideos } from "../services/apiHome";
+import { useAppState } from "../../../store/UserData";
+import "../styles/Profile.css";
+import { getProfile } from "../services/apiAccount";
+import { getVideoOfUser } from "../services/apiVideo";
 import { useParams } from "react-router-dom";
 
-import ChangeInformation from "../../../components/ui/ChangeInformation";
+import ChangeInformation from "../components/ui/ChangeInformation";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
@@ -100,8 +100,9 @@ const Profile = () => {
                         <div className=""><b>{totalFollowers}</b> Follower</div>
                         <div className=""><b>{totalVideoLikes}</b> Lượt thích</div>
                     </div>
-                    <div className="des-prf">
-                        Chưa có tiểu sử
+                    { /* Bio */}
+                    <div className="bio-prf mb-2">
+                        <p className="bio">{user.bio}</p>
                     </div>
                 </div>
             </div>

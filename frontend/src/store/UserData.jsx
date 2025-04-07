@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useRef, useEffect } from "react";
 
 const AppContext = createContext();
 
-export const AppProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isNewVideo, setIsNewVideo] = useState(false);
