@@ -112,16 +112,11 @@ const UploadVideo = () => {
             console.log(key, value);
         }
         try {
-            const response = await axios.post('http://localhost:5281/api/up/upload-video',formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data", // Vì chúng ta đang gửi dữ liệu đa phần là file
-                    
-                }
-            });
-            if (response.status === 200) {
-                alert("Video tải lên thành công!");
+            const response = await uploadVideo(formData);
+            if (response) {
+                console.log("Video tải lên thành công!");
             } else {
-                alert("Tải lên thất bại.");
+                console.log("Tải lên thất bại.");
             }
         } catch (error) {
             alert("Lỗi khi tải video.");

@@ -36,7 +36,7 @@ export const getVideoOfUser = async (uid) => {
             });
 
         console.log("Kết quả:", response.data);
-        return { status: true, data: response.data.userProfile };
+        return { status: true, data: response.data };
     } catch (error) {
         console.error("Lỗi đăng ký:", error.response?.data || error.message);
         return { status: false };

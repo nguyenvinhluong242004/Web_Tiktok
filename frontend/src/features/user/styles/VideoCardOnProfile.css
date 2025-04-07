@@ -1,0 +1,55 @@
+.video-card-on-profile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #111;
+}
+
+/* Khung chứa video */
+.video-card-on-profile__thumbnail {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video nằm chính giữa và lấp đầy khung */
+.video-card-on-profile__thumbnail video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 8px;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+/* Info hiển thị dưới cùng, đè lên video */
+.video-card-on-profile__info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: aliceblue;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.video-card-on-profile__info .info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.video-card-on-profile__info .bi-lock {
+    font-size: 19px;
+    display: flex;
+    align-items: center;
+}

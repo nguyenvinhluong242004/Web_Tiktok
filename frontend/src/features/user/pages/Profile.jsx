@@ -8,6 +8,7 @@ import { getVideoOfUser } from "../services/apiVideo";
 import { useParams } from "react-router-dom";
 
 import ChangeInformation from "../components/ui/ChangeInformation";
+import VideoCardOnProfile from "../components/ui/VideoCardOnProfile";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();
@@ -26,6 +27,7 @@ const Profile = () => {
     const [totalVideoLikes, setTotalVideoLikes] = useState(0);
     const [profileImage, setProfileImage] = useState('');
     const [user, setUser] = useState({});
+    const [videos, setVideos] = useState([]);
 
     const moveTab = (index) => {
         setActiveTab(index);
@@ -58,7 +60,9 @@ const Profile = () => {
             console.log(uid);
             const result = await getVideoOfUser(uid);
             if (result.status) {
-                
+                console.log(result.data.videos);
+                setVideos(result.data.videos);
+                //console.log("Videos:", videos);
             }
             else {
                 console.log("NO Video");
@@ -70,7 +74,7 @@ const Profile = () => {
 
 
     return (
-        <div className="container profile-container">
+        <div className="profile-container">
             {/* Header */}
             <div className="header-prf">
                 <div className="avt-prf">
@@ -83,8 +87,8 @@ const Profile = () => {
 
                 <div className="ct-prf">
                     <div className="prf-name d-flex gap-3 mb-1">
-                        <h3 className="u-name">{userId}</h3>
-                        <h4 className="fullname">{username}</h4>
+                        <h4 className="u-name">{userId}</h4>
+                        <h5 className="fullname">{username}</h5>
                     </div>
                     <div className="d-flex mb-2">
                         <div className="btn-prf-change"
@@ -142,15 +146,33 @@ const Profile = () => {
                 </div>
             </div>
 
+            {/* Video Section */}
+            <div className="video-section">
+                {videos.map((video, index) => (
+                    <VideoCardOnProfile key={index} video={video} />
+                ))}
+                {/* {videos ? (
+                    <>
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    <VideoCardOnProfile key={0} video={videos[0]} />
+                    </>
+                ) : (
+                    <></>
+                )} */}
+            </div>
 
             {/* Upload Section */}
-            <div className="text-center mt-5">
+            {/* <div className="text-center mt-5">
                 <div className="upload-icon">⬜</div>
                 <p className="fw-bold">Tải video đầu tiên của bạn lên</p>
                 <p>Video của bạn sẽ xuất hiện tại đây</p>
-            </div>
+            </div> */}
 
-            <ChangeInformation isOpen={isOpen} setIsOpen={setIsOpen} user={user}/>
+            <ChangeInformation isOpen={isOpen} setIsOpen={setIsOpen} user={user} />
         </div>
     );
 };
