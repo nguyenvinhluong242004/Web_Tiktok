@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
-import VideoCard from "../components/layout/VideoCard";
-import { fetchVideos } from "../services/apiHome";
+import VideoCard from "../../../components/layout/VideoCard";
+import { fetchVideos } from "../../../services/apiHome";
 import { useAppState } from "../store/AppData";
 import "../styles/User/Profile.css";
-import { getProfile } from "../services/apiAccount";
-import { getVideoOfUser } from "../services/apiVideo";
+import { getProfile } from "../../../services/apiAccount";
+import { getVideoOfUser } from "../../../services/apiVideo";
 import { useParams } from "react-router-dom";
 
-import ChangeInformation from "../components/ui/ChangeInformation";
+import ChangeInformation from "../../../components/ui/ChangeInformation";
 
 const Profile = () => {
     const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand } = useAppState();

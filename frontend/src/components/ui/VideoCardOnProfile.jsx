@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import VideoOptions from "../ui/VideoOptions"; // Import menu tùy chọn
 import { FaPlay, FaPause } from "react-icons/fa";
 import { useAppState } from "../../features/user/store/AppData";
-import "../../styles/User/VideoCard.css";
+import "../../styles/User/VideoCardOnProfile.css";
 
-const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
+const VideoCardOnProfile = ({ video, isNewVideo, resetIsNewVideo }) => {
     const { isCommentOpen, setIsCommentOpen } = useAppState();
     const videoRef = useRef(null);
     const progressRef = useRef(null);
@@ -222,4 +222,4 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     );
 };
 
-export default VideoCard;
+export default VideoCardOnProfile;
