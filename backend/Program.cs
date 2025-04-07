@@ -142,6 +142,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserData>();
+builder.Services.AddScoped<VideoData>();
 builder.Services.AddControllers();
 builder.Services.AddLogging();
 

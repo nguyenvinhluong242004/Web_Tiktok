@@ -4,7 +4,7 @@ import axios from "axios";
 export const uploadVideo = async (formData) => {
     const token = getAccessToken(); // Lấy token từ sessionStorage hoặc cookie
     try {
-        const response = await axios.post(`${API_URL}/upload-video`, formData, {
+        const response = await axios.post(`${API_URL}/video/upload-video`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data", // Vì chúng ta đang gửi dữ liệu đa phần là file
                 Authorization: `Bearer ${token}`
@@ -19,5 +19,26 @@ export const uploadVideo = async (formData) => {
         console.error("Lỗi khi tải video:", error);
         alert("Tải video lên thất bại");
         throw error;
+    }
+};
+
+// Lấy profile
+export const getVideoOfUser = async (uid) => {
+    const token = getAccessToken();
+    try {
+        const response = await axios.get(`${API_URL}/video/${uid}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
+
+        console.log("Kết quả:", response.data);
+        return { status: true, data: response.data.userProfile };
+    } catch (error) {
+        console.error("Lỗi đăng ký:", error.response?.data || error.message);
+        return { status: false };
     }
 };

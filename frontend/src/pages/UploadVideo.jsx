@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import { useAppState } from "../store/AppData";
-import { uploadVideo } from "../services/apiUploadVideo";
+import { uploadVideo } from "../services/apiVideo";
 import GetUserStrorage from "../hooks/UseStorage";
+import axios from "axios";
 import "../styles/User/UploadVideo.css"; // Đảm bảo file CSS cập nhật theo giao diện
 
 const UploadVideo = () => {
@@ -12,7 +13,6 @@ const UploadVideo = () => {
     const [isUploading, setIsUploading] = useState(true);
     const [location, setLocation] = useState('');
     const [showControls, setShowControls] = useState(false);
-    const { userId } = useAppState();
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -38,6 +38,7 @@ const UploadVideo = () => {
             // Chuyển đổi canvas thành ảnh base64
             const imgData = canvas.toDataURL("image/png");
             setPreviewImg(imgData);
+            setThumbnail(imgData); // Lưu ảnh bìa vào state thumbnail
         }
         else {
             console.log(videoRef.current);
@@ -80,16 +81,43 @@ const UploadVideo = () => {
 
         setIsUploading(true);
 
+        // Tách phần base64 data (loại bỏ phần header "data:image/png;base64,")
+        const base64Data = thumbnail.split(",")[1];
+
+        // Chuyển base64 thành dữ liệu nhị phân
+        const byteCharacters = atob(base64Data);
+
+        // Tạo byte array từ chuỗi nhị phân
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset++) {
+            const byteArray = byteCharacters.charCodeAt(offset);
+            byteArrays.push(byteArray);
+        }
+
+        const byteArray = new Uint8Array(byteArrays);
+
+        // Tạo một tệp (file) từ byte array
+        const file = new File([byteArray], "image.png", { type: "image/png" });
+
         const formData = new FormData();
         formData.append("video", videoFile);
-        formData.append("thumbnail", thumbnail);
+        formData.append("thumbnail", file);
         formData.append("description", description);
         formData.append("visibility", visibility);
         formData.append("location", location);
-        formData.append("userId", userId);
+        formData.append("userid", user.uuid);
 
+        // Duyệt qua và log từng cặp khóa/giá trị trong formData
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
         try {
-            const response = await uploadVideo(formData);
+            const response = await axios.post('http://localhost:5281/api/up/upload-video',formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data", // Vì chúng ta đang gửi dữ liệu đa phần là file
+                    
+                }
+            });
             if (response.status === 200) {
                 alert("Video tải lên thành công!");
             } else {
@@ -164,9 +192,9 @@ const UploadVideo = () => {
                             <div className="upload-field mt-1 description-input">
                                 <label className="mb-2">Mô tả:</label>
                                 <textarea value={description} onInput={handleInput} onChange={(e) => setDescription(e.target.value)} placeholder="Nhập mô tả..." />
-                                <div className="bt-hashtag"  onClick={() => handleInsertText("#")}># Hashtag</div>
-                                <div className="bt-call"  onClick={() => handleInsertText("@")}>@ Nhắc đến</div>
-                            
+                                <div className="bt-hashtag" onClick={() => handleInsertText("#")}># Hashtag</div>
+                                <div className="bt-call" onClick={() => handleInsertText("@")}>@ Nhắc đến</div>
+
                             </div>
 
                             {/* Ảnh bìa */}

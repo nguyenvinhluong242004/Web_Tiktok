@@ -4,6 +4,7 @@ import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../store/AppData";
 import "../styles/User/Profile.css";
 import { getProfile } from "../services/apiAccount";
+import { getVideoOfUser } from "../services/apiVideo";
 import { useParams } from "react-router-dom";
 
 import ChangeInformation from "../components/ui/ChangeInformation";
@@ -53,7 +54,18 @@ const Profile = () => {
                 console.log("NO USER");
             }
         };
+        const video = async () => {
+            console.log(uid);
+            const result = await getVideoOfUser(uid);
+            if (result.status) {
+                
+            }
+            else {
+                console.log("NO Video");
+            }
+        };
         user();
+        video();
     }, []);
 
 

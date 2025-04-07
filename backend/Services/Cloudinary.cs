@@ -15,6 +15,29 @@ public class CloudinaryService
         _logger = logger;
     }
 
+    public async Task<string> UploadVideoAsync(IFormFile file)
+    {
+        if (_cloudinary == null)
+        {
+            throw new NullReferenceException("Cloudinary instance is null!");
+        }
+
+        if (file == null || file.Length == 0)
+            return null;
+
+        using var stream = file.OpenReadStream();
+        var uploadParams = new VideoUploadParams
+        {
+            File = new FileDescription(file.FileName, stream),
+            Folder = "Video_tiktok",
+            PublicId = Guid.NewGuid().ToString(),
+            // KHÔNG cần gán ResourceType ở đây
+        };
+
+        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        return uploadResult.SecureUrl?.AbsoluteUri;
+    }
+
     public async Task<string> UploadImageAsync(IFormFile file)
     {
         if (_cloudinary == null)

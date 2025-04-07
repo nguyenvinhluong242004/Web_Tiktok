@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Models
+namespace Backend.Models
 {
+    [Table("videos")]
     public class Video
     {
         [Key]
@@ -13,13 +14,13 @@ namespace backend.Models
         public int UserId { get; set; }
 
         [Column("description")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required, Column("videourl")]
         public string VideoUrl { get; set; }
 
         [Column("thumbnailurl")]
-        public string ThumbnailUrl { get; set; }
+        public string ThumbnailUrl { get; set; } = string.Empty;
 
         [Column("visibility")]
         public string Visibility { get; set; } = "public";
