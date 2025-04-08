@@ -150,15 +150,25 @@ video {
 /* Avatar nhỏ ở góc */
 .avt-profile,
 .n-music {
-    width: 45px;
-    height: 45px;
     background: #fff;
     border-radius: 50%;
     margin-top: 3px;
+    border: 0.5px solid rgb(99, 99, 99);
+}
+.avt-profile {
+    
+    width: 50px;
+    height: 50px;
+}
+
+.n-music {
+    
+    width: 45px;
+    height: 45px;
 }
 
 .avt-profile {
-    margin-bottom: 28px;
+    margin-bottom: 25px;
 }
 
 .header-btn {
@@ -167,8 +177,8 @@ video {
 
 .add-follow {
     position: absolute;
-    top: 34px;
-    left: 10px;
+    bottom: 15px;
+    left: 12.5px;
     background-color: #ff3b5c;
     text-align: center;
     align-content: center;
@@ -252,9 +262,12 @@ video {
 
 
 .info-video-feeds {
+    width: 100%;
     position: absolute;
-    bottom: 50px;
+    bottom: 17px;
     left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .info-video-feeds .bi {
@@ -282,17 +295,8 @@ video {
     font-size: 17px;
 }
 
-.description-ct {
-    display: flex;
-    justify-content: space-between;
-}
 
-.see-more-btn {
-    width: 80px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
+
 
 .hashtag,
 .link-user {
@@ -319,18 +323,29 @@ video {
     word-break: break-word;
 }
 
-.prv-description {
-    max-width: 250px;
-    /* Giới hạn chiều rộng */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    /* Giới hạn 2 dòng */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    /* Ẩn nội dung vượt quá */
-    text-overflow: ellipsis;
-    /* Hiển thị "..." nếu bị cắt */
+.description-full {
+    max-width: 100%;
+    display: block; /* không dùng -webkit-box */
+    overflow: visible;
+    text-overflow: unset;
+    max-height: unset;
     word-break: break-word;
-    /* Xuống dòng nếu từ quá dài */
+    overflow-wrap: anywhere;
+}
+.see-more-btn {
+    width: 70px;
+    /* position: absolute;
+    bottom: 0;
+    right: 0; */
+    text-align: end;
+    cursor: pointer;
+}
+
+.bt-more-hide {
+    height: 20px;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    text-align: end;
+    justify-content: space-between;
 }

@@ -86,6 +86,7 @@ public class VideoData
 
                     // thông tin nhạc
                     MusicId = music?.Id,
+                    MusicName = music?.Name ?? "",
                     MusicUserId = music?.UserId ?? 0,
                     MusicImage = music?.Image ?? "",
                     MusicLink = music?.Link ?? "",

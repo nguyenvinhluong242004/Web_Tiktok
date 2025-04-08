@@ -180,8 +180,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                             <div className="date">{formatDate(video.createdAt)}</div>
                         </div>
                         <div className="content-i-v-f">
-                            <Description text={"djskhfkdshfffffffffffffffffffffffffffffffffffffffffffkjdshffffffffffffffshfbndmvbnmcbvmcbvnmcbvmcbvmcnvbncmbvmcbmvb"} />
-
+                            <Description video={video} videoId={videoId} text={video.description} />
                         </div>
                     </div>
 
@@ -255,7 +254,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                 <div className="bt-action">
                     <div className="actions d-flex flex-column align-items-center">
                         <div className="header-btn">
-                            <img className="avt-profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlrDBSmMQyqmbeYR0Xbhkf0f8YmLQGju_8nw&s" alt="profile" />
+                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" />
                             <div className="add-follow"><span>+</span></div>
                         </div>
                         <div className="btn-act">
@@ -282,7 +281,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                             </div>
                             <span>{video.totalShares}</span>
                         </div>
-                        <img className="n-music" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlrDBSmMQyqmbeYR0Xbhkf0f8YmLQGju_8nw&s" alt="music" />
+                        <img className="n-music" src={video.musicId ? video.musicImage : "/img/music.jpg"} alt="music" />
                     </div>
                 </div>
             </div>

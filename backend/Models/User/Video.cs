@@ -75,6 +75,7 @@ namespace Backend.Models
         public int TotalShares { get; set; }
         public string Address { get; set; }
         public int? MusicId { get; set; } = null;
+        public string MusicName { get; set; }
         public int MusicUserId { get; set; }
         public string MusicImage { get; set; }
         public string MusicLink { get; set; }
