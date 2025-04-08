@@ -49,16 +49,29 @@ public class VideoData
             .Users.Where(u => userIds.Contains(u.Id))
             .ToDictionaryAsync(u => u.Id);
 
+        var musicIds = videos
+            .Where(v => v.MusicId.HasValue)
+            .Select(v => v.MusicId.Value)
+            .Distinct()
+            .ToList();
+
+        var musics = await _context
+            .Musics.Where(m => musicIds.Contains(m.Id))
+            .ToDictionaryAsync(m => m.Id);
+
         return videos
             .Select(v =>
             {
                 var user = users.GetValueOrDefault(v.UserId);
+                var music = v.MusicId.HasValue ? musics.GetValueOrDefault(v.MusicId.Value) : null;
+
                 return new VideoWithUserDto
                 {
                     Id = v.Id,
                     UserDbId = user?.Id ?? 0,
                     UserId = user?.UserId ?? "",
                     Username = user?.Username ?? "",
+                    ProfileImage = user?.ProfileImage ?? "",
                     Description = v.Description,
                     VideoUrl = v.VideoUrl,
                     ThumbnailUrl = v.ThumbnailUrl,
@@ -66,7 +79,16 @@ public class VideoData
                     CreatedAt = v.CreatedAt,
                     TotalLikes = v.TotalLikes,
                     TotalViews = v.TotalViews,
+                    TotalComments = v.TotalComments,
+                    TotalSaves = v.TotalSaves,
+                    TotalShares = v.TotalShares,
                     Address = v.Address,
+
+                    // thông tin nhạc
+                    MusicId = music?.Id,
+                    MusicUserId = music?.UserId ?? 0,
+                    MusicImage = music?.Image ?? "",
+                    MusicLink = music?.Link ?? "",
                 };
             })
             .ToList();

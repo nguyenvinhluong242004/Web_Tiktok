@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
     const [isExpand, setIsExpand] = useState(false);
     const [isSearch, setIsSearch] = useState(true);
     const [videoId, setVideoId] = useState(0);
+    const [muted, setMuted] = useState(true);
     const homeRef = useRef(null);
 
     useEffect(() => {
@@ -37,7 +38,8 @@ export const UserProvider = ({ children }) => {
             isExpand, setIsExpand,
             isSearch, setIsSearch,
             isLoginOpen, setIsLoginOpen,
-            videoId, setVideoId
+            videoId, setVideoId,
+            muted, setMuted
         }}>
             {children}
         </AppContext.Provider>

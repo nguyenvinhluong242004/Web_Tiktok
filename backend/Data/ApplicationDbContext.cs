@@ -9,4 +9,5 @@ public class ApplicationDbContext : DbContext
     // Định nghĩa DbSet để truy vấn dữ liệu
     public DbSet<User> Users { get; set; }
     public DbSet<Video> Videos { get; set; }
+    public DbSet<Music> Musics { get; set; }
 }

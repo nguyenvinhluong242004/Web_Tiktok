@@ -51,6 +51,9 @@ namespace Backend.Models
 
         [Column("address")]
         public string Address { get; set; } = "";
+
+        [Column("musicid")]
+        public int? MusicId { get; set; } = null;
     }
 
     public class VideoWithUserDto
@@ -59,6 +62,7 @@ namespace Backend.Models
         public int UserDbId { get; set; } // id trong bảng videos (trỏ tới bảng users)
         public string UserId { get; set; } // userid trong bảng users
         public string Username { get; set; }
+        public string ProfileImage { get; set; }
         public string Description { get; set; }
         public string VideoUrl { get; set; }
         public string ThumbnailUrl { get; set; }
@@ -66,6 +70,13 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         public int TotalLikes { get; set; }
         public int TotalViews { get; set; }
+        public int TotalComments { get; set; }
+        public int TotalSaves { get; set; }
+        public int TotalShares { get; set; }
         public string Address { get; set; }
+        public int? MusicId { get; set; } = null;
+        public int MusicUserId { get; set; }
+        public string MusicImage { get; set; }
+        public string MusicLink { get; set; }
     }
 }

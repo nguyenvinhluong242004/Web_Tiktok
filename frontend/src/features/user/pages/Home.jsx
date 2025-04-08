@@ -5,7 +5,7 @@ import { useAppState } from "../../../store/UserData";
 import "../styles/Home.css";
 
 const Home = () => {
-    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand, videoId, setVideoId } = useAppState();
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand, setVideoId } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
@@ -14,6 +14,7 @@ const Home = () => {
         fetchVideos().then((data) => {
             console.log(data)
             setVideos(data);
+            setVideoId(data[0].id || 0);
             videoRefs.current = data.map(() => React.createRef());
         });
     }, []);

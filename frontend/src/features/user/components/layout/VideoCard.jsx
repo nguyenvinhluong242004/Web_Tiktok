@@ -21,12 +21,11 @@ function formatDate(dateString) {
 
 const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const [volume, setVolume] = useState(0.5); // giá trị mặc định là 50%
-    const { isCommentOpen, setIsCommentOpen, videoId, setVideoId } = useAppState();
+    const { isCommentOpen, setIsCommentOpen, videoId, setVideoId, muted, setMuted } = useAppState();
     const videoRef = useRef(null);
     const progressRef = useRef(null);
     const [playing, setPlaying] = useState(true);
     //const [isHide, setHide] = useState(false);
-    const [muted, setMuted] = useState(true);
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -48,7 +47,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         //console.log(video)
 
         setPlaying(false);
-        setMuted(true);
+        //setMuted(true);
         setProgress(0);
         setCurrentTime(0);
         setDuration(videoElement.duration || 0);
@@ -60,10 +59,10 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         videoElement.volume = validVolume;
         setVolume(validVolume);
 
-        const savedMuted = sessionStorage.getItem("muted") === "true";
-        console.log(savedMuted)
-        videoElement.muted = savedMuted;
-        setMuted(savedMuted);
+        // const savedMuted = sessionStorage.getItem("muted") === "true";
+        // console.log(savedMuted)
+        // videoElement.muted = savedMuted;
+        // setMuted(savedMuted);
 
         setPlaying(true);
         videoElement.play().catch(error => {
@@ -99,7 +98,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
     const toggleMute = () => {
         const newMuted = !muted;
         setMuted(newMuted);
-        sessionStorage.setItem("muted", newMuted.toString());
+        //sessionStorage.setItem("muted", newMuted.toString());
         if (videoRef.current) {
             videoRef.current.muted = newMuted;
         }
@@ -263,25 +262,25 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                             <div className="btn-action" id="heart">
                                 <i className="bi bi-heart-fill"></i>
                             </div>
-                            <span>17.4k</span>
+                            <span>{video.totalLikes}</span>
                         </div>
                         <div className="btn-act">
                             <div className="btn-action" id="chat" onClick={() => setIsCommentOpen(!isCommentOpen)}>
                                 <i className="bi bi-chat-dots-fill"></i>
                             </div>
-                            <span>2004</span>
+                            <span>{video.totalComments}</span>
                         </div>
                         <div className="btn-act">
                             <div className="btn-action" id="bookmark">
                                 <i className="bi bi-bookmark-fill"></i>
                             </div>
-                            <span>74</span>
+                            <span>{video.totalSaves}</span>
                         </div>
                         <div className="btn-act">
                             <div className="btn-action" id="share">
                                 <i className="bi bi-reply-fill" style={{ transform: "scaleX(-1)" }}></i>
                             </div>
-                            <span>244</span>
+                            <span>{video.totalShares}</span>
                         </div>
                         <img className="n-music" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlrDBSmMQyqmbeYR0Xbhkf0f8YmLQGju_8nw&s" alt="music" />
                     </div>
