@@ -1,6 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Backend.Models;
+using Backend.Models;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,20 +31,55 @@ public class AccountController : ControllerBase
     [HttpGet("@{uid}")]
     public async Task<IActionResult> GetProfile(string uid)
     {
+        string email = null;
         if (string.IsNullOrEmpty(uid))
         {
             return BadRequest(new { message = "Uid không hợp lệ." });
         }
 
+        if (Request.Cookies.TryGetValue("access_token", out var refreshToken))
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadToken(refreshToken) as JwtSecurityToken;
+            email = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        }
+
         var user = await _userData.GetUserByUserIdAsync(uid);
+        string profileEmail = user.Email;
 
         if (user == null)
         {
             return NotFound(new { message = "Người dùng không tồn tại." });
         }
 
+        string pov = null;
+        if (profileEmail == email)
+        {
+            _logger.LogInformation("chính chủ");
+            pov = "owner";
+        }
+        else if (email == null)
+        {
+            _logger.LogInformation("khách");
+            pov = "guest";
+        }
+        else
+        {
+            if (await _userData.IsFriendAsync(user.Id, email))
+            {
+                pov = "friend";
+            }
+            else
+            {
+                pov = "guest";
+            }
+        }
+
+        _logger.LogInformation("Trạng thái người xem {pov}", pov);
+
         var userProfile = new
         {
+            pov = pov,
             uuid = user.Id,
             userid = user.UserId,
             username = user.Username,

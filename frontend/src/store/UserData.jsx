@@ -6,7 +6,7 @@ export const UserProvider = ({ children }) => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isNewVideo, setIsNewVideo] = useState(false);
-    const [isCommentOpen, setIsCommentOpen] = useState(true);
+    const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [isExpand, setIsExpand] = useState(false);
     const [isSearch, setIsSearch] = useState(true);
     const [videoId, setVideoId] = useState(0);

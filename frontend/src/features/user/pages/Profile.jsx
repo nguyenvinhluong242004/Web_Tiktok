@@ -21,6 +21,7 @@ const Profile = () => {
     const [userId, setUserId] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [pov, setPov] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [totalFollowers, setTotalFollowers] = useState(0);
     const [totalFollowing, setTotalFollowing] = useState(0);
@@ -37,12 +38,32 @@ const Profile = () => {
         setActiveFilter(index);
     };
 
+    // Tự động chèn thẻ <a> cho #hashtag và @mention
+    const parseText = (input) => {
+        return input.split(/\n/).flatMap((line, i) => [
+            ...line.split(/(\s+)/).map((part, index) => {
+                if (part.startsWith('#')) {
+                    const tag = part.substring(1);
+                    return <a key={`${i}-${index}`} href={`/hashtag/${tag}`} className='hashtag'>{part}</a>;
+                }
+                if (part.startsWith('@')) {
+                    const user = part.substring(1);
+                    return <a key={`${i}-${index}`} href={`/user/${user}`} className='link-user'>{part}</a>;
+                }
+                return part;
+            }),
+            <br key={`br-${i}`} />
+        ]);
+    };
+
+
     useEffect(() => {
         const user = async () => {
             console.log(uid);
             const result = await getProfile(uid);
             if (result.status) {
                 setUser(result.data);
+                setPov(result.data.pov);
                 setUserId(result.data.userid);
                 setUsername(result.data.username);
                 setEmail(result.data.email);
@@ -90,23 +111,55 @@ const Profile = () => {
                         <h4 className="u-name">{userId}</h4>
                         <h5 className="fullname">{username}</h5>
                     </div>
-                    <div className="d-flex mb-2">
-                        <div className="btn-prf-change"
-                            onClick={() => setIsOpen(true)}
-                        >Sửa hồ sơ</div>
-                        <div className="btn-prf">Quảng bá bài đăng</div>
-                        <div className="btn-prf"><i className="bi bi-gear-wide"></i></div>
-                        <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
-                    </div>
+
+                    {
+                        pov === 'owner' ? (
+                            <div className="d-flex mb-2 button-profile">
+                                <div className="btn-prf-change"
+                                    onClick={() => setIsOpen(true)}
+                                >Sửa hồ sơ</div>
+                                <div className="btn-prf">Quảng bá bài đăng</div>
+                                <div className="btn-prf"><i className="bi bi-gear-wide"></i></div>
+                                <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
+
+                            </div>
+                        ) : (
+                            <>
+                                {
+                                    pov === 'friend' ? (
+                                        <div className="d-flex mb-2 button-profile">
+                                            <div className="btn-prf"
+                                                onClick={console.log("click")}
+                                            ><i class="bi bi-person-check" style={{marginRight: "7px"}}></i><div> Đã follow</div></div>
+                                            <div className="btn-prf">Tin nhắn</div>
+                                            <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
+                                            <div className="btn-prf"><i className="bi bi-three-dots"></i></div>
+
+                                        </div>
+                                    ) : // guest
+                                        (
+                                            <div className="d-flex mb-2 button-profile">
+                                                <div className="btn-prf-change"
+                                                    onClick={console.log("click")}
+                                                >Follow</div>
+                                                <div className="btn-prf">Tin nhắn</div>
+                                                <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
+                                                <div className="btn-prf"><i className="bi bi-three-dots"></i></div>
+                                            </div>
+                                        )
+                                }
+                            </>
+                        )
+                    }
                     {/* Stats */}
-                    <div className="d-flex gap-4 mb-2">
+                    <div className="d-flex gap-4 mb-2 info-profile-total">
                         <div className=""><b>{totalFollowing}</b> Đã follow</div>
                         <div className=""><b>{totalFollowers}</b> Follower</div>
                         <div className=""><b>{totalVideoLikes}</b> Lượt thích</div>
                     </div>
                     { /* Bio */}
                     <div className="bio-prf mb-2">
-                        <p className="bio">{user.bio}</p>
+                        <p className="bio">{user.bio && parseText(user.bio)}</p>
                     </div>
                 </div>
             </div>
@@ -173,7 +226,7 @@ const Profile = () => {
             </div> */}
 
             <ChangeInformation isOpen={isOpen} setIsOpen={setIsOpen} user={user} />
-        </div>
+        </div >
     );
 };
 

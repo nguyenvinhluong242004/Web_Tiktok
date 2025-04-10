@@ -51,4 +51,16 @@ public class UserData
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> IsFriendAsync(int uId, string targetEmail) // uId: Người đang được xem profile     targetEmail: người xem
+    {
+        var target = await _context.Users.FirstOrDefaultAsync(u => u.Email == targetEmail);
+
+        if (target == null)
+            return false;
+
+        return await _context.Followers.AnyAsync(f =>
+            f.FollowerId == target.Id && f.FollowingId == uId
+        );
+    }
 }

@@ -123,8 +123,15 @@ function Navbar({ reload, setReload }) {
           </>
         )}
         <div onClick={() => movePath(`/@${userid}`)} className={`nav-item ${currentPath === `/@${userid}` ? "active" : ""}`}>
-          {isLogin && profileImage ? (
-            <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
+          {isLogin ? (
+            <>
+              {
+                profileImage ? (
+                  <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
+                ) : (
+                  <div className="avt-icon"></div>
+                )}
+            </>
           ) : (
             <i className="bi bi-person-fill"></i>
           )

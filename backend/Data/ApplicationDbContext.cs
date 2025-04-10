@@ -10,4 +10,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Video> Videos { get; set; }
     public DbSet<Music> Musics { get; set; }
+    public DbSet<Follower> Followers { get; set; }
 }
