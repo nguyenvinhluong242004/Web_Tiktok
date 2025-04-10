@@ -59,30 +59,37 @@ const Description = ({ video, videoId, text }) => {
                     {parseText(text)}
                 </div>
             </div>
-            <div className='bt-more-hide'>
-                <div className="name-song">{video.mucsicId ? video.musicName : ""}</div>
-                {
-                    (isOverflowing) ? (
-                        <div onClick={() => handlesetShowFull()} className="see-more-btn">
-                            Xem thêm
-                        </div>
-                    ) : (
-                        <>
-                            {
-                                (showFull) ? (
-                                    <div onClick={() => handlesetShowFull()} className="see-more-btn">
-                                        Ẩn bớt
-                                    </div>
-                                ) : (
-                                    <>
+            {
+                (!video.mucsicId && !isOverflowing && !showFull) ? (
+                    <></>
+                ) : (
+                    <div className='bt-more-hide'>
+                        <div className="name-song">{video.mucsicId ? video.musicName : ""}</div>
+                        {
+                            (isOverflowing) ? (
+                                <div onClick={() => handlesetShowFull()} className="see-more-btn">
+                                    Xem thêm
+                                </div>
+                            ) : (
+                                <>
+                                    {
+                                        (showFull) ? (
+                                            <div onClick={() => handlesetShowFull()} className="see-more-btn">
+                                                Ẩn bớt
+                                            </div>
+                                        ) : (
+                                            <>
 
-                                    </>
-                                )
-                            }
-                        </>
-                    )
-                }
-            </div>
+                                            </>
+                                        )
+                                    }
+                                </>
+                            )
+                        }
+                    </div>
+                )
+            }
+
         </div>
     );
 };

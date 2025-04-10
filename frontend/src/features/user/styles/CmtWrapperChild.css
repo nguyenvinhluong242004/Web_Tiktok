@@ -42,3 +42,9 @@
 .likes-child i {
     font-size: 13.5px;
 }
+
+.reply-cmt-child {
+    display: flex;
+    justify-content: end;
+    padding-left: 46px;
+}

@@ -19,7 +19,7 @@ function formatDate(dateString) {
     }
 }
 
-const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
+const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     const [volume, setVolume] = useState(0.5); // giá trị mặc định là 50%
     const { isCommentOpen, setIsCommentOpen, videoId, setVideoId, muted, setMuted } = useAppState();
     const videoRef = useRef(null);
@@ -38,6 +38,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         const videoElement = videoRef.current;
         if (!videoElement || !isNewVideo) return;
         if (videoId !== video.id) {
+            console.log("muted")
             setPlaying(false);
             videoElement.pause();
             return;
@@ -134,6 +135,10 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
         const timerElement = videoRef.current.parentNode.querySelector(".video-timer")
         timerElement.style.opacity = "0";
     };
+
+    const handleRedirectProfileUser = (userid) => {
+        navigate(`@${userid}`);
+    }
 
     return (
         <div className="d-flex position-relative">
@@ -254,7 +259,7 @@ const VideoCard = ({ video, isNewVideo, resetIsNewVideo }) => {
                 <div className="bt-action">
                     <div className="actions d-flex flex-column align-items-center">
                         <div className="header-btn">
-                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" />
+                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" onClick={() => {handleRedirectProfileUser(video.userId)}}/>
                             <div className="add-follow"><span>+</span></div>
                         </div>
                         <div className="btn-act">

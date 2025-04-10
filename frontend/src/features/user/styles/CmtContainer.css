@@ -23,13 +23,14 @@
 
 .footer-cmt {
     position: sticky;  /* Giữ cố định khi cuộn */
-    bottom: 0;         /* Cố định ở cuối */
+    bottom: 0px;         /* Cố định ở cuối */
     z-index: 1000;     /* Đảm bảo hiển thị trên nội dung khác */
     background-color: rgb(26, 25, 25);  /* Màu nền */
-    height: 56px;
+    height: auto;
     padding-top: 10px;
-    
+    padding-bottom: 0px;
 }
+
 
 .bt-login-cmt {
     height: 46px;

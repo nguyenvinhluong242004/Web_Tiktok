@@ -2,19 +2,22 @@ import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../../../store/UserData";
+import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
 const Home = () => {
-    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, resetIsNewVideo, isCommentOpen, isExpand, setVideoId } = useAppState();
+    const { handleScrollButton, homeRef, currentIndex, setCurrentIndex, isNewVideo, setIsNewVideo, resetIsNewVideo, isCommentOpen, isExpand, setVideoId } = useAppState();
     const [videos, setVideos] = useState([]);
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchVideos().then((data) => {
             console.log(data)
             setVideos(data);
             setVideoId(data[0].id || 0);
+            setIsNewVideo(true);
             videoRefs.current = data.map(() => React.createRef());
         });
     }, []);
@@ -69,7 +72,7 @@ const Home = () => {
                 <div className="video-container">
                     {videos.map((video, index) => (
                         <div ref={videoRefs.current[index]} key={video.id} className="video-wrapper">
-                            <VideoCard video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo} />
+                            <VideoCard navigate={navigate} video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo} />
                         </div>
                     ))}
                 </div>
