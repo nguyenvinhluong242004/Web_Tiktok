@@ -17,6 +17,7 @@ function Navbar({ reload, setReload }) {
 
   const navigate = useNavigate(); // Thay thế window.location.href
   const currentPath = CurrentPath();
+  const isTikTokVideoPath = /^\/@[^\/]+\/video\/\d+$/.test(currentPath);
 
   const movePath = (path) => {
     setIsSearch(false);
@@ -63,112 +64,118 @@ function Navbar({ reload, setReload }) {
   }, [reload]);
 
   return (
-    <div className="ct-navbar">
-      <div className={`navbar ${isExpand ? "expand" : ""}`}>
-        <div style={{ height: "1px" }}></div>
-        <div>
-          <div onClick={() => movePath("/")} className="nav-item-logo">
-            <i className="bi bi-tiktok"></i>
-            <span className="t-tiktok">TikTok</span>
+    <>
+      {!isTikTokVideoPath ? (
+        <div className="ct-navbar">
+          <div className={`navbar ${isExpand ? "expand" : ""}`}>
+            <div style={{ height: "1px" }}></div>
+            <div>
+              <div onClick={() => movePath("/")} className="nav-item-logo">
+                <i className="bi bi-tiktok"></i>
+                <span className="t-tiktok">TikTok</span>
+              </div>
+            </div>
+            <div onClick={() => hideExpand(!isSearch)} className="bt-search-container">
+              <i className="bi bi-search bt-search-icon"></i><span> Tìm kiếm</span>
+            </div>
+            <div onClick={() => movePath("/")} className={`nav-item ${currentPath === "/" ? "active" : ""}`}>
+              <i className="bi bi-house-door-fill"></i>
+              <span>Đề xuất</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-slash-circle"></i>
+              <span>Khám phá</span>
+            </div>
+            <div onClick={() => movePath("/")} className="nav-item">
+              <i className="bi bi-person-fill-check"></i>
+              <span>Đã follow</span>
+            </div>
+            {!isLogin ? (
+              <>
+                <div onClick={() => movePath("/p/upload")} className={`nav-item ${currentPath === `/p/upload` ? "active" : ""}`}>
+                  <i className="bi bi-plus-square"></i>
+                  <span>Tải lên</span>
+                </div>
+                <div onClick={() => movePath("/")} className="nav-item">
+                  <i className="bi bi-camera-reels"></i>
+                  <span>Live</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div onClick={() => movePath("/")} className="nav-item">
+                  <i className="bi bi-people-fill"></i>
+                  <span>Bạn bè</span>
+                </div>
+                <div onClick={() => movePath("/p/upload")} className={`nav-item ${currentPath === `/p/upload` ? "active" : ""}`}>
+                  <i className="bi bi-camera-reels"></i>
+                  <span>Tải lên</span>
+                </div>
+                <div onClick={() => movePath("/")} className="nav-item">
+                  <i className="bi bi-chat-square-dots"></i>
+                  <span>Hoạt động</span>
+                </div>
+                <div onClick={() => movePath("/")} className="nav-item">
+                  <i className="bi bi-send"></i>
+                  <span>Tin nhắn</span>
+                </div>
+                <div onClick={() => movePath("/")} className="nav-item">
+                  <i className="bi bi-camera-reels"></i>
+                  <span>Live</span>
+                </div>
+              </>
+            )}
+            <div onClick={() => movePath(`/@${userid}`)} className={`nav-item ${currentPath === `/@${userid}` ? "active" : ""}`}>
+              {isLogin ? (
+                <>
+                  {
+                    profileImage ? (
+                      <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
+                    ) : (
+                      <div className="avt-icon"></div>
+                    )}
+                </>
+              ) : (
+                <i className="bi bi-person-fill"></i>
+              )
+
+              }
+              <span>Hồ sơ</span>
+            </div>
+            <div onClick={() => {
+              setIsSearch(false);
+              setIsExpand(!isExpand);
+            }} className="nav-item">
+              <i className="bi bi-three-dots"></i>
+              <span>Thêm</span>
+            </div>
+
+            {isLogin ? (
+              <></>
+            ) : (
+              <div className="bt-login" onClick={() => {
+                setIsLoginOpen(true);
+              }}>
+                Đăng nhập
+              </div>
+            )}
+
+            <hr className="line" />
+
+            <span className="t-nav">Công ty</span>
+            <span className="t-nav">Chương trình</span>
+            <span className="t-nav">Điều khoản và chính sách</span>
+            <span className="t-nav-cp">Thêm</span>
+            <span className="t-nav-cp"><i className="bi bi-c-circle"></i> <span>2025 TikTok</span></span>
+
           </div>
-        </div>
-        <div onClick={() => hideExpand(!isSearch)} className="bt-search-container">
-          <i className="bi bi-search bt-search-icon"></i><span> Tìm kiếm</span>
-        </div>
-        <div onClick={() => movePath("/")} className={`nav-item ${currentPath === "/" ? "active" : ""}`}>
-          <i className="bi bi-house-door-fill"></i>
-          <span>Đề xuất</span>
-        </div>
-        <div onClick={() => movePath("/")} className="nav-item">
-          <i className="bi bi-slash-circle"></i>
-          <span>Khám phá</span>
-        </div>
-        <div onClick={() => movePath("/")} className="nav-item">
-          <i className="bi bi-person-fill-check"></i>
-          <span>Đã follow</span>
-        </div>
-        {!isLogin ? (
-          <>
-            <div onClick={() => movePath("/upload")} className="nav-item">
-              <i className="bi bi-plus-square"></i>
-              <span>Tải lên</span>
-            </div>
-            <div onClick={() => movePath("/")} className="nav-item">
-              <i className="bi bi-camera-reels"></i>
-              <span>Live</span>
-            </div>
-          </>
-        ) : (
-          <>
-            <div onClick={() => movePath("/")} className="nav-item">
-              <i className="bi bi-people-fill"></i>
-              <span>Bạn bè</span>
-            </div>
-            <div onClick={() => movePath("/upload")} className="nav-item">
-              <i className="bi bi-camera-reels"></i>
-              <span>Tải lên</span>
-            </div>
-            <div onClick={() => movePath("/")} className="nav-item">
-              <i className="bi bi-chat-square-dots"></i>
-              <span>Hoạt động</span>
-            </div>
-            <div onClick={() => movePath("/")} className="nav-item">
-              <i className="bi bi-send"></i>
-              <span>Tin nhắn</span>
-            </div>
-            <div onClick={() => movePath("/")} className="nav-item">
-              <i className="bi bi-camera-reels"></i>
-              <span>Live</span>
-            </div>
-          </>
-        )}
-        <div onClick={() => movePath(`/@${userid}`)} className={`nav-item ${currentPath === `/@${userid}` ? "active" : ""}`}>
-          {isLogin ? (
-            <>
-              {
-                profileImage ? (
-                  <img src={profileImage || "/path/to/default-avatar.png"} alt="User Avatar" className="avt-icon" />
-                ) : (
-                  <div className="avt-icon"></div>
-                )}
-            </>
-          ) : (
-            <i className="bi bi-person-fill"></i>
-          )
 
-          }
-          <span>Hồ sơ</span>
+          <ExpandAndMore isLogin={isLogin} handleLogout={handleLogout} />
         </div>
-        <div onClick={() => {
-          setIsSearch(false);
-          setIsExpand(!isExpand);
-        }} className="nav-item">
-          <i className="bi bi-three-dots"></i>
-          <span>Thêm</span>
-        </div>
-
-        {isLogin ? (
-          <></>
-        ) : (
-          <div className="bt-login" onClick={() => {
-            setIsLoginOpen(true);
-          }}>
-            Đăng nhập
-          </div>
-        )}
-
-        <hr className="line" />
-
-        <span className="t-nav">Công ty</span>
-        <span className="t-nav">Chương trình</span>
-        <span className="t-nav">Điều khoản và chính sách</span>
-        <span className="t-nav-cp">Thêm</span>
-        <span className="t-nav-cp"><i className="bi bi-c-circle"></i> <span>2025 TikTok</span></span>
-
-      </div>
-
-      <ExpandAndMore isLogin={isLogin} handleLogout={handleLogout} />
-    </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

@@ -228,13 +228,16 @@
     width: 100px;
     padding-left: 10px;
     padding-right: 10px;
-    background-color: #000000;
+    background-color: #252424;
     padding-top: 4px;
     padding-bottom: 4px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
-
+.bt-opt-preview .active {
+    background-color: #413f3f;
+}
 
 .display-preview i {
     position: absolute;
@@ -501,7 +504,7 @@
 .prv-time {
     position: absolute;
     top: 20px;
-    left: 35px;
+    left: 32px;
     font-size: 12px;
 }
 

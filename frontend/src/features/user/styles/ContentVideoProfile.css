@@ -1,11 +1,11 @@
-.cmt-container {
+.video-cmt-container {
     background-color: rgb(26, 25, 25);
     color: aliceblue;
     padding: 10px;
 }
 
-.main-cmt {
-    width: 360px;
+.video-main-cmt {
+    width: 500px;
     max-height: 100%;
     justify-content: center;
     overflow-y: auto;
@@ -13,7 +13,7 @@
     position: relative;
 }
 
-.header-cmt {
+.video-header-cmt {
     height: 50px;
     position: sticky;  /* Giữ cố định khi cuộn */
     top: 0;            /* Cố định ở đầu */
@@ -22,19 +22,19 @@
     z-index: 1000;     /* Đảm bảo nằm trên nội dung khác */
 }
 
-.footer-cmt {
+.video-footer-cmt {
     position: absolute;  /* Giữ cố định khi cuộn */
     bottom: 0;         /* Cố định ở cuối */
     z-index: 1000;     /* Đảm bảo hiển thị trên nội dung khác */
     background-color: rgb(26, 25, 25);  /* Màu nền */
     /* height: 100%; */
     padding-top: 10px;
-    width: 360px;
+    width: 500px;
     /* margin-bottom: 2px; */
 }
 
 
-.bt-login-cmt {
+.video-bt-login-cmt {
     height: 46px;
     width: 100%;
     border-radius: 9px;
@@ -49,15 +49,15 @@
 }
 
 
-.cmt-child {
+.video-cmt-child {
     margin-left: 50px;
 }
 
-.ft-input-cmt {
+.video-ft-input-cmt {
     padding: 0;
     padding-bottom: 5px;
 }
 
-.list-cmt {
+.video-list-cmt {
     margin-bottom: 60px;
 }

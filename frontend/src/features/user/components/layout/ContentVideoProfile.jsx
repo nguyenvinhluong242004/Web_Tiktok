@@ -3,18 +3,17 @@ import CmtWrapperParent from "../ui/CmtWrapperParent";
 import { useAppState } from "../../../../store/UserData";
 import GetUserStrorage from "../../../../hooks/UseStorage";
 import InputComment from "../ui/InputComment"
-import "../../styles/CmtContainer.css";
+import "../../styles/ContentVideoProfile.css";
 
-const CmtContainer = () => {
+const ContentVideoProfile = () => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen, activeCommentId, setActiveCommentId } = useAppState();
   const [inputMain] = useState(false);
-  if (!isCommentOpen) return null;
   const user = GetUserStrorage();
 
   return (
-    <div className="cmt-container">
-      <div className="main-cmt">
-        <div className="header-cmt d-flex justify-content-between">
+    <div className="video-cmt-container">
+      <div className="video-main-cmt">
+        <div className="video-header-cmt d-flex justify-content-between">
           <h5 className="mb-4">Bình luận</h5>
           <button
             type="button"
@@ -22,7 +21,7 @@ const CmtContainer = () => {
             onClick={() => setIsCommentOpen(false)}
           ></button>
         </div>
-        <div className="list-cmt">
+        <div className="video-list-cmt">
           <CmtWrapperParent
             avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
             username="Doãn Chí Bình"
@@ -58,13 +57,13 @@ const CmtContainer = () => {
           />
         </div>
       </div>
-      <div className="footer-cmt">
+      <div className="video-footer-cmt">
         {user ? (
-          <div className="ft-input-cmt">
+          <div className="video-ft-input-cmt">
             <InputComment isClose={inputMain} />
           </div>
         ) : (
-          <div className="bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
+          <div className="video-bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
             Đăng nhập để bình luận
           </div>
         )}
@@ -73,4 +72,4 @@ const CmtContainer = () => {
   );
 };
 
-export default CmtContainer;
+export default ContentVideoProfile;

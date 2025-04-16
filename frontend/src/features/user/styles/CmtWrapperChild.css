@@ -45,6 +45,8 @@
 
 .reply-cmt-child {
     display: flex;
-    justify-content: end;
+    justify-content: start;
+    align-items: center;
     padding-left: 46px;
+    width: 100%;
 }

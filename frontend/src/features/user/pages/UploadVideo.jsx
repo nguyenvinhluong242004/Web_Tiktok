@@ -251,7 +251,7 @@ const UploadVideo = () => {
                     <div className="right-main-upload">
                         <h5 className="">Preview</h5>
                         <div className="bt-opt-preview">
-                            <div className="on-feed">Bảng tin</div>
+                            <div className="on-feed active">Bảng tin</div>
                             <div className="on-profile">Hồ sơ</div>
                             <div className="on-web">Web/TV</div>
                         </div>
@@ -287,7 +287,7 @@ const UploadVideo = () => {
                                 <div className="prv-description">{description}</div>
 
                                 <div className="prv-name-song">
-                                    <i class="bi bi-music-note-beamed"></i>
+                                    <i className="bi bi-music-note-beamed"></i>
                                     <span className="prv-name-song-main">Âm thanh gốc -
                                         <span className="prv-name-song-name"> {user.username}</span>
                                     </span>
