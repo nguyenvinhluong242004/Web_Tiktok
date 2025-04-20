@@ -137,6 +137,7 @@ const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     };
 
     const handleRedirectProfileUser = (userid) => {
+        setIsCommentOpen(false);
         navigate(`@${userid}`);
     }
 

@@ -11,12 +11,20 @@ const CmtWrapper = ({ avatar, username, content, time, likes, replies, id, isOpe
         <div className="cmt-wrapper">
             <img src={avatar} alt="avatar" className="avatar" />
             <div className="cmt-content">
-                <div className="username">{username}</div>
-                <span className="ct-cmt">{content}</span>
-                <div className="cmt-info">
-                    <span className="time">{time}</span>
-                    <span className="likes"><i className="bi bi-suit-heart"></i> {likes}</span>
-                    <span style={{ cursor: "pointer" }} className="reply" onClick={onReplyClick}>Trả lời</span>
+                <div className="cmt-content-info">
+                    <div className="content-info">
+                        <div className="username">{username}</div>
+                        <span className="ct-cmt">{content}</span>
+                        <div className="cmt-info">
+                            <span className="time">{time}</span>
+                            <span className="likes"><i className="bi bi-suit-heart"></i> {likes}</span>
+                            <span style={{ cursor: "pointer" }} className="reply" onClick={onReplyClick}>Trả lời</span>
+                        </div>
+                    </div>
+                    <div className="ct-like">
+                        <i className="bi bi-heart"></i>
+                        <div>7</div>
+                    </div>
                 </div>
                 {isOpenInput ? (
                     <InputComment isClose={isOpenInput} />

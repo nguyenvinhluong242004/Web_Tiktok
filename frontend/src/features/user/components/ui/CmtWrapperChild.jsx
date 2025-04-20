@@ -16,6 +16,10 @@ const CmtWrapper = ({ avatar, username, content, time, likes, replies, id, isOpe
                         <span style={{ cursor: "pointer" }} className="reply" onClick={onReplyClick}>Trả lời</span>
                     </div>
                 </div>
+                <div className="ct-like">
+                    <i className="bi bi-heart"></i>
+                    <div>7</div>
+                </div>
             </div>
             <div className="reply-cmt-child">
                 {isOpenInput ? (
