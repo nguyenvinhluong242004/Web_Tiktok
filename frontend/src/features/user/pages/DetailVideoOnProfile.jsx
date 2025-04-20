@@ -162,7 +162,7 @@ const DetailVideoOnProfile = () => {
                     </div>
                 </div>
             </div>
-            <div className="footer">
+            <div className="v-footer">
                 <div className="bt-prev" onClick={() => handleScrollButton(-1)}>
                     <i className="bi bi-chevron-up"></i>
                 </div>
@@ -170,7 +170,7 @@ const DetailVideoOnProfile = () => {
                     <i className="bi bi-chevron-down"></i>
                 </div>
             </div>
-            <ContentVideoProfile />
+            <ContentVideoProfile user={user} video={video}/>
         </div>
     );
 };

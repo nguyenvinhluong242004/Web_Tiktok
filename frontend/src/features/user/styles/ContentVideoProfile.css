@@ -1,12 +1,14 @@
 .video-cmt-container {
-    background-color: rgb(26, 25, 25);
+    background-color: rgb(19, 18, 18);
     color: aliceblue;
     padding: 10px;
     height: 100%;
+    padding-left: 20px;
+
 }
 
 .video-main-cmt {
-    width: 500px;
+    width: 480px;
     max-height: 100%;
     justify-content: center;
     overflow-y: auto;
@@ -15,22 +17,32 @@
 }
 
 .video-header-cmt {
-    height: 50px;
-    position: sticky;  /* Giữ cố định khi cuộn */
-    top: 0;            /* Cố định ở đầu */
-    background-color: rgb(26, 25, 25);  /* Màu nền */
-    padding: 10px 0px 10px 0px;     /* Khoảng cách */
-    z-index: 1000;     /* Đảm bảo nằm trên nội dung khác */
+    position: sticky;
+    /* Giữ cố định khi cuộn */
+    top: 0;
+    /* Khoảng cách */
+    z-index: 1000;
+    /* Đảm bảo nằm trên nội dung khác */
+}
+
+.v-ct-info {
+    background-color: rgb(32, 32, 34);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .video-footer-cmt {
-    position: absolute;  /* Giữ cố định khi cuộn */
-    bottom: 0;         /* Cố định ở cuối */
-    z-index: 1000;     /* Đảm bảo hiển thị trên nội dung khác */
-    background-color: rgb(26, 25, 25);  /* Màu nền */
+    position: absolute;
+    /* Giữ cố định khi cuộn */
+    bottom: 0;
+    /* Cố định ở cuối */
+    z-index: 1000;
+    /* Đảm bảo hiển thị trên nội dung khác */
+    background-color: rgb(17, 17, 17);
+    /* Màu nền */
     /* height: 100%; */
     padding-top: 10px;
-    width: 500px;
+    width: 480px;
     /* margin-bottom: 2px; */
 }
 
@@ -39,7 +51,8 @@
     height: 46px;
     width: 100%;
     border-radius: 9px;
-    background-color: rgb(39, 37, 37);  /* Màu nền */
+    background-color: rgb(39, 37, 37);
+    /* Màu nền */
     text-align: left;
     align-content: center;
     padding-left: 12px;
@@ -61,4 +74,41 @@
 
 .video-list-cmt {
     margin-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 5px;
+}
+
+/* info */
+.name-avt-fl {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.uid-name {
+    width: 100%;
+    margin-top: -4px;
+}
+
+.v-uid {
+    font-size: 17.4px;
+    font-weight: bold;
+}
+
+.v-u-name {
+    font-weight: 600;
+}
+
+.v-music {
+    display: flex;
+    margin-top: 5px;
+    gap: 17px;
+    cursor: pointer;
+}
+
+.v-music i {
+    font-size: 14px;
+    margin-top: 3px;
 }

@@ -5,22 +5,61 @@ import GetUserStrorage from "../../../../hooks/UseStorage";
 import InputComment from "../ui/InputComment"
 import "../../styles/ContentVideoProfile.css";
 
-const ContentVideoProfile = () => {
+const ContentVideoProfile = ({ user, video }) => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen, activeCommentId, setActiveCommentId } = useAppState();
   const [inputMain] = useState(false);
-  const user = GetUserStrorage();
+
+  const parseText = (input) => {
+    return input.split(/\n/).flatMap((line, i) => [
+      ...line.split(/(\s+)/).map((part, index) => {
+        if (part.startsWith('#')) {
+          const tag = part.substring(1);
+          return <a style={{ color: "rgb(32, 147, 255)", fontWeight: "600" }} key={`${i}-${index}`} href={`/hashtag/${tag}`} className='hashtag'>{part}</a>;
+        }
+        if (part.startsWith('@')) {
+          const user = part.substring(1);
+          return <a key={`${i}-${index}`} href={`/user/${user}`} className='link-user'>{part}</a>;
+        }
+        return part;
+      }),
+      <br key={`br-${i}`} />
+    ]);
+  };
 
   return (
     <div className="video-cmt-container">
       <div className="video-main-cmt">
-        <div className="video-header-cmt d-flex justify-content-between">
-          <h5 className="mb-4">Bình luận</h5>
-          <button
-            type="button"
-            className="btn-close btn-close-white"
-            onClick={() => setIsCommentOpen(false)}
-          ></button>
-        </div>
+        {user ? (
+          <div className="video-header-cmt justify-content-between">
+            <div className="v-ct-info">
+              <div className="name-avt-fl">
+                <div>
+                  <img style={{ width: "45px", borderRadius: "50%", marginRight: "20px" }} src={user ? user.profileImage : ''} alt="" />
+
+                </div>
+                <div className="uid-name">
+                  <div className="v-uid">{user.userid}</div>
+                  <div className="v-u-name">{user.username}</div>
+                </div>
+                <div className="btn-prf-change justify-content-center" style={{ width: "120px", height: "36px", borderRadius: "3px", margin: "0" }}
+                  onClick={console.log("click")}
+                >Follow</div>
+              </div>
+              {video.description ?
+                <div className="v-content">
+                  {parseText(video.description)}
+                </div>
+                : <></>}
+              <div className="v-music">
+                <i className="bi bi-music-note-beamed"></i>
+                <div>Suýt nữa thì</div>
+              </div>
+            </div>
+          </div>
+        ) :
+          (
+            <></>
+          )}
         <div className="video-list-cmt">
           <CmtWrapperParent
             avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
