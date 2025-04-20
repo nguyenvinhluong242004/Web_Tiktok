@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
 import "../../styles/VideoCardOnProfile.css";
-
+import { useNavigate } from "react-router-dom";
 const VideoCardOnProfile = ({ video }) => {
     const videoRef = useRef(null); // Để tham chiếu tới thẻ video
     const [isPlay, setIsPlay] = useState(false);
+    const navigate = useNavigate();
 
     // Hàm phát video khi đưa chuột vào
     const handleMouseEnter = () => {
@@ -22,6 +23,10 @@ const VideoCardOnProfile = ({ video }) => {
         }
     };
 
+    const moveDetailVideo = (uid, videoid) => {
+        navigate(`/@${uid}/video/${videoid}`);
+    }
+
     if (!video || !video.videoUrl) return null;
 
     return (
@@ -30,6 +35,7 @@ const VideoCardOnProfile = ({ video }) => {
                 className="video-card-on-profile__thumbnail"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onClick={ () => moveDetailVideo(video.uid, video.id) }
             >
                 <video
                     ref={videoRef}

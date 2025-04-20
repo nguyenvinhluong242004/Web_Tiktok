@@ -1,0 +1,27 @@
+.main-detail-profile {
+    height: 100vh;
+}
+
+.video-wrapper-profile {
+    height: 100vh; /* Mỗi video chiếm toàn bộ màn hình */
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+}
+
+.bgr-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgb(75, 73, 73);
+    z-index: 2;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

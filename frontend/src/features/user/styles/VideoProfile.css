@@ -1,0 +1,108 @@
+.video-ct-profile video {
+    position: relative;
+    width: 100%;
+    object-fit: contain;
+    height: 100%;
+    border-radius: 10px;
+    background-color: black;
+}
+
+
+.video-card-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.video-ct-profile {
+    width: 100%;
+    height: 97vh;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+
+}
+
+.video-timer-profile {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px 10px;
+    border-radius: 8px;
+    opacity: 0;
+}
+
+
+.video-progress-profile {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.video-progress-profile:hover {
+    height: 7px;
+}
+
+/* Phần đã chạy (bo góc) */
+.video-progress-profile::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 20px;
+    background: linear-gradient(to right, #ff3b5c 0%, rgba(255, 255, 255, 0.3) 0%);
+}
+
+/* Nút kéo (thumb) */
+.video-progress-profile::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -3px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+
+.video-controls-profile {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-icon {
+    color: white;
+    font-size: 20px;
+}
+
+.play-pause-icon-profile {
+    color: rgba(255, 255, 255, 0.733);
+    background-color: rgba(0, 0, 0, 0.63);
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    top: 43%;
+    left: 44%;
+}
+

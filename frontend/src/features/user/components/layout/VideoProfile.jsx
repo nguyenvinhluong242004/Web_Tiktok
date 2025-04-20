@@ -2,24 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import VideoOptions from "../ui/VideoOptions"; // Import menu tùy chọn
 import { FaPlay, FaPause } from "react-icons/fa";
 import { useAppState } from "../../../../store/UserData";
-import "../../styles/VideoCardProfile.css";
-import Description from "../utils/Description"
+import "../../styles/VideoProfile.css";
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Tháng trong JS bắt đầu từ 0
-    const year = date.getFullYear();
-    const currentYear = new Date().getFullYear();
-
-    if (year === currentYear) {
-        return `${day}-${month}`;
-    } else {
-        return `${day}-${month}-${year}`;
-    }
-}
-
-const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
+const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     const [volume, setVolume] = useState(0.5); // giá trị mặc định là 50%
     const { isCommentOpen, setIsCommentOpen, videoId, setVideoId, muted, setMuted } = useAppState();
     const videoRef = useRef(null);
@@ -141,8 +126,9 @@ const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     }
 
     return (
-        <div className="d-flex position-relative">
-            <div className="video-card"
+        <div className="d-flex position-relative justify-content-between">
+            <div style={{width: "150px"}}></div>
+            <div className="video-card-profile"
 
                 onMouseEnter={() => {
                     if (isClickButton) {
@@ -159,7 +145,7 @@ const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                 }}
 
             >
-                <div className="video-ct"
+                <div className="video-ct-profile"
                 >
                     <video
                         src={video.videoUrl}
@@ -178,30 +164,17 @@ const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
 
                     />
 
-                    <div className="info-video-feeds">
-                        <div className="header-i-v-f">
-                            <div className="name">{video.username}</div>  
-                            <i className="bi bi-dot"></i>
-                            <div className="date">{formatDate(video.createdAt)}</div>
-                        </div>
-                        <div className="content-i-v-f">
-                            <Description video={video} videoId={videoId} text={video.description} />
-                        </div>
-                    </div>
-
-
-
                     {showAnimation && (
-                        <div className="play-pause-icon">
+                        <div className="play-pause-icon-profile">
                             {playing ? <FaPause size={40} /> : <FaPlay size={40} />}
                         </div>
                     )}
-                    <div className="video-timer">
+                    <div className="video-timer-profile">
                         {formatTime(currentTime)} / {formatTime(duration)}
                     </div>
                     <input
                         type="range"
-                        className="video-progress"
+                        className="video-progress-profile"
                         ref={progressRef}
                         value={progress}
                         max="100"
@@ -209,7 +182,7 @@ const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                         onMouseLeave={disableTimer}
                     />
                     {showSpeaker && (
-                        <div className="video-controls d-flex align-items-center">
+                        <div className="video-controls-profile d-flex align-items-center">
                             <i
                                 className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
                                 onClick={toggleMute}
@@ -256,45 +229,12 @@ const VideoCardProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                     )}
                 </div>
 
-                <div className="bt-action">
-                    <div className="actions d-flex flex-column align-items-center">
-                        <div className="header-btn">
-                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" onClick={() => {handleRedirectProfileUser(video.userId)}}/>
-                            <div className="add-follow"><span>+</span></div>
-                        </div>
-                        <div className="btn-act">
-                            <div className="btn-action" id="heart">
-                                <i className="bi bi-heart-fill"></i>
-                            </div>
-                            <span>{video.totalLikes}</span>
-                        </div>
-                        <div className="btn-act">
-                            <div className="btn-action" id="chat" onClick={() => setIsCommentOpen(!isCommentOpen)}>
-                                <i className="bi bi-chat-dots-fill"></i>
-                            </div>
-                            <span>{video.totalComments}</span>
-                        </div>
-                        <div className="btn-act">
-                            <div className="btn-action" id="bookmark">
-                                <i className="bi bi-bookmark-fill"></i>
-                            </div>
-                            <span>{video.totalSaves}</span>
-                        </div>
-                        <div className="btn-act">
-                            <div className="btn-action" id="share">
-                                <i className="bi bi-reply-fill" style={{ transform: "scaleX(-1)" }}></i>
-                            </div>
-                            <span>{video.totalShares}</span>
-                        </div>
-                        <img className="n-music" src={video.musicId ? video.musicImage : "/img/music.jpg"} alt="music" />
-                    </div>
-                </div>
             </div>
-
+            <div style={{width: "150px"}}></div>
             {/* Truyền trạng thái menu xuống VideoOptions */}
             <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} />
         </div>
     );
 };
 
-export default VideoCardProfile;
+export default VideoProfile;

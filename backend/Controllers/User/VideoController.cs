@@ -94,6 +94,7 @@ public class VideoController : ControllerBase
         {
             id = video.Id,
             userId = video.UserId,
+            uid = uid,
             description = video.Description,
             videoUrl = video.VideoUrl,
             thumbnailUrl = video.ThumbnailUrl,
