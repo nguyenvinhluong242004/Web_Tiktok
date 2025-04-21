@@ -127,7 +127,7 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
 
     return (
         <div className="d-flex position-relative justify-content-between">
-            <div style={{width: "150px"}}></div>
+            <div style={{width: "200px"}}></div>
             <div className="video-card-profile"
 
                 onMouseEnter={() => {

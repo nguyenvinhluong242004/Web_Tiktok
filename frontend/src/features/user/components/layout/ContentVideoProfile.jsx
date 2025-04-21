@@ -4,13 +4,29 @@ import { useAppState } from "../../../../store/UserData";
 import GetUserStrorage from "../../../../hooks/UseStorage";
 import InputComment from "../ui/InputComment"
 import VideoDescription from "../utils/VideoDescription"
+import VideoCardOnProfile from "../ui/VideoCardOnProfile"
 import "../../styles/ContentVideoProfile.css";
 
-const ContentVideoProfile = ({ user, video }) => {
+const ContentVideoProfile = ({ user, videos, video }) => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen, activeCommentId, setActiveCommentId } = useAppState();
   const [inputMain] = useState(false);
+  const [tab, setTab] = useState(0);
   const path = window.location.href;
+  const id = video.id;
 
+  const switchTab = (id) => {
+    setTab(id);
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(path)
+      .then(() => {
+        alert("Đã sao chép liên kết!");
+      })
+      .catch((err) => {
+        console.error("Lỗi sao chép:", err);
+      });
+  };
 
   return (
     <div className="video-cmt-container">
@@ -68,54 +84,66 @@ const ContentVideoProfile = ({ user, video }) => {
             </div>
             <div className="v-coppy">
               <div className="v-url">
-                {path + "fdhgfjhdsgfghjgsdfvhjsfghj"}
+                {path}
               </div>
-              <div className="v-bt-coppy">
+              <div className="v-bt-coppy" onClick={handleCopy}>
                 Sao chép liên kết
               </div>
+            </div>
+            <div className="v-bt-sw">
+              <div className={`v-bt ${tab === 0 ? 'active' : ''}`} onClick={() => switchTab(0)}>Bình luận (0)</div>
+              <div className={`v-bt ${tab === 1 ? 'active' : ''}`} onClick={() => switchTab(1)}>Video của nhà sáng tạo</div>
             </div>
           </div>
         ) :
           (
             <></>
           )}
-        <div className="video-list-cmt">
-          <CmtWrapperParent
-            avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
-            username="Doãn Chí Bình"
-            content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
-            time="5 ngày trước"
-            likes={2800}
-            replies={53}
-            id={1}
-            isOpenInput={activeCommentId === 1}
-            onReplyClick={() => setActiveCommentId(1)}
-          />
-          <CmtWrapperParent
-            avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
-            username="Doãn Chí Bình"
-            content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
-            time="5 ngày trước"
-            likes={2800}
-            replies={53}
-            id={7}
-            isOpenInput={activeCommentId === 7}
-            onReplyClick={() => setActiveCommentId(7)}
-          />
-          <CmtWrapperParent
-            avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
-            username="Doãn Chí Bình"
-            content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
-            time="5 ngày trước"
-            likes={2800}
-            replies={53}
-            id={12}
-            isOpenInput={activeCommentId === 12}
-            onReplyClick={() => setActiveCommentId(12)}
-          />
-        </div>
+        {tab === 0 ? (
+          <div className="video-list-cmt">
+            <CmtWrapperParent
+              avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
+              username="Doãn Chí Bình"
+              content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
+              time="5 ngày trước"
+              likes={2800}
+              replies={53}
+              id={1}
+              isOpenInput={activeCommentId === 1}
+              onReplyClick={() => setActiveCommentId(1)}
+            />
+            <CmtWrapperParent
+              avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
+              username="Doãn Chí Bình"
+              content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
+              time="5 ngày trước"
+              likes={2800}
+              replies={53}
+              id={7}
+              isOpenInput={activeCommentId === 7}
+              onReplyClick={() => setActiveCommentId(7)}
+            />
+            <CmtWrapperParent
+              avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-h7mrLMeN6YSKP4xRLCuU-G4idEdVKctWOA&s"  // Đổi thành link ảnh thực tế
+              username="Doãn Chí Bình"
+              content="Qua thấy clip mấy trinh sát này được chủ tịch nước thăng 2-3 cấp luôn 😘😘😘"
+              time="5 ngày trước"
+              likes={2800}
+              replies={53}
+              id={12}
+              isOpenInput={activeCommentId === 12}
+              onReplyClick={() => setActiveCommentId(12)}
+            />
+          </div>)
+          : (
+            <div className="v-video-section">
+              {videos.map((v, index) => (
+                <VideoCardOnProfile key={index} video={v} id={id}/>
+              ))}
+            </div>
+          )}
       </div>
-      <div className="video-footer-cmt">
+      {tab === 0 && <div className="video-footer-cmt">
         {user ? (
           <div className="video-ft-input-cmt">
             <InputComment isClose={inputMain} />
@@ -125,7 +153,7 @@ const ContentVideoProfile = ({ user, video }) => {
             Đăng nhập để bình luận
           </div>
         )}
-      </div>
+      </div>}
     </div>
   );
 };

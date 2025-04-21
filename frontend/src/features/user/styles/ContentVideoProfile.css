@@ -24,7 +24,7 @@
     z-index: 1000;
     /* Đảm bảo nằm trên nội dung khác */
     background-color: rgb(17, 17, 17);
-    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(54, 50, 50);
 }
 
 .v-ct-info {
@@ -244,4 +244,36 @@
     text-overflow: ellipsis;   /* Hiện dấu ... */
     font-size: 14px;   
     color: rgb(190, 190, 190);
+}
+
+/* button switch */
+.v-bt-sw {
+    display: flex;
+    margin-top: 15px;
+}
+
+.v-bt-sw .active {
+    color: white;
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+.v-bt {
+    width: 50%;
+    text-align: center;
+    color: rgb(156, 155, 153);
+    font-weight: 600;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+/* video */
+/* Đảm bảo có ít nhất 3 video trong mỗi hàng trên màn hình nhỏ */
+.v-video-section {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Tự động scale các video trên màn hình lớn */
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 3px;
 }

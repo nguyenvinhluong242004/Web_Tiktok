@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "../../styles/VideoCardOnProfile.css";
 import { useNavigate } from "react-router-dom";
-const VideoCardOnProfile = ({ video }) => {
+const VideoCardOnProfile = ({ video, id }) => {
     const videoRef = useRef(null); // Để tham chiếu tới thẻ video
     const [isPlay, setIsPlay] = useState(false);
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ const VideoCardOnProfile = ({ video }) => {
                 className="video-card-on-profile__thumbnail"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={ () => moveDetailVideo(video.uid, video.id) }
+                onClick={() => moveDetailVideo(video.uid, video.id)}
             >
                 <video
                     ref={videoRef}
@@ -52,6 +52,19 @@ const VideoCardOnProfile = ({ video }) => {
                 </div>
                 <div className="bi bi-lock"></div>
             </div>
+            {video.id === id && (
+                <div className="video-card-flag">
+                    <div className="equalizer">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div className="text">Hiện đang phát</div>
+                </div>
+            )}
+
         </div>
     );
 };
