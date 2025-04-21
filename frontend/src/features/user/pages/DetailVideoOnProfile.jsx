@@ -255,7 +255,7 @@ const DetailVideoOnProfile = () => {
                     <i className="bi bi-chevron-down"></i>
                 </div>}
             </div>
-            <ContentVideoProfile user={user} videos={videos} video={video} />
+            <ContentVideoProfile user={user} videos={videos} video={video} pov={pov}/>
         </div>
     );
 };

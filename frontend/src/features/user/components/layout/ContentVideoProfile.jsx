@@ -7,9 +7,10 @@ import VideoDescription from "../utils/VideoDescription"
 import VideoCardOnProfile from "../ui/VideoCardOnProfile"
 import "../../styles/ContentVideoProfile.css";
 
-const ContentVideoProfile = ({ user, videos, video }) => {
+const ContentVideoProfile = ({ user, videos, video, pov }) => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen, activeCommentId, setActiveCommentId } = useAppState();
   const [inputMain] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [tab, setTab] = useState(0);
   const path = window.location.href;
   const id = video.id;
@@ -28,6 +29,18 @@ const ContentVideoProfile = ({ user, videos, video }) => {
       });
   };
 
+  const handleToggleMenu = (sta) => {
+    setShowMenu(sta);
+  };
+
+  const handlePrivacySettings = () => {
+    console.log("Cài đặt quyền riêng tư");
+  };
+
+  const handleDelete = () => {
+    console.log("Xóa video");
+  };
+
   return (
     <div className="video-cmt-container">
       <div className="video-main-cmt">
@@ -43,9 +56,36 @@ const ContentVideoProfile = ({ user, videos, video }) => {
                   <div className="v-uid">{user.userid}</div>
                   <div className="v-u-name">{user.username}</div>
                 </div>
-                <div className="btn-prf-change justify-content-center" style={{ width: "120px", height: "36px", borderRadius: "3px", margin: "0" }}
-                  onClick={console.log("click")}
-                >Follow</div>
+                {pov === 'owner' ? (
+                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <i
+                      style={{ cursor: 'pointer' }}
+                      className="bi bi-three-dots"
+                      onMouseEnter={() => handleToggleMenu(true)}
+                      onMouseLeave={() => handleToggleMenu(false)}
+                    ></i>
+                    {showMenu && (
+                      <div className="v-menu-opt-info"
+                        onMouseEnter={() => handleToggleMenu(true)}
+                        onMouseLeave={() => handleToggleMenu(false)}
+                      >
+                        <div onClick={handlePrivacySettings} className="v-menu-it">
+                          Cài đặt quyền riêng tư
+                        </div>
+                        <div onClick={handleDelete} className="v-menu-it-erase"> Xóa </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div
+                    className="btn-prf-change justify-content-center"
+                    style={{ width: '120px', height: '36px', borderRadius: '3px', margin: '0', }}
+                    onClick={() => console.log('click')}
+                  >
+                    Follow
+                  </div>
+                )}
+
               </div>
               {video.description &&
                 <div className="v-content">
@@ -138,7 +178,7 @@ const ContentVideoProfile = ({ user, videos, video }) => {
           : (
             <div className="v-video-section">
               {videos.map((v, index) => (
-                <VideoCardOnProfile key={index} video={v} id={id}/>
+                <VideoCardOnProfile key={index} video={v} id={id} />
               ))}
             </div>
           )}

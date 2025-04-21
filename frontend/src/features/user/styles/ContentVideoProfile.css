@@ -239,10 +239,13 @@
     margin-left: 10px;
     border-radius: 0 10px 10px 0;
     max-width: 340px;
-    white-space: nowrap;       /* Không xuống dòng */
-    overflow: hidden;          /* Ẩn phần vượt quá */
-    text-overflow: ellipsis;   /* Hiện dấu ... */
-    font-size: 14px;   
+    white-space: nowrap;
+    /* Không xuống dòng */
+    overflow: hidden;
+    /* Ẩn phần vượt quá */
+    text-overflow: ellipsis;
+    /* Hiện dấu ... */
+    font-size: 14px;
     color: rgb(190, 190, 190);
 }
 
@@ -271,9 +274,36 @@
 .v-video-section {
     margin-top: 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Tự động scale các video trên màn hình lớn */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    /* Tự động scale các video trên màn hình lớn */
     gap: 12px;
     width: 100%;
     margin-bottom: 30px;
     padding: 3px;
+}
+
+.v-menu-opt-info {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    background-color: rgb(58, 57, 57);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 210px;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.v-menu-it {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(138, 131, 131, 0.15);
+}
+.v-menu-it-erase {
+    padding: 10px;
+    cursor: pointer;
+}
+.v-menu-it-erase:hover, .v-menu-it:hover {
+    color: rgb(223, 33, 0);
 }

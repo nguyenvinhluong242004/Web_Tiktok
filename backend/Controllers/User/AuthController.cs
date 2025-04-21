@@ -401,6 +401,8 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role))
             return Unauthorized(new { message = "Email not found" });
 
+        // _logger.LogInformation("Email: {email}, RefreshToken: {refreshToken}", email, refreshToken);
+
         // 5️⃣ Kiểm tra refresh token có hợp lệ không (lấy từ Redis)
         if (!await _authService.ValidateRefreshTokenAsync(email, refreshToken))
             return Unauthorized(new { message = "Invalid refresh token" });
