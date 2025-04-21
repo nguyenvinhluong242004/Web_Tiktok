@@ -186,7 +186,7 @@ const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                             <div className="date">{formatDate(video.createdAt)}</div>
                         </div>
                         <div className="content-i-v-f">
-                            <Description video={video} videoId={videoId} text={video.description = ""} />
+                            <Description video={video} videoId={videoId} text={video.description} />
                         </div>
                     </div>
 

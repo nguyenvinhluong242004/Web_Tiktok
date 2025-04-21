@@ -8,6 +8,7 @@ const Description = ({ video, videoId, text }) => {
 
     // Tự động chèn thẻ <a> cho #hashtag và @mention
     const parseText = (input) => {
+        if (!text) return;
         return input.split(/\n/).flatMap((line, i) => [
             ...line.split(/(\s+)/).map((part, index) => {
                 if (part.startsWith('#')) {

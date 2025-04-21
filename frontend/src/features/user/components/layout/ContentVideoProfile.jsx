@@ -3,28 +3,14 @@ import CmtWrapperParent from "../ui/CmtWrapperParent";
 import { useAppState } from "../../../../store/UserData";
 import GetUserStrorage from "../../../../hooks/UseStorage";
 import InputComment from "../ui/InputComment"
+import VideoDescription from "../utils/VideoDescription"
 import "../../styles/ContentVideoProfile.css";
 
 const ContentVideoProfile = ({ user, video }) => {
   const { isCommentOpen, setIsCommentOpen, setIsLoginOpen, activeCommentId, setActiveCommentId } = useAppState();
   const [inputMain] = useState(false);
+  const path = window.location.href;
 
-  const parseText = (input) => {
-    return input.split(/\n/).flatMap((line, i) => [
-      ...line.split(/(\s+)/).map((part, index) => {
-        if (part.startsWith('#')) {
-          const tag = part.substring(1);
-          return <a style={{ color: "rgb(32, 147, 255)", fontWeight: "600" }} key={`${i}-${index}`} href={`/hashtag/${tag}`} className='hashtag'>{part}</a>;
-        }
-        if (part.startsWith('@')) {
-          const user = part.substring(1);
-          return <a key={`${i}-${index}`} href={`/user/${user}`} className='link-user'>{part}</a>;
-        }
-        return part;
-      }),
-      <br key={`br-${i}`} />
-    ]);
-  };
 
   return (
     <div className="video-cmt-container">
@@ -45,14 +31,47 @@ const ContentVideoProfile = ({ user, video }) => {
                   onClick={console.log("click")}
                 >Follow</div>
               </div>
-              {video.description ?
+              {video.description &&
                 <div className="v-content">
-                  {parseText(video.description)}
+                  <VideoDescription video={video} videoId={video.id} />
                 </div>
-                : <></>}
+              }
               <div className="v-music">
                 <i className="bi bi-music-note-beamed"></i>
                 <div>Suýt nữa thì</div>
+              </div>
+            </div>
+            <div className="v-count-emoj">
+              <div className="v-count">
+                <div className="v-c-bgr">
+                  <i className="bi bi-heart-fill"></i>
+                </div>
+                <div className="v-total">0</div>
+                <div className="v-c-bgr">
+                  <i className="bi bi-chat-dots-fill"></i>
+                </div>
+                <div className="v-total">0</div>
+                <div className="v-c-bgr">
+                  <i className="bi bi-bookmark-fill"></i>
+                </div>
+                <div className="v-total">0</div>
+              </div>
+              <div className="v-emoj">
+                <div className="v-c-bgr">
+                  <div>&lt;/&gt;</div>
+                </div>
+                <i class="bi bi-whatsapp"></i>
+                <i class="bi bi-telegram"></i>
+                <i class="bi bi-facebook"></i>
+                <i className="bi bi-reply-fill" style={{ transform: "scaleX(-1)" }}></i>
+              </div>
+            </div>
+            <div className="v-coppy">
+              <div className="v-url">
+                {path + "fdhgfjhdsgfghjgsdfvhjsfghj"}
+              </div>
+              <div className="v-bt-coppy">
+                Sao chép liên kết
               </div>
             </div>
           </div>
