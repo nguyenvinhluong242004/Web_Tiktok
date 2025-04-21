@@ -50,7 +50,8 @@ const VideoCardOnProfile = ({ video, id }) => {
                     <i className="bi bi-play"></i>
                     <div>{video.totalViews}</div>
                 </div>
-                <div className="bi bi-lock"></div>
+                {video.visibility === 'private' && <div className="bi bi-lock"></div>}
+                {video.visibility === 'friends' && <div className="bi bi-people" style={{fontSize: "22px"}}></div>}
             </div>
             {video.id === id && (
                 <div className="video-card-flag">

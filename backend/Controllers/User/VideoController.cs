@@ -90,25 +90,38 @@ public class VideoController : ControllerBase
 
         var videos = await _videoData.GetVideosByUIdAsync(user.Id);
 
-        var videoList = videos.Select(video => new
+        // lọc theo quyền
+        List<Video> filteredVideos = pov switch
         {
-            id = video.Id,
-            userId = video.UserId,
-            uid = uid,
-            description = video.Description,
-            videoUrl = video.VideoUrl,
-            thumbnailUrl = video.ThumbnailUrl,
-            visibility = video.Visibility,
-            createdAt = video.CreatedAt,
-            updatedAt = video.UpdatedAt,
-            deletedAt = video.DeletedAt,
-            totalLikes = video.TotalLikes,
-            totalShares = video.TotalShares,
-            totalComments = video.TotalComments,
-            totalSaves = video.TotalSaves,
-            totalViews = video.TotalViews,
-            address = video.Address,
-        });
+            "owner" => videos, // trả hết
+            "friend" => videos
+                .Where(v => v.Visibility == "public" || v.Visibility == "friends")
+                .ToList(),
+            "guest" => videos.Where(v => v.Visibility == "public").ToList(),
+            _ => new List<Video>(),
+        };
+
+        var videoList = filteredVideos
+            .OrderByDescending(v => v.CreatedAt)
+            .Select(video => new
+            {
+                id = video.Id,
+                userId = video.UserId,
+                uid = uid,
+                description = video.Description,
+                videoUrl = video.VideoUrl,
+                thumbnailUrl = video.ThumbnailUrl,
+                visibility = video.Visibility,
+                createdAt = video.CreatedAt,
+                updatedAt = video.UpdatedAt,
+                deletedAt = video.DeletedAt,
+                totalLikes = video.TotalLikes,
+                totalShares = video.TotalShares,
+                totalComments = video.TotalComments,
+                totalSaves = video.TotalSaves,
+                totalViews = video.TotalViews,
+                address = video.Address,
+            });
 
         return Ok(new { videos = videoList });
     }

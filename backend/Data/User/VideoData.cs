@@ -22,7 +22,10 @@ public class VideoData
 
         if (total <= count)
         {
-            var allVideos = await _context.Videos.OrderBy(v => v.Id).ToListAsync();
+            var allVideos = await _context
+                .Videos.OrderBy(v => v.Id)
+                .OrderByDescending(v => v.CreatedAt)
+                .ToListAsync();
 
             return await ConvertToDtoList(allVideos);
         }

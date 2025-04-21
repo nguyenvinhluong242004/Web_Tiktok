@@ -111,14 +111,6 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
         const newTime = (e.target.value / 100) * videoElement.duration;
         videoElement.currentTime = newTime;
         setProgress(e.target.value);
-
-        // Hiển thị timer khi kéo
-        const timerElement = videoRef.current.parentNode.querySelector(".video-timer")
-        timerElement.style.opacity = "1";
-    };
-    const disableTimer = () => {
-        const timerElement = videoRef.current.parentNode.querySelector(".video-timer")
-        timerElement.style.opacity = "0";
     };
 
     const handleRedirectProfileUser = (userid) => {
@@ -179,7 +171,6 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                         value={progress}
                         max="100"
                         onChange={handleSeek}
-                        onMouseLeave={disableTimer}
                     />
                     {showSpeaker && (
                         <div className="video-controls-profile d-flex align-items-center">
