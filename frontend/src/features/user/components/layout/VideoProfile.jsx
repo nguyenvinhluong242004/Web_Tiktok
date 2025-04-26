@@ -118,112 +118,116 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     }
 
     return (
-        <div className="d-flex position-relative justify-content-between">
-            <div style={{width: "200px"}}></div>
-            <div className="video-card-profile"
+        <div>
+            <div className="d-flex position-relative justify-content-between">
+                <div style={{ width: "200px" }}></div>
+                <div className="video-card-profile"
 
-                onMouseEnter={() => {
-                    if (isClickButton) {
-                        setMenuOpen(false);
-                        console.log("cllll");
-                    }
-                    setShowButton(true);
-                    setShowSpeaker(true);
-                }}
-                onMouseLeave={() => {
-                    setShowButton(false);
-                    //setMenuOpen(false);
-                    setShowSpeaker(false);
-                }}
+                    onMouseEnter={() => {
+                        if (isClickButton) {
+                            setMenuOpen(false);
+                            console.log("cllll");
+                        }
+                        setShowButton(true);
+                        setShowSpeaker(true);
+                    }}
+                    onMouseLeave={() => {
+                        setShowButton(false);
+                        //setMenuOpen(false);
+                        setShowSpeaker(false);
+                    }}
 
-            >
-                <div className="video-ct-profile"
                 >
-                    <video
-                        src={video.videoUrl}
-                        ref={videoRef}
-                        autoPlay
-                        loop
-                        muted={muted}
-                        playsInline
-                        preload="auto"
-                        controls={false}
-                        onClick={togglePlay}
-                        onTimeUpdate={handleTimeUpdate}
-                        onLoadedMetadata={handleLoadedMetadata}
-                        onContextMenu={(e) => e.preventDefault()}
-                        controlsList="nodownload nofullscreen noremoteplayback"
+                    <div className="video-ct-profile"
+                    >
+                        <video
+                            src={video.videoUrl}
+                            ref={videoRef}
+                            autoPlay
+                            loop
+                            muted={muted}
+                            playsInline
+                            preload="auto"
+                            controls={false}
+                            onClick={togglePlay}
+                            onTimeUpdate={handleTimeUpdate}
+                            onLoadedMetadata={handleLoadedMetadata}
+                            onContextMenu={(e) => e.preventDefault()}
+                            controlsList="nodownload nofullscreen noremoteplayback"
 
-                    />
+                        />
 
-                    {showAnimation && (
-                        <div className="play-pause-icon-profile">
-                            {playing ? <FaPause size={40} /> : <FaPlay size={40} />}
+                        {showAnimation && (
+                            <div className="play-pause-icon-profile">
+                                {playing ? <FaPause size={40} /> : <FaPlay size={40} />}
+                            </div>
+                        )}
+                        <div className="video-timer-profile">
+                            {formatTime(currentTime)} / {formatTime(duration)}
                         </div>
-                    )}
-                    <div className="video-timer-profile">
-                        {formatTime(currentTime)} / {formatTime(duration)}
-                    </div>
-                    <input
-                        type="range"
-                        className="video-progress-profile"
-                        ref={progressRef}
-                        value={progress}
-                        max="100"
-                        onChange={handleSeek}
-                    />
-                    {showSpeaker && (
-                        <div className="video-controls-profile d-flex align-items-center">
-                            <i
-                                className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
-                                onClick={toggleMute}
-                            ></i>
-                            <input
-                                type="range"
-                                min="0"
-                                max="1"
-                                step="0.05"
-                                value={volume}
-                                onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                className="volume-slider"
-                                style={{
-                                    width: "60px",
-                                    marginLeft: "5px",
-                                    background: `linear-gradient(to right, #ff3b5c ${volume * 100}%, rgba(255, 255, 255, 0.3) ${volume * 100}%)`
+                        <input
+                            type="range"
+                            className="video-progress-profile"
+                            ref={progressRef}
+                            value={progress}
+                            max="100"
+                            onChange={handleSeek}
+                        />
+
+                        {/* Nút menu (góc trên bên phải) */}
+                        {showButton && (
+                            <div
+                                className="position-absolute top-0 end-0"
+                                onMouseEnter={() => {
+                                    setMenuOpen(true);
+                                    if (isClickButton) {
+                                        setIsClickButton(false);
+                                        setMenuOpen(false);
+                                    }
                                 }}
-                            />
-
-                        </div>
-                    )}
-
-                    {/* Nút menu (góc trên bên phải) */}
-                    {showButton && (
-                        <div
-                            className="position-absolute top-0 end-0"
-                            onMouseEnter={() => {
-                                setMenuOpen(true);
-                                if (isClickButton) {
-                                    setIsClickButton(false);
-                                    setMenuOpen(false);
-                                }
-                            }}
-                            onMouseLeave={() => setMenuOpen(isClickButton)}
-                        >
-                            <button
-                                className="btn text-white p-2"
-                                type="button"
-                                onClick={() => setIsClickButton(!isClickButton) && setMenuOpen(menuOpen)}
+                                onMouseLeave={() => setMenuOpen(isClickButton)}
                             >
-                                <i className="bi bi-three-dots fs-4"></i>
-                            </button>
-                        </div>
-                    )}
-                </div>
+                                <button
+                                    className="btn text-white p-2"
+                                    type="button"
+                                    onClick={() => setIsClickButton(!isClickButton) && setMenuOpen(menuOpen)}
+                                >
+                                    <i className="bi bi-three-dots fs-4"></i>
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
+                </div>
+                <div style={{ width: "150px" }}></div>
+
+
+                {/* Truyền trạng thái menu xuống VideoOptions */}
+                <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} />
             </div>
-            <div style={{width: "150px"}}></div>
-            {/* Truyền trạng thái menu xuống VideoOptions */}
-            <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} />
+            <div className="v-video-controls-profile">
+                <div className="v-ct-speaker">
+                    <div className="v-ct-input-speaker">
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={volume}
+                            onChange={(e) => setVolume(parseFloat(e.target.value))}
+                            className="vertical-slider"
+                            style={{
+                                background: `linear-gradient(to right, #ff3b5c ${volume * 100}%, rgba(255, 255, 255, 0.3) ${volume * 100}%)`
+                            }}
+                        />
+                    </div>
+                    <i
+                        className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
+                        onClick={toggleMute}
+                    ></i>
+                </div>
+            </div>
+
         </div>
     );
 };
