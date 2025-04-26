@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "../../styles/VideoOptions.css";
 
 
-const VideoOptions = ({isOpen, setMenuOpen, setIsClickButton, setShowButton}) => {
+const VideoOptions = ({ isOpen, setMenuOpen, setIsClickButton, setShowButton, v_prf }) => {
     const [autoScroll, setAutoScroll] = useState(false);
 
     return (
         <div className={`menu-opt position-relative ${isOpen ? "d-block" : "d-none"}`}>
-            <ul className="drop-menu-opt dropdown-menu dropdown-menu-dark show" data-bs-display="static" onMouseLeave={() => setMenuOpen(false) && setIsClickButton(false) && setShowButton(false)} >
+            <ul className={`dropdown-menu dropdown-menu-dark show ${v_prf ? 'drop-menu-opt-v' : 'drop-menu-opt'}`} data-bs-display="static" onMouseLeave={() => setMenuOpen(false) && setIsClickButton(false) && setShowButton(false)} >
                 <li>
                     <button className="dropdown-item d-flex justify-content-between">
                         <span><i className="bi bi-badge-hd ic-opt"></i> Chất lượng</span> <span>540P</span>

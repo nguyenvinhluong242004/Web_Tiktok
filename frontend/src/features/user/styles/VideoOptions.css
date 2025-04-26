@@ -1,3 +1,14 @@
+.drop-menu-opt-v {
+    position: absolute;
+    top: -40px; /* Điều chỉnh cho menu nằm dưới nút */
+    left: -170px; /* Đưa menu ra sát mép */
+    width: 170px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 9999;
+    font-size: 13px;
+}
+
 .drop-menu-opt {
     position: absolute;
     top: 0px; /* Điều chỉnh cho menu nằm dưới nút */

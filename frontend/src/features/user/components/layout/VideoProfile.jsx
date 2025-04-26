@@ -15,7 +15,7 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false); // 🆕 Trạng thái menu
-    const [showButton, setShowButton] = useState(false);
+    const [showButton, setShowButton] = useState(true);
     const [showSpeaker, setShowSpeaker] = useState(false);
     const [isClickButton, setIsClickButton] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
@@ -129,12 +129,10 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                             console.log("cllll");
                         }
                         setShowButton(true);
-                        setShowSpeaker(true);
                     }}
                     onMouseLeave={() => {
                         setShowButton(false);
                         //setMenuOpen(false);
-                        setShowSpeaker(false);
                     }}
 
                 >
@@ -173,41 +171,37 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                             max="100"
                             onChange={handleSeek}
                         />
-
-                        {/* Nút menu (góc trên bên phải) */}
-                        {showButton && (
-                            <div
-                                className="position-absolute top-0 end-0"
-                                onMouseEnter={() => {
-                                    setMenuOpen(true);
-                                    if (isClickButton) {
-                                        setIsClickButton(false);
-                                        setMenuOpen(false);
-                                    }
-                                }}
-                                onMouseLeave={() => setMenuOpen(isClickButton)}
-                            >
-                                <button
-                                    className="btn text-white p-2"
-                                    type="button"
-                                    onClick={() => setIsClickButton(!isClickButton) && setMenuOpen(menuOpen)}
-                                >
-                                    <i className="bi bi-three-dots fs-4"></i>
-                                </button>
-                            </div>
-                        )}
                     </div>
 
                 </div>
                 <div style={{ width: "150px" }}></div>
-
-
-                {/* Truyền trạng thái menu xuống VideoOptions */}
-                <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} />
             </div>
-            <div className="v-video-controls-profile">
+            {/* Nút menu (góc trên bên phải) */}
+            <div
+                className="position-absolute top-0 end-0"
+                onMouseEnter={() => {
+                    setMenuOpen(true);
+                }}
+                onMouseLeave={() => setMenuOpen(false)}
+            >
+                <button
+                    className="btn text-white p-2"
+                    type="button"
+                    onClick={() => setIsClickButton(!isClickButton) && setMenuOpen(menuOpen)}
+                >
+                    <i className="bi bi-three-dots fs-4"></i>
+                </button>
+                
+                {/* Truyền trạng thái menu xuống VideoOptions */}
+                <VideoOptions isOpen={menuOpen} setMenuOpen={setMenuOpen} setIsClickButton={setIsClickButton} setShowButton={setShowButton} v_prf={true}/>
+            </div>
+            <div className="v-video-controls-profile"
+                onMouseLeave={() =>
+                    setShowSpeaker(false)
+                }
+            >
                 <div className="v-ct-speaker">
-                    <div className="v-ct-input-speaker">
+                    {showSpeaker && <div className="v-ct-input-speaker">
                         <input
                             type="range"
                             min="0"
@@ -220,10 +214,13 @@ const VideoProfile = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                                 background: `linear-gradient(to right, #ff3b5c ${volume * 100}%, rgba(255, 255, 255, 0.3) ${volume * 100}%)`
                             }}
                         />
-                    </div>
+                    </div>}
                     <i
                         className={`bi ${muted ? "bi-volume-mute-fill" : "bi-volume-up-fill"} volume-icon`}
                         onClick={toggleMute}
+                        onMouseEnter={() =>
+                            setShowSpeaker(true)
+                        }
                     ></i>
                 </div>
             </div>
