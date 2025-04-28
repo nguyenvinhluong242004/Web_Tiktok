@@ -36,7 +36,16 @@ const Profile = () => {
 
     const moveFilter = (index) => {
         setActiveFilter(index);
+        if (index === 0) {  // Mới nhất
+            const sorted = [...videos].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setVideos(sorted);
+        }
+        else if (index === 2) { // Cũ nhất
+            const sorted = [...videos].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            setVideos(sorted);
+        }
     };
+
 
     // Tự động chèn thẻ <a> cho #hashtag và @mention
     const parseText = (input) => {
@@ -130,7 +139,7 @@ const Profile = () => {
                                         <div className="d-flex mb-2 button-profile">
                                             <div className="btn-prf"
                                                 onClick={console.log("click")}
-                                            ><i class="bi bi-person-check" style={{marginRight: "7px"}}></i><div> Đã follow</div></div>
+                                            ><i class="bi bi-person-check" style={{ marginRight: "7px" }}></i><div> Đã follow</div></div>
                                             <div className="btn-prf">Tin nhắn</div>
                                             <div className="btn-prf"><i className="bi bi-reply" style={{ transform: "scaleX(-1)" }}></i></div>
                                             <div className="btn-prf"><i className="bi bi-three-dots"></i></div>

@@ -5,6 +5,8 @@ import GetUserStrorage from "../../../../hooks/UseStorage";
 import InputComment from "../ui/InputComment"
 import VideoDescription from "../utils/VideoDescription"
 import VideoCardOnProfile from "../ui/VideoCardOnProfile"
+import { useNavigate } from "react-router-dom";
+import PrivacyVideoSettings from "../ui/PrivacyVideoSettings"
 import "../../styles/ContentVideoProfile.css";
 
 const ContentVideoProfile = ({ user, videos, video, pov }) => {
@@ -14,6 +16,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
   const [tab, setTab] = useState(0);
   const path = window.location.href;
   const id = video.id;
+  const navigate = useNavigate(); // Thay thế window.location.href
 
   const switchTab = (id) => {
     setTab(id);
@@ -41,6 +44,10 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
     console.log("Xóa video");
   };
 
+  const getUser = () => {
+    navigate(`/@${user.userid}`);
+  }
+
   return (
     <div className="video-cmt-container">
       <div className="video-main-cmt">
@@ -49,8 +56,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
             <div className="v-ct-info">
               <div className="name-avt-fl">
                 <div>
-                  <img style={{ width: "45px", borderRadius: "50%", marginRight: "20px" }} src={user ? user.profileImage : ''} alt="" />
-
+                  <img onClick={() => getUser()} style={{ width: "45px", borderRadius: "50%", marginRight: "20px", cursor: "pointer" }} src={user ? user.profileImage : ''} alt="" />
                 </div>
                 <div className="uid-name">
                   <div className="v-uid">{user.userid}</div>
@@ -58,12 +64,14 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
                 </div>
                 {pov === 'owner' ? (
                   <div style={{ position: 'relative', display: 'inline-block' }}>
-                    <i
-                      style={{ cursor: 'pointer' }}
-                      className="bi bi-three-dots"
-                      onMouseEnter={() => handleToggleMenu(true)}
-                      onMouseLeave={() => handleToggleMenu(false)}
-                    ></i>
+                    <div>
+                      <i
+                        style={{ cursor: 'pointer' }}
+                        className="bi bi-three-dots"
+                        onMouseEnter={() => handleToggleMenu(true)}
+                        onMouseLeave={() => handleToggleMenu(false)}
+                      ></i>
+                    </div>
                     {showMenu && (
                       <div className="v-menu-opt-info"
                         onMouseEnter={() => handleToggleMenu(true)}
@@ -194,6 +202,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
           </div>
         )}
       </div>}
+      <PrivacyVideoSettings isOpen={true}/>
     </div>
   );
 };

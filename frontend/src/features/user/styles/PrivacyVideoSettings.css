@@ -1,0 +1,41 @@
+.modal-overlay-v {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container-v {
+    background: #121212;
+    color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.modal-body-change {
+}
+
+.note-small {
+    font-size: 13px;
+    color: #5e5e5e;
+}
+
+.privacy-option select {
+    background-color: #4b4b4b;
+    border: none;
+    color: #fff;
+}
+
+.privacy-option div {
+    font-size: 18px;
+}
+
+.privacy-option select:hover {
+    
+    background-color: #4b4b4b;
+}
