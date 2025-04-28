@@ -14,6 +14,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
   const [inputMain] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [tab, setTab] = useState(0);
+  const [isOpenSettingPrivacy, setIsOpenSettingPrivacy] = useState(false);
   const path = window.location.href;
   const id = video.id;
   const navigate = useNavigate(); // Thay thế window.location.href
@@ -38,6 +39,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
 
   const handlePrivacySettings = () => {
     console.log("Cài đặt quyền riêng tư");
+    setIsOpenSettingPrivacy(true);
   };
 
   const handleDelete = () => {
@@ -202,7 +204,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
           </div>
         )}
       </div>}
-      <PrivacyVideoSettings isOpen={true}/>
+      <PrivacyVideoSettings video={video} isOpen={isOpenSettingPrivacy} setIsOpen={setIsOpenSettingPrivacy}/>
     </div>
   );
 };

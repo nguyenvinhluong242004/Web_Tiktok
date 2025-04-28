@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/PrivacyVideoSettings.css"; // Tạo CSS riêng nếu cần
 
-const PrivacyVideoSettings = ({ isOpen, setIsOpen, videoPrivacy }) => {
-    const [viewOption, setViewOption] = useState("Bạn bè");
+const visibilityOptions = {
+    public: "Mọi người",
+    friends: "Bạn bè",
+    private: "Chỉ mình tôi"
+};
+
+const PrivacyVideoSettings = ({ video, isOpen, setIsOpen, videoPrivacy }) => {
+    const [viewOption, setViewOption] = useState("public");
     const [allowComment, setAllowComment] = useState(true);
     const [allowDuet, setAllowDuet] = useState(false);
     const [allowStitch, setAllowStitch] = useState(false);
 
     useEffect(() => {
+        if (video) {
+            setViewOption(video.visibility);
+        }
         if (videoPrivacy) {
-            setViewOption(videoPrivacy.viewOption || "Bạn bè");
             setAllowComment(videoPrivacy.allowComment ?? true);
             setAllowDuet(videoPrivacy.allowDuet ?? false);
             setAllowStitch(videoPrivacy.allowStitch ?? false);
         }
-    }, [videoPrivacy]);
+        console.log(video.visibility)
+    }, [video, videoPrivacy]);
 
     if (!isOpen) return null;
 
@@ -55,9 +64,11 @@ const PrivacyVideoSettings = ({ isOpen, setIsOpen, videoPrivacy }) => {
                             value={viewOption}
                             onChange={(e) => setViewOption(e.target.value)}
                         >
-                            <option value="Mọi người">Mọi người</option>
-                            <option value="Bạn bè">Bạn bè</option>
-                            <option value="Chỉ mình tôi">Chỉ mình tôi</option>
+                            {Object.keys(visibilityOptions).map((key) => (
+                                <option key={key} value={key}>
+                                    {visibilityOptions[key]}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
@@ -109,13 +120,6 @@ const PrivacyVideoSettings = ({ isOpen, setIsOpen, videoPrivacy }) => {
 
                 {/* Footer */}
                 <div className="modal-footer border-0 d-flex justify-content-end px-4 mt-2 mb-3">
-                    <button
-                        type="button"
-                        className="btn btn-dark"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        Hủy
-                    </button>
                     <button
                         type="button"
                         className="btn btn-dark ms-2"
