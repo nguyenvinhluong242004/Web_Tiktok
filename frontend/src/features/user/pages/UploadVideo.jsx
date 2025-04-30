@@ -112,7 +112,7 @@ const UploadVideo = () => {
             console.log(key, value);
         }
         try {
-            const response = await uploadVideo(formData);
+            const response = await uploadVideo(formData, user.userid);
             if (response) {
                 console.log("Video tải lên thành công!");
             } else {

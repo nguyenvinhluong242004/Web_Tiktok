@@ -186,7 +186,12 @@ public class VideoController : ControllerBase
             _logger.LogInformation("Lưu thông tin video vào cơ sở dữ liệu thành công.");
 
             return Ok(
-                new { message = "Upload video thành công", userProfile = new { userid = userid } }
+                new
+                {
+                    message = "Upload video thành công",
+                    videoId = newVideo.Id,
+                    userProfile = new { userid = userid },
+                }
             );
         }
         catch (Exception ex)

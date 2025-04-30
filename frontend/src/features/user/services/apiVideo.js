@@ -1,7 +1,7 @@
 import { API_URL, getAccessToken } from "./config/APIConfig";
 import axios from "axios";
 
-export const uploadVideo = async (formData) => {
+export const uploadVideo = async (formData, uid) => {
     const token = getAccessToken(); // Lấy token từ sessionStorage hoặc cookie
     try {
         const response = await axios.post(`${API_URL}/video/upload-video`, formData, {
@@ -13,7 +13,7 @@ export const uploadVideo = async (formData) => {
 
         console.log(response.data.message);
         alert("Tải video lên thành công!");
-        window.location.href = `/@${response.data.userProfile.userid}/videos`; // Điều hướng đến trang video sau khi tải lên thành công
+        window.location.href = `/@${uid}/video/${response.data.videoId}`; // Điều hướng đến trang video sau khi tải lên thành công
         return response.data;
     } catch (error) {
         console.error("Lỗi khi tải video:", error);
