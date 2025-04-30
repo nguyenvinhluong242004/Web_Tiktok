@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/PrivacyVideoSettings.css"; // Tạo CSS riêng nếu cần
+import { changeVisibility } from "../../services/apiVideo";
 
 const visibilityOptions = {
     public: "Mọi người",
@@ -27,7 +28,7 @@ const PrivacyVideoSettings = ({ video, isOpen, setIsOpen, videoPrivacy }) => {
 
     if (!isOpen) return null;
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const updatedPrivacy = {
             viewOption,
             allowComment,
@@ -35,7 +36,27 @@ const PrivacyVideoSettings = ({ video, isOpen, setIsOpen, videoPrivacy }) => {
             allowStitch
         };
         console.log("Đã lưu cài đặt:", updatedPrivacy);
-        setIsOpen(false);
+
+        const formData = new FormData();
+        formData.append("videoid", video.id);
+        formData.append("visibility", updatedPrivacy.viewOption);
+
+        // Duyệt qua và log từng cặp khóa/giá trị trong formData
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        try {
+            const response = await changeVisibility(formData);
+            if (response) {
+                console.log("Thay đổi privacy thành công!");
+            } else {
+                console.log("Thất bại.");
+            }
+        } catch (error) {
+            alert("Lỗi khi thay đổi.");
+        } finally {
+            setIsOpen(false);
+        }
     };
 
     return (

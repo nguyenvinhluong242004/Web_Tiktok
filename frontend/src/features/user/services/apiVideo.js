@@ -22,6 +22,22 @@ export const uploadVideo = async (formData, uid) => {
     }
 };
 
+export const changeVisibility = async (formData) => {
+    const token = getAccessToken(); // Lấy token từ sessionStorage hoặc cookie
+    try {
+        const response = await axios.put(`${API_URL}/video/update-visibility`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // Vì chúng ta đang gửi dữ liệu đa phần là file
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(response.data.message);
+    } catch (error) {
+        console.error("Lỗi khi tải video:", error);
+        throw error;
+    }
+};
+
 // Lấy profile
 export const getVideoOfUser = async (uid) => {
     const token = getAccessToken();

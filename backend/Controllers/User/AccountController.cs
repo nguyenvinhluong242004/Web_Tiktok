@@ -129,7 +129,7 @@ public class AccountController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("update-profile")]
+    [HttpPut("update-profile")]
     public async Task<IActionResult> UpdateProfile(
         [FromForm] IFormFile? newImage,
         [FromForm] int uuid,

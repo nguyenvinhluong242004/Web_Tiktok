@@ -126,6 +126,7 @@ public class VideoController : ControllerBase
         return Ok(new { videos = videoList });
     }
 
+    [Authorize]
     [HttpPost("upload-video")]
     public async Task<IActionResult> UploadVideo(
         [FromForm] IFormFile video,
@@ -198,6 +199,63 @@ public class VideoController : ControllerBase
         {
             _logger.LogError(ex, "Lỗi khi upload video.");
             return StatusCode(500, "Đã xảy ra lỗi trong quá trình upload video.");
+        }
+    }
+
+    [Authorize]
+    [HttpPut("update-visibility")]
+    public async Task<IActionResult> UpdateVisibility(
+        [FromForm] int videoId,
+        [FromForm] string visibility
+    )
+    {
+        try
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (email == null)
+            {
+                _logger.LogWarning("Người dùng chưa đăng nhập hoặc token không hợp lệ.");
+                return Unauthorized();
+            }
+
+            var user = await _userData.GetUserByEmailAsync(email);
+
+            var video = await _videoData.GetVideoByIdAsync(videoId);
+            if (video == null)
+            {
+                _logger.LogWarning($"Không tìm thấy video với ID: {videoId}");
+                return NotFound("Video không tồn tại.");
+            }
+
+            if (video.UserId != user.Id)
+            {
+                _logger.LogWarning($"Người dùng không có quyền sửa video với ID: {videoId}");
+                return Forbid("Bạn không có quyền sửa video này.");
+            }
+
+            video.Visibility = visibility;
+            video.UpdatedAt = DateTime.UtcNow.ToUniversalTime();
+            video.DeletedAt = video.DeletedAt?.ToUniversalTime();
+            video.CreatedAt = DateTime.SpecifyKind(video.CreatedAt, DateTimeKind.Utc);
+
+            _context.Videos.Update(video);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Đã cập nhật visibility cho video ID: {videoId}");
+
+            return Ok(
+                new
+                {
+                    message = "Cập nhật visibility thành công",
+                    videoId = video.Id,
+                    newVisibility = video.Visibility,
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Lỗi khi cập nhật visibility.");
+            return StatusCode(500, "Đã xảy ra lỗi khi cập nhật visibility.");
         }
     }
 }
