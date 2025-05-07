@@ -64,8 +64,8 @@ const CmtContainer = () => {
             <InputComment isClose={inputMain} />
           </div>
         ) : (
-          <div className="bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
-            Đăng nhập để bình luận
+          <div className="bt-login-cmt mb-2" onClick={() => setIsLoginOpen(true)}>
+            Đăng nhập để bình luận 
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import CmtWrapperParent from "../ui/CmtWrapperParent";
 import { useAppState } from "../../../../store/UserData";
 import GetUserStrorage from "../../../../hooks/UseStorage";
@@ -7,6 +7,9 @@ import VideoDescription from "../utils/VideoDescription"
 import VideoCardOnProfile from "../ui/VideoCardOnProfile"
 import { useNavigate } from "react-router-dom";
 import PrivacyVideoSettings from "../ui/PrivacyVideoSettings"
+
+import { checkProfile } from "../../services/apiAccount";
+import { checkToken, checkRole } from "../../services/apiNavbar";
 import "../../styles/ContentVideoProfile.css";
 
 const ContentVideoProfile = ({ user, videos, video, pov }) => {
@@ -15,6 +18,7 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [tab, setTab] = useState(0);
   const [isOpenSettingPrivacy, setIsOpenSettingPrivacy] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const path = window.location.href;
   const id = video.id;
   const navigate = useNavigate(); // Thay thế window.location.href
@@ -49,6 +53,26 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
   const getUser = () => {
     navigate(`/@${user.userid}`);
   }
+
+  const verifyToken = async () => {
+    const result = await checkToken();
+    setIsLogin(!!result); // Chuyển kết quả thành true/false
+    if (result) {
+      const user = await checkProfile(); // Kiểm tra profile
+      if (user.status) {
+        setIsLogin(true);
+        console.log(user.data);
+      }
+      else {
+        setIsLogin(false);
+        console.log(user.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
   return (
     <div className="video-cmt-container">
@@ -194,17 +218,17 @@ const ContentVideoProfile = ({ user, videos, video, pov }) => {
           )}
       </div>
       {tab === 0 && <div className="video-footer-cmt">
-        {user ? (
+        {isLogin ? (
           <div className="video-ft-input-cmt">
             <InputComment isClose={inputMain} />
           </div>
         ) : (
-          <div className="video-bt-login-cmt" onClick={() => setIsLoginOpen(true)}>
+          <div className="video-bt-login-cmt mb-2" onClick={() => setIsLoginOpen(true)}>
             Đăng nhập để bình luận
           </div>
         )}
       </div>}
-      <PrivacyVideoSettings video={video} isOpen={isOpenSettingPrivacy} setIsOpen={setIsOpenSettingPrivacy}/>
+      <PrivacyVideoSettings video={video} isOpen={isOpenSettingPrivacy} setIsOpen={setIsOpenSettingPrivacy} />
     </div>
   );
 };
