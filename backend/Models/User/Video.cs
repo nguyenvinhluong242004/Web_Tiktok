@@ -79,5 +79,12 @@ namespace Backend.Models
         public int MusicUserId { get; set; }
         public string MusicImage { get; set; }
         public string MusicLink { get; set; }
+
+        public bool IsFollowed { get; set; } = false;
+    }
+
+    public class UuidRequest
+    {
+        public int Uuid { get; set; }
     }
 }

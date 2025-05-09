@@ -191,6 +191,10 @@ video {
     padding-top: 4px;
 }
 
+.add-follow.done {
+    background-color: #252525;
+}
+
 /* Nút chuyển video */
 .btn-nav {
     position: absolute;

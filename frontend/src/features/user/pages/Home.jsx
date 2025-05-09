@@ -3,6 +3,8 @@ import VideoCard from "../components/layout/VideoCard";
 import { fetchVideos } from "../services/apiHome";
 import { useAppState } from "../../../store/UserData";
 import { useNavigate } from "react-router-dom";
+import { addFollow, deleteFollow } from "../services/apiActionUser";
+import GetUserStrorage from "../../../hooks/UseStorage";
 import "../styles/Home.css";
 
 const Home = () => {
@@ -11,9 +13,15 @@ const Home = () => {
     const containerRef = useRef(null);
     const videoRefs = useRef([]);
     const navigate = useNavigate();
+    const [user, setUser] = useState({});
+
 
     useEffect(() => {
-        fetchVideos().then((data) => {
+        const user = GetUserStrorage(); // Kiểm tra profile
+        setUser(user);
+        console.log(user);
+
+        fetchVideos(user.uuid).then((data) => {
             console.log(data)
             setVideos(data);
             setVideoId(data[0].id || 0);
@@ -57,6 +65,45 @@ const Home = () => {
         }
     };
 
+    const handleFollower = (uuid) => {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            alert("Vui lòng đăng nhập để thực hiện hành động này.");
+            return;
+        }
+
+        const followerId = user.uuid;
+        const followingId = uuid;
+
+        if (videos[currentIndex].isFollowed) {
+            deleteFollow(followerId, followingId)
+                .then(() => {
+                    console.log("Unfollowed successfully");
+                    setVideos((prevVideos) =>
+                        prevVideos.map((video, index) =>
+                            index === currentIndex ? { ...video, isFollowed: false } : video
+                        )
+                    );
+                    console.log(videos)
+                })
+                .catch((error) => console.error(error));
+        } else {
+            addFollow(followerId, followingId)
+                .then(() => {
+                    console.log("Followed successfully");
+                    setVideos((prevVideos) =>
+                        prevVideos.map((video, index) =>
+                            index === currentIndex ? { ...video, isFollowed: true } : video
+                        )
+                    );
+                    console.log(videos)
+                })
+                .catch((error) => console.error(error));
+        }
+
+
+    }
+
     return (
         <div className="d-flex main-home">
             {isExpand ? (
@@ -72,7 +119,14 @@ const Home = () => {
                 <div className="video-container">
                     {videos.map((video, index) => (
                         <div ref={videoRefs.current[index]} key={video.id} className="video-wrapper">
-                            <VideoCard navigate={navigate} video={video} isNewVideo={isNewVideo} resetIsNewVideo={resetIsNewVideo} />
+                            <VideoCard
+                                navigate={navigate}
+                                video={video}
+                                isNewVideo={isNewVideo}
+                                resetIsNewVideo={resetIsNewVideo}
+                                handleFollower={handleFollower}
+                                uid={user.userid}
+                            />
                         </div>
                     ))}
                 </div>

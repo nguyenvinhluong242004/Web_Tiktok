@@ -19,7 +19,7 @@ function formatDate(dateString) {
     }
 }
 
-const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
+const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo, handleFollower, uid }) => {
     const [volume, setVolume] = useState(0.5); // giá trị mặc định là 50%
     const { isCommentOpen, setIsCommentOpen, videoId, setVideoId, muted, setMuted } = useAppState();
     const videoRef = useRef(null);
@@ -181,7 +181,7 @@ const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
 
                     <div className="info-video-feeds">
                         <div className="header-i-v-f">
-                            <div className="name">{video.username}</div>  
+                            <div className="name">{video.username}</div>
                             <i className="bi bi-dot"></i>
                             <div className="date">{formatDate(video.createdAt)}</div>
                         </div>
@@ -260,8 +260,20 @@ const VideoCard = ({ navigate, video, isNewVideo, resetIsNewVideo }) => {
                 <div className="bt-action">
                     <div className="actions d-flex flex-column align-items-center">
                         <div className="header-btn">
-                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" onClick={() => {handleRedirectProfileUser(video.userId)}}/>
-                            <div className="add-follow"><span>+</span></div>
+                            <img className="avt-profile" src={video.profileImage ? video.profileImage : "/img/avt.jpg"} alt="profile" onClick={() => { handleRedirectProfileUser(video.userId) }} />
+
+                            {uid !== video.userId &&
+                                <>
+                                    {video.isFollowed ?
+                                        <div className="add-follow done" onClick={() => handleFollower(video.userDbId)}>
+                                            <i className="bi bi-check-lg" style={{ fontSize: '14px', color: 'red' }}></i>
+                                        </div> :
+                                        <div className="add-follow" onClick={() => handleFollower(video.userDbId)}>
+                                            <i className="bi bi-plus-lg" style={{ fontSize: '14px' }}></i>
+                                        </div>
+                                    }
+                                </>
+                            }
                         </div>
                         <div className="btn-act">
                             <div className="btn-action" id="heart">

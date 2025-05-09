@@ -31,9 +31,11 @@ public class VideoController : ControllerBase
     }
 
     [HttpPost("feeds")]
-    public async Task<IActionResult> GetVideosOnFeeds()
+    public async Task<IActionResult> GetVideosOnFeeds([FromBody] UuidRequest request)
     {
-        var videos = await _videoData.GetRandomVideosAsync(10);
+        int uuid = request.Uuid;
+        _logger.LogInformation("uuid {uuid}", uuid);
+        var videos = await _videoData.GetRandomVideosAsync(10, uuid);
         return Ok(videos);
     }
 

@@ -13,7 +13,7 @@ public class VideoData
         _context = context;
     }
 
-    public async Task<List<VideoWithUserDto>> GetRandomVideosAsync(int count = 10)
+    public async Task<List<VideoWithUserDto>> GetRandomVideosAsync(int count = 10, int uuid = 0)
     {
         var total = await _context.Videos.CountAsync();
 
@@ -27,7 +27,7 @@ public class VideoData
                 .OrderByDescending(v => v.CreatedAt)
                 .ToListAsync();
 
-            return await ConvertToDtoList(allVideos);
+            return await ConvertToDtoList(allVideos, uuid);
         }
 
         var random = new Random();
@@ -42,15 +42,37 @@ public class VideoData
         );
 
         var selectedVideos = await Task.WhenAll(tasks);
-        return await ConvertToDtoList(selectedVideos.ToList());
+        return await ConvertToDtoList(selectedVideos.ToList(), uuid);
     }
 
-    private async Task<List<VideoWithUserDto>> ConvertToDtoList(List<Video> videos)
+    private async Task<List<VideoWithUserDto>> ConvertToDtoList(List<Video> videos, int uuid = 0)
     {
         var userIds = videos.Select(v => v.UserId).Distinct().ToList();
         var users = await _context
             .Users.Where(u => userIds.Contains(u.Id))
             .ToDictionaryAsync(u => u.Id);
+
+        var followedIds = new HashSet<int>();
+        if (uuid > 0)
+        {
+            followedIds = _context
+                .Followers.Where(f => f.FollowerId == uuid)
+                .Select(f => f.FollowingId)
+                .ToHashSet();
+            Console.WriteLine(
+                "Danh sách followedIds: uuid: {0}, Count: {1}",
+                uuid,
+                followedIds.Count
+            );
+            foreach (var id in followedIds)
+            {
+                Console.WriteLine(id);
+            }
+        }
+        else if (uuid == 0)
+        {
+            Console.WriteLine("uuid không tồn tại");
+        }
 
         var musicIds = videos
             .Where(v => v.MusicId.HasValue)
@@ -93,6 +115,8 @@ public class VideoData
                     MusicUserId = music?.UserId ?? 0,
                     MusicImage = music?.Image ?? "",
                     MusicLink = music?.Link ?? "",
+
+                    IsFollowed = uuid > 0 && followedIds.Contains(user?.Id ?? -1),
                 };
             })
             .ToList();
