@@ -91,7 +91,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:8888") // Đúng với frontend
+                .WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_URL")) // Đúng với frontend
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials(); // Cho phép gửi cookie/token

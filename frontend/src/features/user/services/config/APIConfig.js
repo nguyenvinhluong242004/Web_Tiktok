@@ -1,8 +1,10 @@
-export const API_URL = 'http://localhost:5281/api';
+export const API_URL = process.env.REACT_APP_API_URL;
 
 // Biến lưu access token
 let accessToken = null;
 let role = null;
+
+console.log(API_URL);
 
 // Hàm set access token
 export const setAccessToken = (token) => {
