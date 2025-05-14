@@ -21,7 +21,12 @@ const Home = () => {
         setUser(user);
         console.log(user);
 
-        fetchVideos(user.uuid).then((data) => {
+        let uuid = 0;
+        if (user){
+            uuid = user.uuid;
+        }
+
+        fetchVideos(uuid).then((data) => {
             console.log(data)
             setVideos(data);
             setVideoId(data[0].id || 0);
@@ -125,7 +130,7 @@ const Home = () => {
                                 isNewVideo={isNewVideo}
                                 resetIsNewVideo={resetIsNewVideo}
                                 handleFollower={handleFollower}
-                                uid={user.userid}
+                                uid={user?.userid || -1}
                             />
                         </div>
                     ))}
