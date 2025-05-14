@@ -137,8 +137,8 @@ public class AuthController : ControllerBase
             new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, //local là false
-                SameSite = SameSiteMode.Lax,
+                Secure = true, //local là false
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddMinutes(3),
             }
         );
@@ -218,8 +218,8 @@ public class AuthController : ControllerBase
             new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
+                Secure = true,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddMinutes(15),
             }
         );
@@ -230,8 +230,8 @@ public class AuthController : ControllerBase
             new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, //local là false
-                SameSite = SameSiteMode.Lax,
+                Secure = true, //local là false
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(7),
             }
         );
@@ -417,8 +417,8 @@ public class AuthController : ControllerBase
             new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // Local là false, production nên đặt true
-                SameSite = SameSiteMode.Lax,
+                Secure = true, // Local là false, production nên đặt true
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddMinutes(15),
             }
         );
